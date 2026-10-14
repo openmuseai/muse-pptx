@@ -46,7 +46,7 @@ def build(output: Path) -> None:
         "artifacts": [
             {
                 "id": "pptx-worker",
-                "kind": "sandbox-worker",
+                "kind": "host-bundle",
                 "target": target,
                 "digest": {"algorithm": "sha256", "value": digest_payload(files)},
                 "license": "Apache-2.0",
