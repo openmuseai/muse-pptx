@@ -1,0 +1,26 @@
+{
+  "name": "@openmuse/genoffice-pptx-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": ["vendor/*"],
+  "scripts": {
+    "build": "esbuild src/worker.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/worker.mjs",
+    "pack:desktop": "npm run build && python3 scripts/pack_desktop.py",
+    "inspect": "node --import tsx src/worker.ts inspect",
+    "roundtrip": "node --import tsx src/worker.ts roundtrip",
+    "test": "node --import tsx --test test/worker.test.ts"
+  },
+  "dependencies": {
+    "@genoffice/agent-core": "*",
+    "@genoffice/pptx-engine": "*",
+    "@genoffice/zip-gate": "*",
+    "fast-xml-parser": "^5.3.4",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "@types/node": "^24.10.1"
+  }
+}
