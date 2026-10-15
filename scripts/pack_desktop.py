@@ -1,8 +1,4 @@
-"""Build a local Desktop Host installation fixture from the pinned PPTX worker.
-
-This fixture is intentionally local and unsigned. Public distribution requires
-the store signing and Host verification path described in the architecture doc.
-"""
+"""Package the standalone GenOffice MCP server as a standard MCP Bundle."""
 
 from __future__ import annotations
 
@@ -13,100 +9,53 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PLUGIN_ID = "com.openmuse.pptx"
-VERSION = "0.1.0"
+NAME = "genoffice-pptx"
+VERSION = "0.2.0"
 
 
-def digest_payload(files: dict[str, bytes]) -> str:
-    digest = hashlib.sha256()
-    for name in sorted(files):
-        digest.update(name.encode())
-        digest.update(b"\x00")
-        digest.update(files[name])
-        digest.update(b"\x00")
-    return digest.hexdigest()
-
-
-def build(output: Path) -> None:
-    worker = (ROOT / "dist/worker.mjs").read_bytes()
-    files = {"worker.mjs": worker}
-    target = {"os": "macos", "arch": "aarch64", "libc": "darwin"}
+def build(output: Path) -> Path:
+    output.mkdir(parents=True, exist_ok=True)
+    worker = (ROOT / "dist/server.mjs").read_bytes()
     manifest = {
-        "manifest_version": 2,
-        "id": PLUGIN_ID,
-        "name": "PPTX · GenOffice Core",
+        "manifest_version": "0.3",
+        "name": NAME,
+        "display_name": "GenOffice PPTX",
         "version": VERSION,
-        "protocol": {"major": 1, "minor": 0},
-        "ui_runtime": {"kind": "none"},
-        "execution_connector": {
-            "kind": "host-process",
-            "protocol": "openmuse.pptx.worker/v1",
+        "description": "Inspect a user-selected PowerPoint deck with GenOffice.",
+        "author": {"name": "OpenMuse contributors"},
+        "license": "Apache-2.0",
+        "repository": {"type": "git", "url": "https://github.com/genspark-ai/genoffice"},
+        "tools": [{"name": "inspect_pptx", "description": "Inspect a PPTX deck"}],
+        "compatibility": {
+            "platforms": ["darwin", "win32", "linux"],
+            "runtimes": {"node": ">=22.0.0"},
         },
-        "compatibility": {"targets": [{"target": target, "status": "supported"}]},
-        "artifacts": [
-            {
-                "id": "pptx-worker",
-                "kind": "host-bundle",
-                "target": target,
-                "digest": {"algorithm": "sha256", "value": digest_payload(files)},
-                "license": "Apache-2.0",
-                "abi": "node-esm-22",
-            }
-        ],
-        "activation_events": ["onCommand:pptx.inspect"],
-        "requested_permissions": ["workspace.read"],
-        "presentation": {"surfaces": [], "remote_capable": False},
-        "contributes": {
-            "commands": [
-                {
-                    "id": "pptx.inspect",
-                    "title": "检查 PPTX 文件",
-                    "required_permissions": ["workspace.read"],
-                }
-            ]
-        },
-        "install": {
-            "steps": [
-                {"type": "workspace.choose", "id": "pptx-workspace", "title": "PPTX 工作区"},
-                {"type": "workspace.layout", "directories": ["PPTX"]},
-                {
-                    "type": "workspace.materialize",
-                    "artifact": "pptx-worker",
-                    "into": "PPTX",
-                },
-            ]
+        "server": {
+            "type": "node",
+            "entry_point": "server/index.mjs",
+            "mcp_config": {
+                "command": "node",
+                "args": ["${__dirname}/server/index.mjs"],
+            },
         },
     }
-    output.mkdir(parents=True, exist_ok=True)
-    package = output / f"{PLUGIN_ID}-{VERSION}-macos-aarch64.omplugin"
+    package = output / f"{NAME}-{VERSION}.mcpb"
     entries = {
-        "openmuse.plugin.json": json.dumps(manifest, ensure_ascii=False, separators=(",", ":")).encode(),
-        "payload/pptx-worker/worker.mjs": worker,
+        "manifest.json": (json.dumps(manifest, separators=(",", ":")) + "\n").encode(),
+        "server/index.mjs": worker,
+        "LICENSE": (ROOT / "UPSTREAM-LICENSE").read_bytes(),
+        "NOTICE": (ROOT / "UPSTREAM-NOTICE").read_bytes(),
     }
     with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, data in sorted(entries.items()):
-            metadata = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
-            metadata.compress_type = zipfile.ZIP_DEFLATED
-            metadata.external_attr = 0o644 << 16
-            archive.writestr(metadata, data)
-    package_bytes = package.read_bytes()
-    catalog = {
-        "schema": "openmuse.local-catalog/v1",
-        "packages": [
-            {
-                "id": PLUGIN_ID,
-                "version": VERSION,
-                "url": package.name,
-                "sha256": hashlib.sha256(package_bytes).hexdigest(),
-                "size": len(package_bytes),
-            }
-        ],
-    }
-    (output / "catalog.json").write_text(
-        json.dumps(catalog, ensure_ascii=False, indent=2) + "\n"
-    )
-    print(package)
+            info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o644 << 16
+            archive.writestr(info, data)
+    digest = hashlib.sha256(package.read_bytes()).hexdigest()
+    (output / "mcpb.sha256").write_text(f"{digest}  {package.name}\n")
+    return package
 
 
 if __name__ == "__main__":
-    build(Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "dist")
+    print(build(Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "dist"))

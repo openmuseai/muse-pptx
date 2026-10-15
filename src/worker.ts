@@ -6,12 +6,15 @@ const MAX_BYTES = 64 * 1024 * 1024
 
 export async function inspect(file: string) {
   const bytes = await readFile(file)
+  return inspectBytes(bytes)
+}
+
+export async function inspectBytes(bytes: Uint8Array) {
   if (bytes.length === 0 || bytes.length > MAX_BYTES) {
     throw new Error('PPTX size exceeds plugin limit')
   }
   const opened = await openPptx(bytes)
   return {
-    schema: 'openmuse.pptx.inspect/v1',
     slides: opened.deck.slides.length,
     size: opened.deck.size,
     sha256: createHash('sha256').update(bytes).digest('hex'),
@@ -32,7 +35,6 @@ export async function roundtrip(file: string, out: string) {
   const saved = await readFile(out)
   const reopened = await openPptx(saved)
   return {
-    schema: 'openmuse.pptx.roundtrip/v1',
     byteIdentical: Buffer.compare(bytes, Buffer.from(saved)) === 0,
     slidesPreserved: reopened.deck.slides.length === opened.deck.slides.length,
     sha256: createHash('sha256').update(saved).digest('hex'),

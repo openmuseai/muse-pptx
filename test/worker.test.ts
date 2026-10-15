@@ -11,7 +11,6 @@ test('GenOffice PPTX core inspects and round trips a real deck', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'openmuse-pptx-'))
   try {
     const result = await inspect(fixture)
-    assert.equal(result.schema, 'openmuse.pptx.inspect/v1')
     assert.ok(result.slides > 0)
     const output = join(directory, 'copy.pptx')
     const saved = await roundtrip(fixture, output)
