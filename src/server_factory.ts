@@ -16,7 +16,7 @@ const template = [
 
 export function buildServer() {
   const server = new McpServer(
-    { name: 'io.openmuse/genoffice-pptx', version: '0.2.0' },
+    { name: 'io.openmuse/genoffice-pptx', version: '0.3.1' },
     { capabilities: { tools: {}, resources: {} } },
   )
   server.registerResource(

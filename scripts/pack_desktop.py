@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "genoffice-pptx"
-VERSION = "0.2.0"
+VERSION = json.loads((ROOT / "package.json").read_text())["version"]
 
 
 def build(output: Path) -> Path:
@@ -21,7 +21,7 @@ def build(output: Path) -> Path:
         "name": NAME,
         "display_name": "GenOffice PPTX",
         "version": VERSION,
-        "description": "Inspect a user-selected PowerPoint deck with GenOffice.",
+        "description": "Inspect PowerPoint decks and enable a native Flutter slide preview in compatible clients.",
         "author": {"name": "OpenMuse contributors"},
         "license": "Apache-2.0",
         "repository": {"type": "git", "url": "https://github.com/genspark-ai/genoffice"},
@@ -46,6 +46,13 @@ def build(output: Path) -> Path:
         "LICENSE": (ROOT / "UPSTREAM-LICENSE").read_bytes(),
         "NOTICE": (ROOT / "UPSTREAM-NOTICE").read_bytes(),
     }
+    # Source for the optional AOT renderer is published with the reviewed MCPB.
+    # Flutter cannot load new Dart AOT code at runtime; compatible clients compile
+    # this package before release and only activate it after market installation.
+    flutter_root = ROOT / "flutter_renderer"
+    for path in (flutter_root / "lib").rglob("*.dart"):
+        entries[f"flutter_renderer/{path.relative_to(flutter_root).as_posix()}"] = path.read_bytes()
+    entries["flutter_renderer/pubspec.yaml"] = (flutter_root / "pubspec.yaml").read_bytes()
     with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, data in sorted(entries.items()):
             info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
