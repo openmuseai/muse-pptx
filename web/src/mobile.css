@@ -23,3 +23,8 @@
   .status-left { width: 100%; min-height: 20px; }
   .status-right { width: 100%; justify-content: flex-end; }
 }
+/* The host's Agent plugin owns conversation UI. No GenSpark provider or chat
+   surface is mounted; this plugin contributes live document tools instead. */
+.ai-dock, .stage-ai-bar { display: none !important; }
+.openmuse-agent-entry { display: flex; align-items: center; }
+.openmuse-agent-entry [role=alert] { color: #9b1c1c; max-width: 160px; font-size: 11px; }

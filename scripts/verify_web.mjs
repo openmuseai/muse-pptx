@@ -19,12 +19,12 @@ const args={name:path.basename(sample),content:(await fs.readFile(sample)).toStr
 const ui=await fs.readFile(process.env.MCP_APP_HTML?path.resolve(process.env.MCP_APP_HTML):path.join(root,'dist/web/index.html'),'utf8')
 const host=`<!doctype html><meta charset="utf-8"><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden}</style><iframe id="view" sandbox="allow-scripts allow-downloads"></iframe><script>
 const frame=document.getElementById('view');
-window.input=${JSON.stringify(args).replaceAll('<','\\u003c')};window.download=null;
+window.pending=new Map();window.seq=0;window.callView=(method,params={})=>new Promise((resolve,reject)=>{const id="tck:"+(++window.seq);window.pending.set(id,{resolve,reject});frame.contentWindow.postMessage({jsonrpc:"2.0",id,method,params},"*")});window.input=${JSON.stringify(args).replaceAll('<','\\u003c')};window.download=null;
 window.sendInput=()=>frame.contentWindow.postMessage({jsonrpc:'2.0',method:'ui/notifications/tool-input',params:{arguments:window.input}},'*');
-addEventListener('message',event=>{if(event.source!==frame.contentWindow)return;const m=event.data;if(m?.jsonrpc!=='2.0')return;const reply=result=>frame.contentWindow.postMessage({jsonrpc:'2.0',id:m.id,result},'*');
-if(m.method==='ui/initialize')reply({protocolVersion:'2026-01-26',hostInfo:{name:'Independent MCP Apps TCK',version:'1.0.0'},hostCapabilities:{downloadFile:{}},hostContext:{theme:'light',platform:'desktop',displayMode:'inline'}});
+addEventListener('message',event=>{if(event.source!==frame.contentWindow)return;const m=event.data;if(m?.jsonrpc!=='2.0')return;if(!m.method&&window.pending.has(m.id)){const p=window.pending.get(m.id);window.pending.delete(m.id);m.error?p.reject(m.error):p.resolve(m.result);return}const reply=result=>frame.contentWindow.postMessage({jsonrpc:'2.0',id:m.id,result},'*');
+if(m.method==='ui/initialize')reply({protocolVersion:'2026-01-26',hostInfo:{name:'Independent MCP Apps TCK',version:'1.0.0'},hostCapabilities:{downloadFile:{},message:{text:{}},updateModelContext:{text:{}}},hostContext:{theme:'light',platform:'desktop',displayMode:'inline'}});
 if(m.method==='ui/notifications/initialized')window.sendInput();
-if(m.method==='ui/download-file'){window.download=m.params;reply({});}
+if(m.method==='ui/update-model-context'){window.context=m.params;reply({});}if(m.method==='ui/message'){window.agentMessage=m.params;reply({});}if(m.method==='ui/download-file'){window.download=m.params;reply({});}
 });frame.srcdoc=new TextDecoder().decode(Uint8Array.from(atob('${Buffer.from(ui).toString('base64')}'),c=>c.charCodeAt(0)));
 </script>`
 const server=createServer((req,res)=>res.end(host))
@@ -59,6 +59,39 @@ try{
   }
   report.push(entry)
  }
+ // Discover and invoke the View's tools through the standard MCP Apps channel.
+ const toolList=await page.evaluate(()=>window.callView('tools/list'))
+ assert(toolList.tools.some(t=>t.name==='pptx_edit_text'))
+ const callTool=async(name,args={})=>page.evaluate(({name,args})=>window.callView('tools/call',{name,arguments:args}),{name,args})
+ const readDeck=async()=>JSON.parse((await callTool('pptx_read_deck')).content[0].text)
+ const deck=await readDeck()
+ const candidate=deck.slides.flatMap(slide=>slide.elements.map(el=>({...el,slideIndex:slide.index}))).find(el=>el.text?.includes('20XX'))
+ assert(candidate,'Sample title element must be discoverable')
+ const agentText='OpenMuse Agent verified'
+ const changed=await callTool('pptx_edit_text',{slideIndex:candidate.slideIndex,elementId:candidate.elementId,expectedRevision:deck.revision,text:agentText})
+ assert(!changed.isError,JSON.stringify(changed))
+ const stale=await callTool('pptx_set_notes',{slideIndex:0,expectedRevision:deck.revision,text:'stale overwrite'})
+ assert.equal(stale.isError,true,'A stale agent must not overwrite a concurrent edit')
+ const current=await readDeck()
+ assert(current.slides[candidate.slideIndex].elements.some(el=>el.text===agentText))
+ const saveResult=await callTool('pptx_save',{expectedRevision:current.revision})
+ assert(!saveResult.isError,JSON.stringify(saveResult))
+ const agentBlob=await page.evaluate(()=>window.download.contents[0].resource.blob)
+ const agentBytes=Buffer.from(agentBlob,'base64')
+ const agentZip=await JSZip.loadAsync(agentBytes)
+ assert((await agentZip.file(`ppt/slides/slide${candidate.slideIndex+1}.xml`).async('text')).includes(agentText))
+ await fs.writeFile(path.join(out,'agent-edited.pptx'),agentBytes)
+ await view.locator('.thumb').nth(candidate.slideIndex).evaluate(el=>el.click())
+ await page.screenshot({path:path.join(out,'agent-edited.png')})
+ await view.getByRole('button',{name:'Agent',exact:true}).click()
+ await page.waitForFunction(()=>window.agentMessage!==undefined)
+ assert((await page.evaluate(()=>window.agentMessage)).content.length>0,'Agent request must use standard ui/message')
+ assert.equal(await view.locator('.ai-dock:visible').count(),0,'Original chat panel must be absent')
+ const undo=await callTool('pptx_undo',{expectedRevision:current.revision})
+ assert(!undo.isError)
+ const restored=await readDeck()
+ assert(restored.slides[candidate.slideIndex].elements.some(el=>el.text===candidate.text))
+ await page.evaluate(()=>window.download=null)
  // Exercise the original text-edit overlay, then the standard download channel.
  await view.locator('.thumb').first().evaluate(el=>el.click())
  await view.getByText(`幻灯片 1 / ${count}`,{exact:true}).waitFor()
@@ -92,7 +125,7 @@ try{
  await view.getByText(`幻灯片 ${Math.min(4,count)} / ${count}`,{exact:true}).waitFor()
  await page.screenshot({path:path.join(out,'mobile-editor.png')})
  assert.deepEqual(errors,[])
- const result={sample:path.basename(sample),sampleSha256:createHash('sha256').update(await fs.readFile(sample)).digest('hex'),uiSha256:createHash('sha256').update(ui).digest('hex'),slides:count,renderedPages:report.length,textEditSavedAndReopened:true,protocol:'MCP Apps',pages:report}
+ const result={sample:path.basename(sample),sampleSha256:createHash('sha256').update(await fs.readFile(sample)).digest('hex'),uiSha256:createHash('sha256').update(ui).digest('hex'),slides:count,renderedPages:report.length,textEditSavedAndReopened:true,viewToolsDiscovered:true,agentEditSaved:true,staleRevisionRejected:true,agentEditUndoable:true,standardAgentMessage:true,genSparkPanelRemoved:true,protocol:'MCP Apps',pages:report}
  await fs.writeFile(path.join(out,'result.json'),JSON.stringify(result,null,2)+'\n')
  console.log(JSON.stringify({...result,pages:undefined,maxDifferentPixelRatio:Math.max(...report.map(p=>p.differentPixelRatio||0))},null,2))
 }finally{await browser.close();server.close()}

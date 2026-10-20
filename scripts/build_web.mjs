@@ -19,6 +19,19 @@ const result = await esbuild.build({
   assetNames:'assets/[name]-[hash]', metafile:true,
   alias:{'electron':path.join(root,'web/shims/electron.ts'),'node:path':path.join(root,'web/shims/path.ts'),'pngjs':path.join(root,'node_modules/pngjs/browser.js'),'node:crypto':path.join(root,'web/shims/crypto.ts'),'node:zlib':path.join(root,'web/shims/zlib.ts'),'node:fs':path.join(root,'web/shims/unavailable.ts'),'node:stream/promises':path.join(root,'web/shims/unavailable.ts')},
   plugins:[{name:'upstream-packages',setup(build){
+    // Product integration overlays only AI surfaces; parser, session builder,
+    // original React editor and Konva rendering are unchanged.
+    if (!process.env.GENOFFICE_WEB_ENTRY) {
+      build.onResolve({filter:/^\.\/ai\/AiPanel$/},()=>({path:path.join(root,'web/src/agent-panel.tsx')}))
+      build.onLoad({filter:/\/components\/RibbonHomeTab\.tsx$/},async args=>{
+        let source=await fs.promises.readFile(args.path,'utf8')
+        const start=source.indexOf('<Group label="Genspark AI">')
+        const end=source.indexOf('</Group>',start)
+        if(start<0||end<0)throw new Error('Upstream AI toolbar contract changed')
+        source=source.slice(0,start)+'<Group label="Agent"><AgentButton /></Group>'+source.slice(end+8)
+        return {contents:`import {AgentButton} from ${JSON.stringify(path.join(root,'web/src/agent-button.tsx'))};\n`+source,loader:'tsx',resolveDir:path.dirname(args.path)}
+      })
+    }
     build.onResolve({filter:/^\.\/fonts$/},args=>args.importer.endsWith('/main/session-state.ts')?{path:path.join(root,'web/shims/desktop-fonts.ts')}:undefined)
     build.onResolve({filter:/^@genoffice\//},args=>{
       const parts=args.path.split('/'); const name=parts.slice(0,2).join('/'); const p=packages.get(name)

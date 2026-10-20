@@ -10,17 +10,37 @@ import { runTxn, type Op } from '@genoffice/pptx-ops'
 import {fontsReady} from './font-metrics'
 import { AI_PROVIDERS } from '@genoffice/ai-provider/browser'
 
-const mcpApp = window.parent !== window ? new App({name:'GenOffice PPTX',version:'0.4.0'},{}) : null
+const mcpApp = window.parent !== window ? new App({name:'GenOffice PPTX',version:'0.5.0'},{tools:{listChanged:false}}) : null
 if (mcpApp) {
   mcpApp.ontoolinput = ({arguments:args}) => {
     if(typeof args?.content === 'string') void load(new File([Buffer.from(args.content,'base64')], typeof args.name==='string'?args.name:'Presentation.pptx', {type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})).catch(showError)
   }
-  void mcpApp.connect().catch(showError)
+  mcpApp.onlisttools = async()=>({tools:agentTools})
+  mcpApp.oncalltool = async params=>{
+    const task=agentQueue.then(()=>callAgentTool(params.name,params.arguments??{}))
+    agentQueue=task.catch(()=>{})
+    try {return {content:[{type:'text',text:JSON.stringify(await task)}]}}
+    catch(error){return {isError:true,content:[{type:'text',text:String(error)}]}}
+  }
+  void mcpApp.connect().then(()=>publishContext()).catch(showError)
 }
 let opened: OpenedPptx | null = null
 let fileName = 'Presentation.pptx'
 let fitWidthPx = 1280
 let dirty = false
+let revision = 0
+let agentQueue: Promise<unknown> = Promise.resolve()
+let editorContext: {slideIndex:number,selectedIds:string[],beforeRun?:()=>Promise<void>} = {slideIndex:0,selectedIds:[]}
+export function setAgentEditorContext(value: typeof editorContext) {editorContext=value;publishContext()}
+function publishContext() {
+  document.documentElement.dataset.pptxRevision=String(revision)
+  if(mcpApp?.getHostCapabilities()?.updateModelContext) void mcpApp.updateModelContext({structuredContent:{name:fileName,revision,dirty,slides:opened?.deck.slides.length??0,slideIndex:editorContext.slideIndex,selectedIds:editorContext.selectedIds}}).catch(()=>{})
+}
+export async function askAgent(text:string) {
+  if(!mcpApp?.getHostCapabilities()?.message)throw new Error('当前 Host 尚未连接 Agent 插件，请在 Host 的 Agent 面板中操作。')
+  await editorContext.beforeRun?.()
+  await mcpApp.sendMessage({role:'user',content:[{type:'text',text}]})
+}
 let pendingResolve: ((value: any) => void) | null = null
 let firstOpen: any = null
 const listeners = new Map<string, Set<(...args: any[]) => void>>()
@@ -38,6 +58,7 @@ async function load(file: File) {
   await fontsReady()
   opened = await openPptx(new Uint8Array(await file.arrayBuffer()))
   fileName = file.name; dirty=false; undoStack.length=0;redoStack.length=0
+  revision++;publishContext()
   firstOpen=result()
   if(pendingResolve) {pendingResolve(firstOpen);pendingResolve=null}
   emit('onOpened',firstOpen);history()
@@ -53,12 +74,14 @@ function showError(error: unknown) {
   banner.style.cssText='position:fixed;bottom:20px;left:20px;background:#fff2f2;color:#9b1c1c;padding:12px;z-index:99999'
   document.body.append(banner)
 }
-async function apply(ops: Op[], index: number, all=false) {
+async function apply(ops: Op[], index: number, all=false, expectedRevision?:number) {
   if(!opened) throw new Error('No presentation open')
   const before=await savePptx(opened)
+  if(expectedRevision!==undefined&&expectedRevision!==revision)throw new Error(`Revision conflict: expected ${expectedRevision}, actual ${revision}. Read the document again.`)
   const outcome=runTxn(opened,{ops})
   if(!outcome.applied) throw new Error(outcome.failures?.map(f=>f.error).join('; ')||'Edit failed')
   undoStack.push(before);if(undoStack.length>30)undoStack.shift();redoStack.length=0;dirty=true;history()
+  revision++;publishContext()
   return all?allSlides():render(index)
 }
 const target=(op:any)=>({target:{slide:op.slideIndex,el:op.sourceId},...(op.groupId?{group:op.groupId}:{})})
@@ -73,6 +96,7 @@ async function save() {
     const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=fileName;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
   }
   dirty=false
+  emit('onDeckChanged',{slides:allSlides()});publishContext()
   return {ok:true,path:fileName,slides:allSlides()}
 }
 const settings={provider:'custom',providers:Object.fromEntries(AI_PROVIDERS.map(p=>[p.id,{apiKey:'',baseUrl:'',model:p.defaultModel}]))}
@@ -90,8 +114,8 @@ const api: Record<string, (...args:any[])=>any>={
   getComments:async()=>[],getSections:async()=>[],getNotes:async(index:number)=>opened?getSlideNotes(opened.archive,opened.deck.slides[index].path):'',
   setNotes:async(op:any)=>{await apply([{op:'setNotes',target:{slide:op.slideIndex},text:op.text}],op.slideIndex);return true},
   isDirty:async()=>dirty,save,saveAs:save,
-  undo:async()=>{if(!opened||!undoStack.length)return null;redoStack.push(await savePptx(opened));opened=await openPptx(undoStack.pop()!);dirty=true;history();return allSlides()},
-  redo:async()=>{if(!opened||!redoStack.length)return null;undoStack.push(await savePptx(opened));opened=await openPptx(redoStack.pop()!);dirty=true;history();return allSlides()},
+  undo:async()=>{if(!opened||!undoStack.length)return null;redoStack.push(await savePptx(opened));opened=await openPptx(undoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
+  redo:async()=>{if(!opened||!redoStack.length)return null;undoStack.push(await savePptx(opened));opened=await openPptx(redoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
   editText:async(op:any)=>apply([{op:'setText',...target(op),paragraphs:op.paragraphs}],op.slideIndex),
   setElementFont:async(op:any)=>apply(op.sourceIds.map((id:string)=>({op:'setFont',...target({...op,sourceId:id}),font:op})),op.slideIndex),
   setElementParagraphFormat:async(op:any)=>apply(op.sourceIds.map((id:string)=>({op:'setParagraphFormat',...target({...op,sourceId:id}),format:op})),op.slideIndex),
@@ -123,3 +147,70 @@ const api: Record<string, (...args:any[])=>any>={
 // A browser test harness can select files through the standard file input.
 const input=document.createElement('input');input.type='file';input.accept='.pptx';input.id='pptx-file-input';input.style.display='none';input.onchange=()=>{if(input.files?.[0])void load(input.files[0]).catch(showError)}
 document.addEventListener('DOMContentLoaded',()=>document.body.append(input))
+
+const integer={type:'integer',minimum:0}
+const identity={slideIndex:integer,elementId:{type:'string',minLength:1}}
+const expected={expectedRevision:integer}
+function tool(name:string,description:string,properties:any,required:string[],readOnlyHint=false){
+  return {name,description,inputSchema:{type:'object' as const,properties,required,additionalProperties:false},annotations:{readOnlyHint}}
+}
+const agentTools=[
+  tool('pptx_read_deck','Read live document revision and editable element IDs/text. Optionally read one zero-based slide. Never guess IDs. Read again after a revision conflict.',{slideIndex:integer},[],true),
+  tool('pptx_edit_text','Replace text of one element, preserving original formatting. Zero-based slideIndex and exact elementId from pptx_read_deck. Revision must match; uses the same undoable transaction as manual editing.',{...identity,...expected,text:{type:'string',maxLength:50000}},['slideIndex','elementId','expectedRevision','text']),
+  tool('pptx_set_font','Change text color/size/style of an element. Colors are six hexadecimal digits without #; sizes in points.',{...identity,...expected,font:{type:'object',properties:{color:{type:'string',pattern:'^[0-9A-Fa-f]{6}$'},fontSizePt:{type:'number',minimum:1,maximum:400},bold:{type:'boolean'},italic:{type:'boolean'}},additionalProperties:false}},['slideIndex','elementId','expectedRevision','font']),
+  tool('pptx_set_notes','Set speaker notes of one zero-based slide.',{slideIndex:integer,...expected,text:{type:'string',maxLength:50000}},['slideIndex','expectedRevision','text']),
+  tool('pptx_undo','Undo the last edit in this live editor.',expected,['expectedRevision']),
+  tool('pptx_save','Save the current document through standard MCP Apps download-file to its Host-authorized destination. Call after successful edits. Reports failure if Host did not save.',expected,['expectedRevision']),
+]
+function checkedSlide(value:unknown) {
+  if(!opened||!Number.isInteger(value)||Number(value)<0||Number(value)>=opened.deck.slides.length)throw new Error('Invalid slideIndex')
+  return Number(value)
+}
+function elementSummary(el:any):any {
+  const paragraphs=el.text?.paragraphs??el.textBody?.paragraphs??el.paragraphs
+  return {elementId:el.id,type:el.type,...(paragraphs?{text:paragraphs.map((p:any)=>p.runs?.map((r:any)=>r.text??'').join('')??'').join('\n')}:{ }),...(el.children?{children:el.children.map(elementSummary)}:{})}
+}
+async function callAgentTool(name:string,args:Record<string,any>) {
+  if(!opened)throw new Error('No presentation open')
+  if(!agentTools.some(tool=>tool.name===name))throw new Error('Unknown tool')
+  if(name==='pptx_read_deck') {
+    const indices=args.slideIndex===undefined?opened.deck.slides.map((_,i)=>i):[checkedSlide(args.slideIndex)]
+    return {name:fileName,revision,dirty,slideIndex:editorContext.slideIndex,selectedIds:editorContext.selectedIds,slides:indices.map(index=>({index,elements:opened!.deck.slides[index].elements.map(elementSummary)}))}
+  }
+  // Flush pending original UI drafts before checking the agent's revision.
+  // A draft mutation therefore rejects a stale agent edit rather than losing it.
+  await editorContext.beforeRun?.()
+  if(!Number.isInteger(args.expectedRevision)||args.expectedRevision!==revision)throw new Error(`Revision conflict: expected ${args.expectedRevision}, actual ${revision}. Read the document again.`)
+  if(name==='pptx_save') {
+    const outcome=await save()
+    if(!outcome.ok)throw new Error('Host did not save the document')
+    return {revision,saved:true,name:fileName}
+  }
+  if(name==='pptx_undo') {
+    if(!undoStack.length)throw new Error('No edit to undo')
+    await api.undo();emit('onDeckChanged',{slides:allSlides()});return {revision,dirty}
+  }
+  const index=checkedSlide(args.slideIndex)
+  let op:any
+  if(name==='pptx_set_notes') {
+    if(typeof args.text!=='string'||args.text.length>50000)throw new Error('Invalid notes')
+    op={op:'setNotes',target:{slide:index},text:args.text}
+  } else {
+    if(typeof args.elementId!=='string'||!args.elementId)throw new Error('Invalid elementId')
+    const target={slide:index,el:args.elementId}
+    if(name==='pptx_edit_text') {
+      if(typeof args.text!=='string'||args.text.length>50000)throw new Error('Invalid text')
+      op={op:'setText',target,paragraphs:args.text.split('\n').map(text=>({runs:[{text}]}))}
+    }else if(name==='pptx_set_font') {
+      const font=args.font
+      if(!font||typeof font!=='object'||Array.isArray(font)||Object.keys(font).some(key=>!['color','fontSizePt','bold','italic'].includes(key)))throw new Error('Invalid font patch')
+      if(font.color!==undefined&&!/^[0-9a-f]{6}$/i.test(font.color))throw new Error('Invalid color')
+      if(font.fontSizePt!==undefined&&(!Number.isFinite(font.fontSizePt)||font.fontSizePt<1||font.fontSizePt>400))throw new Error('Invalid font size')
+      if(['bold','italic'].some(key=>font[key]!==undefined&&typeof font[key]!=='boolean'))throw new Error('Invalid font style')
+      op={op:'setFont',target,font}
+    }else throw new Error('Unknown tool')
+  }
+  await apply([op],index,false,args.expectedRevision)
+  emit('onDeckChanged',{slides:allSlides()})
+  return {revision,dirty,slideIndex:index}
+}
