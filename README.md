@@ -10,3 +10,5 @@ npm run pack:desktop
 ```
 
 指定样本 `/Users/mac/src/ioffice/samples/ppt-render/flutter/assets/Sample_ppt.pptx` 有 23 页；`flutter_renderer/test/deck_test.dart` 会在样本存在时验证页数、文字与图片。预览当前支持基本图形、文字、位图和上一页/下一页；复杂动画、SmartArt、SVG/WDP 媒体、精确母版效果及编辑保存尚未覆盖。发布与两端验收步骤见 [DEVELOPMENT.zh-CN.md](DEVELOPMENT.zh-CN.md)。
+
+Desktop 高保真编辑采用复用 GenOffice 原版管线的方案；原版基准测试、插件与 Host 的边界及尚未完成的集成步骤见 [DESKTOP_PIPELINE.zh-CN.md](DESKTOP_PIPELINE.zh-CN.md)。当前 0.3.1 版本仍是简化预览器。
