@@ -1,14 +1,18 @@
-# GenOffice PPTX 0.3.1
+# GenOffice PPTX 0.4.0
 
-独立第三方 PPTX 插件。标准 MCPB 内含 GenOffice 的 `inspect_pptx` MCP 工具以及原生 Flutter 只读预览器源码。插件不引用客户端源码或私有协议字段。兼容的 macOS/Android 客户端在构建时编入 Flutter AOT 预览器，市场安装并校验 MCPB 后启用它；文件经 Host 的统一资源读取流程在应用内展示，不发送到远端 MCP 服务。
+第三方 PowerPoint 插件，复用 GenOffice 原版 React/Konva 编辑器、Desktop session builder、PPTX 引擎及编辑事务。Desktop 和 Android 在应用内的受控 MCP Apps View 运行同一份离线 UI。Host 仅处理标准协议、资源授权和文件回写，不引用插件业务代码。
 
 ```sh
+git submodule update --init --recursive
 npm ci
-npm test
-cd flutter_renderer && flutter pub get && flutter test && cd ..
 npm run pack:desktop
+npm test
+node scripts/verify_web.mjs /path/Sample_ppt.pptx
 ```
 
-指定样本 `/Users/mac/src/ioffice/samples/ppt-render/flutter/assets/Sample_ppt.pptx` 有 23 页；`flutter_renderer/test/deck_test.dart` 会在样本存在时验证页数、文字与图片。预览当前支持基本图形、文字、位图和上一页/下一页；复杂动画、SmartArt、SVG/WDP 媒体、精确母版效果及编辑保存尚未覆盖。发布与两端验收步骤见 [DEVELOPMENT.zh-CN.md](DEVELOPMENT.zh-CN.md)。
+包：`dist/genoffice-pptx-0.4.0.mcpb`。单一插件 ID：`io.openmuse/genoffice-pptx`。Android 安装时发现标准 MCP 能力并核验资源，随后本地运行，不启动 Node 或回环服务，不上传打开的 PPTX。
 
-Desktop 高保真编辑采用复用 GenOffice 原版管线的方案；原版基准测试、插件与 Host 的边界及尚未完成的集成步骤见 [DESKTOP_PIPELINE.zh-CN.md](DESKTOP_PIPELINE.zh-CN.md)。当前 0.3.1 版本仍是简化预览器。
+- [原版管线、Host 边界和保真限制](DESKTOP_PIPELINE.zh-CN.md)
+- [开发、打包、上架审核、更新及人工验收](DEVELOPMENT.zh-CN.md)
+
+0.3.1 的简化 Flutter 画布已退出本版本运行链路。当前实现覆盖原版渲染和基础编辑保存；依赖 Electron/AI/系统剪贴板的全部菜单功能尚未完整移植，商业字体缺失仍可能产生跨平台差异。

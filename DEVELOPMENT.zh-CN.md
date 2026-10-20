@@ -1,82 +1,95 @@
-# GenOffice PPTX 开发、发布和验收
+# GenOffice PPTX 开发、更新与验收
 
-## 交付结构
+## 环境及目录
 
-- `src/`：Node 22 MCP Server，`inspect_pptx` 接收 JSON Schema `contentEncoding: base64`、标准 PPTX MIME 类型，返回页数等结构信息；不接收客户端内部路径。
-- `vendor/`：从 genoffice 提取的 PPTX 引擎及原许可、来源记录。
-- `flutter_renderer/`：独立 Flutter 包，只依赖 Flutter、`archive` 和 `xml`。OOXML 文件在应用内解包，绘制基本形状、文本与位图。它不导入 Muse-Client 代码。Flutter AOT 不支持安装后加载新 Dart 代码，所以兼容版客户端需预先编入此预览器；市场安装状态决定是否启用。
-- `scripts/pack_desktop.py`：生成可复现的标准 MCPB，包含 MCP Server 与渲染器源码。`scripts/publish.py`：通过 MCP Registry v0.1 上传、提交元数据。`scripts/release.py`：开发者一键检查、打包、提交。`scripts/review.py`：审核人员操作独立市场的审核接口。
-
-本版本保留单一插件标识 `io.openmuse/genoffice-pptx`。Desktop 从 MCPB 安装 stdio 服务；Android 下载并核验同一 MCPB 摘要，启用发行版内的原生 Flutter 预览器。普通文件点击只经 Host 的统一资源协议传递字节，不调用远端 MCP，也不打开系统浏览器。插件与 Host 之间使用 MCP、MCPB、MCP Registry、JSON Schema 的公开字段；客户端将公开插件名称与其 AOT 渲染器关联，这是发行版适配关系。
-
-## 开发与样本验证
-
-要求 Node 22+、Python 3、Flutter 3.44。插件目录执行：
+Node 22+、npm、Python 3。独立开发不需要 Muse-Client 源码。首次克隆：
 
 ```sh
+git submodule update --init --recursive -- plugins/genoffice-pptx/vendor/genoffice
+cd plugins/genoffice-pptx
 npm ci
-npm test
-cd flutter_renderer
-flutter pub get
-flutter analyze lib
-OPENMUSE_PPTX_SAMPLE_PATH=/Users/mac/src/ioffice/samples/ppt-render/flutter/assets/Sample_ppt.pptx flutter test
-cd ..
-npm run inspect -- /Users/mac/src/ioffice/samples/ppt-render/flutter/assets/Sample_ppt.pptx
 npm run pack:desktop
-shasum -a 256 dist/genoffice-pptx-0.3.1.mcpb
+npm test
 ```
 
-预期样本 23 页，首屏含“年终汇报”和图片。自动化测试只检查可打开、文字、图片和翻页；它不能证明版式正确。0.3.1 的实机画面已经观察到与 PPTX 缩略图明显不符：封面的曲线裁剪和底色没有还原，第二页文字发生重叠。复杂母版、占位符继承、裁剪路径、段落布局、动画、SmartArt、嵌入媒体、SVG/WDP 仍需完善。以原稿或可信渲染结果逐页视觉比对，是宣称“正常渲染”的发布门槛。修改后必须提升 `package.json` 与 Flutter 包版本，重新打包，不能覆盖已审核版本的字节。
+- `vendor/genoffice/`：固定上游原版代码，更新通过 submodule 提交完成，不在提取副本中改写渲染逻辑。
+- `web/src/runtime.ts`：插件自己的浏览器 preload 胶水、文件生命周期和 MCP Apps SDK。
+- `web/src/font-metrics.ts`：原版 OpentypeMetrics 与可分发字体绑定。
+- `web/shims/`：浏览器与 Electron/Node 环境的最小绑定；不能加入 Host 私有命令。
+- `src/server_factory.ts`：标准 MCP 工具及 UI resource 声明。
+- `dist/genoffice-pptx-0.4.0.mcpb`：同一插件 ID、同一审核包，在 Desktop 和 Android 使用。
 
-## 推送更新
+每次改业务或资源必须提升 `package.json` 版本、同步服务器/App SDK 版本、重新生成 lock 与包。不可覆盖已经审核的版本字节。旧 `flutter_renderer/` 不在新包内，也不应接入 Host。
 
-生产公开目录为 `https://plugins.openmuseai.com`。上传和审核接口仅在生产服务器回环地址监听，先由运维建立 SSH 隧道，切勿把令牌提交到 Git 或写入命令历史：
+## 原版基准及回归
+
+```sh
+node scripts/build_reference.mjs
+node dist/reference.cjs /path/Sample_ppt.pptx dist/reference-tree.json
+GENOFFICE_WEB_ENTRY=web/src/reference-ui.tsx GENOFFICE_WEB_OUT=dist/reference-web node scripts/build_web.mjs
+node scripts/render_reference.mjs dist/reference-pngs
+```
+
+脚本生成原版 Konva 的全部参考 PNG 后：
+
+```sh
+node scripts/verify_web.mjs /path/Sample_ppt.pptx dist/verification dist/reference-pngs
+```
+
+未传参考目录时仍检查全部页渲染、真实文本编辑、标准 download-file 保存和重开，并输出 Desktop/Mobile 视口截图。Chrome 路径可通过 `CHROME_PATH` 设置。原始样本不被修改；编辑结果只写输出目录。命令行 PDF 导出仅作额外测试，不能代替屏幕布局基准。见 `DESKTOP_PIPELINE.zh-CN.md`。
+
+## 上传、审核和发布
+
+公开市场 `https://plugins.openmuseai.com`。管理写接口仅绑定服务器回环地址。使用已有运维身份建立隧道：
 
 ```sh
 ssh -N -L 18795:127.0.0.1:18794 <user>@<market-host>
 ```
 
-在第二个终端运行；脚本会从环境变量读取令牌，若未设置则安全交互输入：
+构建并提交（默认选择兼容矩阵最新客户端）：
 
 ```sh
 python3 scripts/release.py \
   --registry http://127.0.0.1:18795 \
-  --public-origin https://plugins.openmuseai.com
+  --public-origin https://plugins.openmuseai.com \
+  --remote https://plugins.openmuseai.com/pptx/mcp
 ```
 
-`release.py` 依次执行 Node 测试、Flutter 检查、打包、`PUT /packages/{sha256}.mcpb` 和 `POST /v0.1/publish`，输出 submission ID 与 `pending`。只想验证包可用时加 `--build-only`。开发者也可单独调用 `scripts/publish.py`。
+令牌通过 `MARKET_DEVELOPER_TOKEN` 或安全交互输入，不能提交到 Git。`--build-only` 只构建；`scripts/publish.py` 可单独上传现成包。流程是 `PUT /packages/{sha256}.mcpb` → `POST /v0.1/publish` → `pending`，不会自动通过审核。
 
-审核员检查包摘要、许可、测试和两端画面后，在管理后台批准；或在私有隧道上执行。尤其不能只依据页数和 smoke test 批准复杂演示文稿的视觉适配：
+部署前必须从已审核包提取 UI：
 
 ```sh
-python3 scripts/review.py <submission-id> approve \
+npm run build:http
+python3 scripts/stage_service.py dist/genoffice-pptx-0.4.0.mcpb
+```
+
+将 `dist/release-service/dist/` 部署到独立 PPTX 服务目录。不能再从后续 `npm test` / `build:web` 的 `dist/web` 拷贝 UI：构建器可能生成等价但字节不同的输出，安装校验会拒绝。生产配置见市场的 `production.compose.yaml` 中 `pptx` 服务：只监听回环 18797，有内存/CPU/PID 预算。Nginx `/pptx/mcp` 转发到该服务 `/mcp`。**远端 resource HTML 必须与审核包的 web/index.html 字节相同**；不热换 UI。
+
+审核员核对来源、许可、SHA、逐页差异和两端实机证据后，使用独立市场后台，或：
+
+```sh
+python3 scripts/review.py <id> approve \
   --registry http://127.0.0.1:18795 \
-  --note 'macOS/Android 23-page preview checked'
+  --note 'Checked original-pipeline rendering, edit/save/reopen and both native hosts'
 ```
 
-`GET https://plugins.openmuseai.com/v0.1/servers` 仅展示审核通过的版本。客户端从公开目录获取 `server.json`，下载 MCPB 并核对 `fileSha256`。下架用 `review.py <submission-id> delist --note ...`；已安装用户的本地包不会被远程删除。
+公开 `GET /v0.1/servers` 只展示已上架版本。`review.py <id> delist --note ...` 下架；`relist` 恢复。已有用户保留本地安装，不远程删除其文件。
 
-## 两端人工验收
+## 两端人工生命周期验收
 
-1. 安装包含 `flutter_renderer/` 的最新 OpenMuse macOS 和 Android 整包；先核对应用包 SHA-256。
-2. 在两个客户端的在线插件市场刷新、安装 `GenOffice PPTX 0.3.1`；检查已安装版本和服务端 MCPB SHA-256 一致。审核前应不可安装。
-3. macOS：在工作区选中 `Sample_ppt.pptx`，使用 GenOffice PPTX 打开，检查原生 Flutter 画布、23 页计数、文字、图片、翻页。打开路径不创建 WebView。
-4. Android：将同一样本放入可访问的工作区，点击 `.pptx`；Host 将资源字节交给已安装的预览器，在应用内显示并可翻页。也可以从在线市场点击“使用”，经系统文件选择器选择样本。普通文件点击不上传内容到远端服务。
-5. 后台下架后刷新市场，新设备不可安装；已安装包仍可使用。重新上架再确认新安装可用，并核对审计记录。
-
-macOS 可用 Host 的线上集成测试复现正式安装与同一样本的 MCP 调用。仅设置 Registry 地址时安装到临时目录；设置安装目录时会写入当前用户的 OpenMuse 应用支持目录，退出后不会清理：
-
-```sh
-cd ../../../Muse-Client/app/openmuse_host
-OPENMUSE_MCP_REGISTRY_URL=https://plugins.openmuseai.com \
-OPENMUSE_MCP_INSTALL_ROOT="$HOME/Library/Application Support/com.openmuseai.office/OpenMuse/mcpb" \
-OPENMUSE_PPTX_SAMPLE_PATH=/Users/mac/src/ioffice/samples/ppt-render/flutter/assets/Sample_ppt.pptx \
-flutter test test/mcp_market_e2e_test.dart
-```
+1. 安装本次**完整主应用**，不是 smoke harness；记录 App/APK 和 MCPB 摘要。
+2. 在生产市场刷新，安装/升级 GenOffice PPTX 0.4.0。
+3. macOS：Workspace 打开样本；原版工具栏、左侧 23 页缩略图、首屏和第 4/23 页正常。编辑文字/备注、保存、关闭重开。
+4. Android：市场安装后，从工作台 Workspace 点同一文件，或市场“打开/使用”选择文件。在应用内渲染和切页；断网后已安装 UI 仍运行。手机仅重排工具栏和缩略图，不另写 OOXML 解释器。
+5. Mobile 从远端工作区打开的文档导出到 App Documents；本地文件选择器授予的路径可回写。回写到远端 Workspace 的统一资源写协议仍需单独验证，不能用“已导出”冒充远端保存。
+6. 后台下架，刷新后新设备不可安装；已安装副本继续可用。重新上架后再次安装确认。
 
 ## 故障定位
 
-- 市场无卡片：核对审核状态、公开目录版本、客户端的 Registry 提供商地址。
-- Android 无法安装：确认包从 HTTPS 下载、摘要匹配、当前 App 包含 0.3.1 AOT 适配；重新安装 0.3.1 包。
-- 文件点击回退系统应用：核对在线市场安装回执、PPTX MIME 类型（`application/vnd.openxmlformats-officedocument.presentationml.presentation` 或 `application/pptx`）及工作区资源读取授权。
-- 画面缺图：检查图片类型。当前 Flutter 解码器支持普通 PNG/JPEG；SVG/WDP、SmartArt 等需要后续适配。
+- 空白：先看 JS 错误。WebKit 必须有安全文档来源（Web Crypto）和 sandbox 内的 Storage 适配；不要改 PPTX 引擎规避。
+- MCP “connection closed”：自包含 UI 大于 10 MiB，Host 标准资源读取预算需足够；本次 128 MiB，包仍小于市场 32 MiB 限额。
+- Android OOM：不要将大 HTML/base64 文件用 loadDataWithBaseURL 多次复制；使用 AssetLoader 流式离线资源。
+- 无匹配打开方式：核对安装回执、标准 contentMediaType 发现缓存和 MIME 识别；不要按插件名称硬编码分发。
+- 安装报 UI 不同：部署服务与审核包不是同一构建，必须发布新版本。
+- 中文或字体差异：核对字体授权及可用字体；保留证据，不能伪称逐像素一致。

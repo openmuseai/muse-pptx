@@ -4,6 +4,7 @@ import path from 'node:path'
 import {createServer} from 'node:http'
 import {fileURLToPath} from 'node:url'
 import assert from 'node:assert/strict'
+import {createHash} from 'node:crypto'
 import {chromium} from 'playwright-core'
 import {PNG} from 'pngjs'
 import pixelmatch from 'pixelmatch'
@@ -15,7 +16,7 @@ const out=path.resolve(process.argv[3]||'dist/verification')
 const reference=process.argv[4]
 await fs.mkdir(out,{recursive:true})
 const args={name:path.basename(sample),content:(await fs.readFile(sample)).toString('base64')}
-const ui=await fs.readFile(path.join(root,'dist/web/index.html'),'utf8')
+const ui=await fs.readFile(process.env.MCP_APP_HTML?path.resolve(process.env.MCP_APP_HTML):path.join(root,'dist/web/index.html'),'utf8')
 const host=`<!doctype html><meta charset="utf-8"><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden}</style><iframe id="view" sandbox="allow-scripts allow-downloads"></iframe><script>
 const frame=document.getElementById('view');
 window.input=${JSON.stringify(args).replaceAll('<','\\u003c')};window.download=null;
@@ -91,7 +92,7 @@ try{
  await view.getByText(`幻灯片 ${Math.min(4,count)} / ${count}`,{exact:true}).waitFor()
  await page.screenshot({path:path.join(out,'mobile-editor.png')})
  assert.deepEqual(errors,[])
- const result={sample:path.basename(sample),slides:count,renderedPages:report.length,textEditSavedAndReopened:true,protocol:'MCP Apps',pages:report}
+ const result={sample:path.basename(sample),sampleSha256:createHash('sha256').update(await fs.readFile(sample)).digest('hex'),uiSha256:createHash('sha256').update(ui).digest('hex'),slides:count,renderedPages:report.length,textEditSavedAndReopened:true,protocol:'MCP Apps',pages:report}
  await fs.writeFile(path.join(out,'result.json'),JSON.stringify(result,null,2)+'\n')
  console.log(JSON.stringify({...result,pages:undefined,maxDifferentPixelRatio:Math.max(...report.map(p=>p.differentPixelRatio||0))},null,2))
 }finally{await browser.close();server.close()}

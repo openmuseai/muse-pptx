@@ -1,0 +1,103 @@
+{
+  "sample": "sample.pptx",
+  "sampleSha256": "d712b4672db3634457e1c3ee3d9d8485a0cfa3298edcacffbc4fb568c1b36afb",
+  "uiSha256": "15a58b7eebde5e3a3490a2a1ba8b7518fa8f07f36eac90f6cbe58d14ef175a2e",
+  "slides": 23,
+  "renderedPages": 23,
+  "textEditSavedAndReopened": true,
+  "protocol": "MCP Apps",
+  "pages": [
+    {
+      "page": 1,
+      "differentPixelRatio": 0.0014795524691358026
+    },
+    {
+      "page": 2,
+      "differentPixelRatio": 0.006435185185185185
+    },
+    {
+      "page": 3,
+      "differentPixelRatio": 0.004718364197530864
+    },
+    {
+      "page": 4,
+      "differentPixelRatio": 0.01396604938271605
+    },
+    {
+      "page": 5,
+      "differentPixelRatio": 0.02062692901234568
+    },
+    {
+      "page": 6,
+      "differentPixelRatio": 0.01759452160493827
+    },
+    {
+      "page": 7,
+      "differentPixelRatio": 0.01720871913580247
+    },
+    {
+      "page": 8,
+      "differentPixelRatio": 0.011630015432098765
+    },
+    {
+      "page": 9,
+      "differentPixelRatio": 0.019166666666666665
+    },
+    {
+      "page": 10,
+      "differentPixelRatio": 0.01511766975308642
+    },
+    {
+      "page": 11,
+      "differentPixelRatio": 0.01749421296296296
+    },
+    {
+      "page": 12,
+      "differentPixelRatio": 0.012185570987654321
+    },
+    {
+      "page": 13,
+      "differentPixelRatio": 0.014619984567901234
+    },
+    {
+      "page": 14,
+      "differentPixelRatio": 0.01945023148148148
+    },
+    {
+      "page": 15,
+      "differentPixelRatio": 0.018599537037037036
+    },
+    {
+      "page": 16,
+      "differentPixelRatio": 0.023042052469135803
+    },
+    {
+      "page": 17,
+      "differentPixelRatio": 0.016336805555555556
+    },
+    {
+      "page": 18,
+      "differentPixelRatio": 0.02745756172839506
+    },
+    {
+      "page": 19,
+      "differentPixelRatio": 0.01841820987654321
+    },
+    {
+      "page": 20,
+      "differentPixelRatio": 0.020709876543209875
+    },
+    {
+      "page": 21,
+      "differentPixelRatio": 0.01941550925925926
+    },
+    {
+      "page": 22,
+      "differentPixelRatio": 0.011554783950617284
+    },
+    {
+      "page": 23,
+      "differentPixelRatio": 0.0014795524691358026
+    }
+  ]
+}

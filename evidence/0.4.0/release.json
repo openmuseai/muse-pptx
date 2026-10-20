@@ -1,0 +1,13 @@
+{
+  "version": "0.4.0",
+  "upstreamCommit": "1e643ac74416dbff8a3e75e283bd88b0c1cba5f9",
+  "registry": "https://plugins.openmuseai.com",
+  "mcpEndpoint": "https://plugins.openmuseai.com/pptx/mcp",
+  "submissionId": "98150fa4-d35e-48b5-a34d-97356337e38e",
+  "packageSha256": "060aa1d49febc2d5c79b00360f448117b4d6a185677816f4ce9687d874e1985a",
+  "packageBytes": 14000049,
+  "uiSha256": "15a58b7eebde5e3a3490a2a1ba8b7518fa8f07f36eac90f6cbe58d14ef175a2e",
+  "canonicalUiVerifiedFromProduction": true,
+  "androidProductionInstallVerified": true,
+  "androidOfflineNetworkDeniedVerified": true
+}
