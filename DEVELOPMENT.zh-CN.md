@@ -100,3 +100,7 @@ python3 scripts/review.py <id> approve \
 - 无匹配打开方式：核对安装回执、标准 contentMediaType 发现缓存和 MIME 识别；不要按插件名称硬编码分发。
 - 安装报 UI 不同：部署服务与审核包不是同一构建，必须发布新版本。
 - 中文或字体差异：核对字体授权及可用字体；保留证据，不能伪称逐像素一致。
+
+## 0.5.0 Agent 集成
+
+View 工具、DSH 适配边界与更新流程见 [Agent 集成指南](AGENT_INTEGRATION.zh-CN.md)，真实 Desktop 对话、保存、重开、标签会话及生产发布证据见 [0.5.0 验收记录](evidence/0.5.0/ACCEPTANCE.zh-CN.md)。
