@@ -64,6 +64,13 @@ npm run build:http
 python3 scripts/stage_service.py dist/genoffice-pptx-0.4.0.mcpb
 ```
 
+建议对审核包的实际 UI 再执行验收，而不是使用后续的开发构建：
+
+```sh
+MCP_APP_HTML=dist/release-service/dist/web/index.html \
+  node scripts/verify_web.mjs /path/Sample_ppt.pptx dist/reviewed-verification dist/reference-pngs
+```
+
 将 `dist/release-service/dist/` 部署到独立 PPTX 服务目录。不能再从后续 `npm test` / `build:web` 的 `dist/web` 拷贝 UI：构建器可能生成等价但字节不同的输出，安装校验会拒绝。生产配置见市场的 `production.compose.yaml` 中 `pptx` 服务：只监听回环 18797，有内存/CPU/PID 预算。Nginx `/pptx/mcp` 转发到该服务 `/mcp`。**远端 resource HTML 必须与审核包的 web/index.html 字节相同**；不热换 UI。
 
 审核员核对来源、许可、SHA、逐页差异和两端实机证据后，使用独立市场后台，或：

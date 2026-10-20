@@ -29,6 +29,13 @@
 3. MIME/路由：删除 GenOffice ID → Flutter renderer 的专用映射，按标准 JSON Schema 的 MIME 声明发现安装能力。Workspace 不再只分发 Markdown，也不再被 2 MiB 预览上限挡住。
 4. 发布字节不一致：后续构建产物与包内 HTML 只差 13 字节的 `use strict`，Mobile 校验正确拒绝。部署现从审核 MCPB 提取 UI；`stage_service.py` 避免再次误部署后续构建结果。
 
+## 最终整包
+
+- macOS ZIP：`360e8cb38c477d26452d549c9706cc4b53861dafc73b1244bdbc8d451ad6a79f`。
+- Android APK：`bdb142451f40f20fd7c0137929532b548edc1b65e7efcfec29e651775df8dd26`。
+- 最终 macOS 包重启后已使用测试账号密码登录，重新挂载原始样本目录并打开 PPTX 副本。旧应用实例已退出。
+- Android 最终 APK 已再次覆盖安装到物理设备，返回 Success。
+
 ## 仍需明确的边界
 
 - 同一渲染代码不等于任意字体逐像素一致。样本已没有先前几何、图片裁剪和透明背景错乱；字体替代和抗锯齿仍有差异，不能宣称任意 PPTX 完美还原。
