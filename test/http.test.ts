@@ -14,7 +14,7 @@ async function freePort(): Promise<number> {
   return port
 }
 
-test('remote MCP serves A2UI resource and PPTX tool over HTTP', async () => {
+test('remote MCP serves MCP Apps resource and PPTX tool over HTTP', async () => {
   const port = await freePort()
   const server = spawn(process.execPath, [join(import.meta.dirname, '../dist/http.mjs')], {
     env: { ...process.env, PORT: String(port) }, stdio: ['ignore', 'ignore', 'pipe'],
@@ -29,15 +29,15 @@ test('remote MCP serves A2UI resource and PPTX tool over HTTP', async () => {
     try {
       await client.connect(transport, { mode: 'auto' })
       const resources = await client.listResources()
-      assert.ok(resources.resources.some(resource => resource.uri === 'a2ui://pptx-preview'))
-      const ui = await client.readResource({ uri: 'a2ui://pptx-preview' })
-      assert.equal(ui.contents[0].mimeType, 'application/a2ui+json')
+      assert.ok(resources.resources.some(resource => resource.uri === 'ui://genoffice-pptx/editor'))
+      const ui = await client.readResource({ uri: 'ui://genoffice-pptx/editor' })
+      assert.equal(ui.contents[0].mimeType, 'text/html;profile=mcp-app')
       const fixture = join(import.meta.dirname, '../vendor/pptx-engine/tests/fixtures/01_standard_business.pptx')
       const result = await client.callTool({ name: 'inspect_pptx', arguments: {
         content: (await readFile(fixture)).toString('base64'),
       } })
       assert.ok(Number(result.structuredContent?.slides) > 0)
-      assert.ok(result.content.some(item => item.type === 'resource'))
+      assert.ok(ui.contents.some(item => 'text' in item && item.text.includes('GenOffice PPTX')))
     } finally {
       await transport.close()
     }

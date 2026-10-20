@@ -24,12 +24,9 @@ def main() -> None:
     parser.add_argument("--remote")
     parser.add_argument("--build-only", action="store_true")
     args = parser.parse_args()
-    renderer = ROOT / "flutter_renderer"
+    run("git", "submodule", "update", "--init", "--recursive", "--", "plugins/genoffice-pptx/vendor/genoffice", cwd=ROOT.parents[1])
     run("npm", "ci")
     run("npm", "test")
-    run("flutter", "pub", "get", cwd=renderer)
-    run("flutter", "analyze", "lib", cwd=renderer)
-    run("flutter", "test", cwd=renderer)
     run("npm", "run", "pack:desktop")
     bundle = ROOT / f"dist/genoffice-pptx-{VERSION}.mcpb"
     if args.build_only:

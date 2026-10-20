@@ -21,7 +21,7 @@ def build(output: Path) -> Path:
         "name": NAME,
         "display_name": "GenOffice PPTX",
         "version": VERSION,
-        "description": "Inspect PowerPoint decks and enable a native Flutter slide preview in compatible clients.",
+        "description": "GenOffice original in-app PowerPoint rendering and editing via standard MCP Apps.",
         "author": {"name": "OpenMuse contributors"},
         "license": "Apache-2.0",
         "repository": {"type": "git", "url": "https://github.com/genspark-ai/genoffice"},
@@ -39,20 +39,38 @@ def build(output: Path) -> Path:
             },
         },
     }
+    notices = []
+    for metadata in sorted((ROOT / "node_modules").glob("**/package.json")):
+        if "node_modules" in metadata.parent.relative_to(ROOT / "node_modules").parts:
+            continue
+        try:
+            info = json.loads(metadata.read_text())
+        except (ValueError, OSError):
+            continue
+        texts = []
+        for pattern in ("LICENSE*", "LICENCE*", "COPYING*", "NOTICE*"):
+            for license_file in metadata.parent.glob(pattern):
+                if license_file.is_file():
+                    texts.append(license_file.read_text(errors="replace"))
+        if texts:
+            notices.append(f"{info.get('name', metadata.parent.name)} {info.get('version', '')}\n" + "\n".join(texts))
     package = output / f"{NAME}-{VERSION}.mcpb"
     entries = {
         "manifest.json": (json.dumps(manifest, separators=(",", ":")) + "\n").encode(),
         "server/index.mjs": worker,
         "LICENSE": (ROOT / "UPSTREAM-LICENSE").read_bytes(),
         "NOTICE": (ROOT / "UPSTREAM-NOTICE").read_bytes(),
+        "THIRD-PARTY-NOTICES.txt": "\n\n".join(notices).encode(),
+        "licenses/Carlito-OFL.txt": (ROOT / "vendor/genoffice/apps/docs/src/renderer/fonts/LICENSE-OFL.txt").read_bytes(),
+        "licenses/Arimo-OFL.txt": (ROOT / "node_modules/@fontsource/arimo/LICENSE").read_bytes(),
     }
-    # Source for the optional AOT renderer is published with the reviewed MCPB.
-    # Flutter cannot load new Dart AOT code at runtime; compatible clients compile
-    # this package before release and only activate it after market installation.
-    flutter_root = ROOT / "flutter_renderer"
-    for path in (flutter_root / "lib").rglob("*.dart"):
-        entries[f"flutter_renderer/{path.relative_to(flutter_root).as_posix()}"] = path.read_bytes()
-    entries["flutter_renderer/pubspec.yaml"] = (flutter_root / "pubspec.yaml").read_bytes()
+    web_root = ROOT / "dist/web"
+    if not (web_root / "index.html").is_file():
+        raise RuntimeError("Build the original editor UI before packing")
+    # The server exposes this exact HTML through resources/read. The offline
+    # copy is cached by Mobile without executing Node or contacting localhost.
+    entries["server/web/index.html"] = (web_root / "index.html").read_bytes()
+    entries["web/index.html"] = (web_root / "index.html").read_bytes()
     with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, data in sorted(entries.items()):
             info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
