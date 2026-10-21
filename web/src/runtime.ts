@@ -10,7 +10,7 @@ import { runTxn, type Op } from '@genoffice/pptx-ops'
 import {fontsReady} from './font-metrics'
 import { AI_PROVIDERS } from '@genoffice/ai-provider/browser'
 
-const mcpApp = window.parent !== window ? new App({name:'GenOffice PPTX',version:'0.6.0'},{tools:{listChanged:false}}) : null
+const mcpApp = window.parent !== window ? new App({name:'GenOffice PPTX',version:'0.6.1'},{tools:{listChanged:false}}) : null
 if (mcpApp) {
   mcpApp.ontoolinput = ({arguments:args}) => {
     if(typeof args?.content === 'string') void load(new File([Buffer.from(args.content,'base64')], typeof args.name==='string'?args.name:'Presentation.pptx', {type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})).catch(showError)

@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 export const slidesContract = {
   id: 'https://plugins.openmuseai.com/contracts/genoffice/slides-read/v1',
-  version: '1.0.0', title: 'GenOffice Slides · file snapshots',
+  version: '1.0.1', title: 'GenOffice Slides · file snapshots',
   mediaType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   operations: { readSnapshot: 'slides_read_snapshot' }, tools: ['slides_read_snapshot'],
   semantics: 'Immutable authorized file snapshot, not the unsaved active editor. Zero-based slide indices.',
@@ -27,11 +27,10 @@ export function registerSlidesApi(server:McpServer) {
       text:JSON.stringify({profile:'openmuse-capabilities/1',contracts:[slidesContract]})}]}))
   server.registerTool('slides_read_snapshot',{
     description:'Read plain text and notes from an authorized PPTX file using the original GenOffice engine. This does not read unsaved editor changes.',
-    inputSchema:z.object({content:z.base64().max(90*1024*1024).meta({contentMediaType:slidesContract.mediaType}),name:z.string().max(180).optional()}),
+    inputSchema:z.object({content:z.string().max(90*1024*1024).meta({contentEncoding:'base64',contentMediaType:slidesContract.mediaType}),name:z.string().max(180).optional()}),
     outputSchema:slidesSnapshot, annotations:{readOnlyHint:true,openWorldHint:false},
   },async({content,name})=>{
-    const bytes=Buffer.from(content,'base64')
-    if(bytes.length>64*1024*1024)throw Error('FILE_TOO_LARGE')
+    const bytes=decodePptxContent(content)
     const opened=await openPptx(bytes)
     if(opened.deck.slides.length>500)throw Error('PAGE_BUDGET_EXCEEDED')
     const pages=opened.deck.slides.map((slide,index)=>({index,id:slide.path,
@@ -41,4 +40,15 @@ export function registerSlidesApi(server:McpServer) {
     if(JSON.stringify(output).length>2*1024*1024)throw Error('TEXT_BUDGET_EXCEEDED')
     return {content:[{type:'text',text:JSON.stringify(output)}],structuredContent:output}
   })
+}
+
+// Avoid a recursive base64 regex in the public JSON Schema: large valid files
+// can overflow otherwise conforming clients' regex stacks. Validate canonically
+// in the provider with bounded native Buffer operations.
+export function decodePptxContent(content:string):Buffer {
+  if(content.length>90*1024*1024)throw Error('FILE_TOO_LARGE')
+  const bytes=Buffer.from(content,'base64')
+  if(bytes.length>64*1024*1024)throw Error('FILE_TOO_LARGE')
+  if(bytes.toString('base64')!==content)throw Error('INVALID_BASE64')
+  return bytes
 }

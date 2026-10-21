@@ -104,3 +104,9 @@ python3 scripts/review.py <id> approve \
 ## 0.5.0 Agent 集成
 
 View 工具、DSH 适配边界与更新流程见 [Agent 集成指南](AGENT_INTEGRATION.zh-CN.md)，真实 Desktop 对话、保存、重开、标签会话及生产发布证据见 [0.5.0 验收记录](evidence/0.5.0/ACCEPTANCE.zh-CN.md)。
+
+## 0.6.1：大文件能力调用兼容性
+
+`slides-read/v1` 的合同版本升级到 `1.0.1`。公开输入采用有长度上限的字符串及标准 `contentEncoding: base64` / `contentMediaType`，不生成重复分组的 base64 正则。此前约 5.5 MiB PPTX 经 Dart JSON Schema 校验器会触发正则栈溢出，被误报为校验深度超限。Provider 仍通过有大小上限的 Buffer 解码及 canonical base64 回编码比较严格拒绝非法输入，Host 不跳过 Schema 校验、不增加 PPTX 特判。原版 React/Konva 渲染管线保持不变。
+
+跨插件回归必须经过真实 Host 能力网关，而不只直接调用 MCP Server：选择资源、绑定 Provider、校验工具输入输出，再检查 23 页样例结果。DevKit 应从市场更新 Provider 并重新解析依赖，旧锁文件不会悄悄改成新版本。

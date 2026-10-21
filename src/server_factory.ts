@@ -2,14 +2,14 @@ import { readFile } from 'node:fs/promises'
 import { McpServer } from '@modelcontextprotocol/server'
 import { z } from 'zod'
 import { inspectBytes } from './worker.js'
-import { registerSlidesApi } from './public_api.js'
+import { registerSlidesApi, decodePptxContent } from './public_api.js'
 
 const uiResource = 'ui://genoffice-pptx/editor'
 const mimeType = 'text/html;profile=mcp-app'
 
 export function buildServer() {
   const server = new McpServer(
-    { name: 'io.openmuse/genoffice-pptx', version: '0.6.0' },
+    { name: 'io.openmuse/genoffice-pptx', version: '0.6.1' },
     { capabilities: { tools: {}, resources: {} } },
   )
   server.registerResource(
@@ -27,7 +27,8 @@ export function buildServer() {
     {
       title: 'Inspect PowerPoint slides',
       description: 'Inspect a user-selected PPTX document and return its slide structure.',
-      inputSchema: z.object({ content: z.base64().meta({
+      inputSchema: z.object({ content: z.string().max(90*1024*1024).meta({
+        contentEncoding: 'base64',
         contentMediaType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
       }), name: z.string().optional() }),
       outputSchema: z.object({
@@ -39,7 +40,7 @@ export function buildServer() {
       _meta: { ui: { resourceUri: uiResource, mimeType } },
     },
     async ({ content }) => {
-      const output = await inspectBytes(Buffer.from(content, 'base64'))
+      const output = await inspectBytes(decodePptxContent(content))
       return {
         content: [
           { type: 'text' as const, text: JSON.stringify(output) },
