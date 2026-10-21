@@ -71,6 +71,7 @@ def build(output: Path) -> Path:
     # copy is cached by Mobile without executing Node or contacting localhost.
     entries["server/web/index.html"] = (web_root / "index.html").read_bytes()
     entries["web/index.html"] = (web_root / "index.html").read_bytes()
+    entries["web/mcp-offline.json"] = (web_root / "mcp-offline.json").read_bytes()
     with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, data in sorted(entries.items()):
             info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))

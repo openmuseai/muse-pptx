@@ -1,6 +1,6 @@
 {
   "name": "@openmuse/genoffice-pptx-plugin",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -12,7 +12,7 @@
     "build": "esbuild src/mcp_server.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/server.mjs",
     "build:http": "esbuild src/http_server.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/http.mjs",
     "serve:http": "npm run build:http && node dist/http.mjs",
-    "pack:desktop": "npm run build:web && npm run build && python3 scripts/pack_desktop.py",
+    "pack:desktop": "npm run build:web && npm run build && node ../../packages/plugin-sdk/scripts/export-offline.mjs dist/server.mjs dist/web/mcp-offline.json && python3 scripts/pack_desktop.py",
     "inspect": "node --import tsx src/worker.ts inspect",
     "roundtrip": "node --import tsx src/worker.ts roundtrip",
     "test": "npm run build:web && npm run build && npm run build:http && node --import tsx --test test/*.test.ts",
