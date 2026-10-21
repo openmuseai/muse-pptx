@@ -10,7 +10,7 @@ import { runTxn, type Op } from '@genoffice/pptx-ops'
 import {fontsReady} from './font-metrics'
 import { AI_PROVIDERS } from '@genoffice/ai-provider/browser'
 
-const mcpApp = window.parent !== window ? new App({name:'GenOffice PPTX',version:'0.6.1'},{tools:{listChanged:false}}) : null
+const mcpApp = window.parent !== window ? new App({name:'GenOffice PPTX',version:'0.7.0'},{tools:{listChanged:false}}) : null
 if (mcpApp) {
   mcpApp.ontoolinput = ({arguments:args}) => {
     if(typeof args?.content === 'string') void load(new File([Buffer.from(args.content,'base64')], typeof args.name==='string'?args.name:'Presentation.pptx', {type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})).catch(showError)
@@ -30,7 +30,7 @@ let fitWidthPx = 1280
 let dirty = false
 let revision = 0
 let agentQueue: Promise<unknown> = Promise.resolve()
-let editorContext: {slideIndex:number,selectedIds:string[],beforeRun?:()=>Promise<void>} = {slideIndex:0,selectedIds:[]}
+let editorContext: {slideIndex:number,selectedIds:string[],beforeRun?:()=>Promise<void>,goTo?:(index:number)=>Promise<void>} = {slideIndex:0,selectedIds:[]}
 export function setAgentEditorContext(value: typeof editorContext) {editorContext=value;publishContext()}
 function publishContext() {
   document.documentElement.dataset.pptxRevision=String(revision)
@@ -155,6 +155,9 @@ function tool(name:string,description:string,properties:any,required:string[],re
   return {name,description,inputSchema:{type:'object' as const,properties,required,additionalProperties:false},annotations:{readOnlyHint}}
 }
 const agentTools=[
+  tool('pptx_get_state','GenOffice live slides v1: read current page and document revision.',{},[],true),
+  tool('pptx_read_page','Read actual live text and speaker notes for a zero-based slide; no file snapshot.',{slideIndex:integer},['slideIndex'],true),
+  tool('pptx_go_to_slide','Navigate the original editor without changing the document.',{slideIndex:integer},['slideIndex']),
   tool('pptx_read_deck','Read live document revision and editable element IDs/text. Optionally read one zero-based slide. Never guess IDs. Read again after a revision conflict.',{slideIndex:integer},[],true),
   tool('pptx_edit_text','Replace text of one element, preserving original formatting. Zero-based slideIndex and exact elementId from pptx_read_deck. Revision must match; uses the same undoable transaction as manual editing.',{...identity,...expected,text:{type:'string',maxLength:50000}},['slideIndex','elementId','expectedRevision','text']),
   tool('pptx_set_font','Change text color/size/style of an element. Colors are six hexadecimal digits without #; sizes in points.',{...identity,...expected,font:{type:'object',properties:{color:{type:'string',pattern:'^[0-9A-Fa-f]{6}$'},fontSizePt:{type:'number',minimum:1,maximum:400},bold:{type:'boolean'},italic:{type:'boolean'}},additionalProperties:false}},['slideIndex','elementId','expectedRevision','font']),
@@ -173,6 +176,19 @@ function elementSummary(el:any):any {
 async function callAgentTool(name:string,args:Record<string,any>) {
   if(!opened)throw new Error('No presentation open')
   if(!agentTools.some(tool=>tool.name===name))throw new Error('Unknown tool')
+  if(name==='pptx_get_state')return {name:fileName,revision,dirty,pageCount:opened.deck.slides.length,slideIndex:editorContext.slideIndex}
+  if(name==='pptx_read_page') {
+    const index=checkedSlide(args.slideIndex)
+    const elements=opened.deck.slides[index].elements.map(elementSummary)
+    const texts=(items:any[]):string[]=>items.flatMap(e=>[...(e.text?[e.text]:[]),...texts(e.children??[])])
+    return {name:fileName,revision,index,text:texts(elements).join('\n'),notes:getSlideNotes(opened.archive,opened.deck.slides[index].path)}
+  }
+  if(name==='pptx_go_to_slide') {
+    const index=checkedSlide(args.slideIndex)
+    if(!editorContext.goTo)throw Error('Navigation unavailable')
+    await editorContext.goTo(index)
+    return {slideIndex:editorContext.slideIndex,revision}
+  }
   if(name==='pptx_read_deck') {
     const indices=args.slideIndex===undefined?opened.deck.slides.map((_,i)=>i):[checkedSlide(args.slideIndex)]
     return {name:fileName,revision,dirty,slideIndex:editorContext.slideIndex,selectedIds:editorContext.selectedIds,slides:indices.map(index=>({index,elements:opened!.deck.slides[index].elements.map(elementSummary)}))}

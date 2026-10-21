@@ -9,7 +9,7 @@ const mimeType = 'text/html;profile=mcp-app'
 
 export function buildServer() {
   const server = new McpServer(
-    { name: 'io.openmuse/genoffice-pptx', version: '0.6.1' },
+    { name: 'io.openmuse/genoffice-pptx', version: '0.7.0' },
     { capabilities: { tools: {}, resources: {} } },
   )
   server.registerResource(

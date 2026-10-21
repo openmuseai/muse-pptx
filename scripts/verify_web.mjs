@@ -64,6 +64,13 @@ try{
  assert(toolList.tools.some(t=>t.name==='pptx_edit_text'))
  const callTool=async(name,args={})=>page.evaluate(({name,args})=>window.callView('tools/call',{name,arguments:args}),{name,args})
  const readDeck=async()=>JSON.parse((await callTool('pptx_read_deck')).content[0].text)
+ const state=JSON.parse((await callTool('pptx_get_state')).content[0].text)
+ assert.equal(state.pageCount,count)
+ assert(!(await callTool('pptx_go_to_slide',{slideIndex:0})).isError)
+ const first=JSON.parse((await callTool('pptx_read_page',{slideIndex:0})).content[0].text)
+ assert.equal(first.index,0);assert(first.text.length>0)
+ assert(!(await callTool('pptx_go_to_slide',{slideIndex:count-1})).isError)
+ assert.equal(JSON.parse((await callTool('pptx_get_state')).content[0].text).slideIndex,count-1)
  const deck=await readDeck()
  const candidate=deck.slides.flatMap(slide=>slide.elements.map(el=>({...el,slideIndex:slide.index}))).find(el=>el.text?.includes('20XX'))
  assert(candidate,'Sample title element must be discoverable')
@@ -127,5 +134,5 @@ try{
  assert.deepEqual(errors,[])
  const result={sample:path.basename(sample),sampleSha256:createHash('sha256').update(await fs.readFile(sample)).digest('hex'),uiSha256:createHash('sha256').update(ui).digest('hex'),slides:count,renderedPages:report.length,textEditSavedAndReopened:true,viewToolsDiscovered:true,agentEditSaved:true,staleRevisionRejected:true,agentEditUndoable:true,standardAgentMessage:true,genSparkPanelRemoved:true,protocol:'MCP Apps',pages:report}
  await fs.writeFile(path.join(out,'result.json'),JSON.stringify(result,null,2)+'\n')
- console.log(JSON.stringify({...result,pages:undefined,maxDifferentPixelRatio:Math.max(...report.map(p=>p.differentPixelRatio||0))},null,2))
+ console.log(JSON.stringify({...result,pages:undefined,maxDifferentPixelRatio:reference?Math.max(...report.map(p=>p.differentPixelRatio||0)):null},null,2))
 }finally{await browser.close();server.close()}

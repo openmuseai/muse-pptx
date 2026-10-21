@@ -22,6 +22,12 @@ const result = await esbuild.build({
     // Product integration overlays only AI surfaces; parser, session builder,
     // original React editor and Konva rendering are unchanged.
     if (!process.env.GENOFFICE_WEB_ENTRY) {
+      // Add only an integration callback to the existing editor state setter.
+      build.onLoad({filter:/\/renderer\/App\.tsx$/},async args=>{
+        const source=await fs.promises.readFile(args.path,'utf8')
+        if(!source.includes('<AiPanel\n'))throw Error('Upstream navigation contract changed')
+        return {contents:source.replace('<AiPanel\n','<AiPanel onNavigate={setCurrent}\n'),loader:'tsx',resolveDir:path.dirname(args.path)}
+      })
       build.onResolve({filter:/^\.\/ai\/AiPanel$/},()=>({path:path.join(root,'web/src/agent-panel.tsx')}))
       build.onLoad({filter:/\/components\/RibbonHomeTab\.tsx$/},async args=>{
         let source=await fs.promises.readFile(args.path,'utf8')
