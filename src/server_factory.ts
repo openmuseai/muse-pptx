@@ -2,13 +2,14 @@ import { readFile } from 'node:fs/promises'
 import { McpServer } from '@modelcontextprotocol/server'
 import { z } from 'zod'
 import { inspectBytes } from './worker.js'
+import { registerSlidesApi } from './public_api.js'
 
 const uiResource = 'ui://genoffice-pptx/editor'
 const mimeType = 'text/html;profile=mcp-app'
 
 export function buildServer() {
   const server = new McpServer(
-    { name: 'io.openmuse/genoffice-pptx', version: '0.5.0' },
+    { name: 'io.openmuse/genoffice-pptx', version: '0.6.0' },
     { capabilities: { tools: {}, resources: {} } },
   )
   server.registerResource(
@@ -49,5 +50,6 @@ export function buildServer() {
       }
     },
   )
+  registerSlidesApi(server)
   return server
 }
