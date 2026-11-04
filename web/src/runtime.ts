@@ -8,12 +8,13 @@ import { openPptx, savePptx, createBlankPptx, getSlideNotes, type OpenedPptx } f
 import { buildAllRenderSlides, rebuildSlide } from '../../vendor/genoffice/apps/slides/src/main/session-state'
 import { runTxn, type Op } from '@genoffice/pptx-ops'
 import {fontsReady} from './font-metrics'
-import { AI_PROVIDERS } from '@genoffice/ai-provider/browser'
+import {presentation,pluginConfiguration} from './presentation'
+import packageInfo from '../../package.json'
 
-const mcpApp = window.parent !== window ? new App({name:'GenOffice PPTX',version:'0.7.0'},{tools:{listChanged:false}}) : null
+const mcpApp = window.parent !== window ? new App({name:'OpenMuse Slides',version:packageInfo.version},{tools:{listChanged:false}}) : null
 if (mcpApp) {
   mcpApp.ontoolinput = ({arguments:args}) => {
-    if(typeof args?.content === 'string') void load(new File([Buffer.from(args.content,'base64')], typeof args.name==='string'?args.name:'Presentation.pptx', {type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})).catch(showError)
+    if(typeof args?.content === 'string') void load(new File([Buffer.from(args.content,'base64')], typeof args.name==='string'?args.name:presentation.limits.defaultFileName, {type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})).catch(showError)
   }
   mcpApp.onlisttools = async()=>({tools:agentTools})
   mcpApp.oncalltool = async params=>{
@@ -22,10 +23,22 @@ if (mcpApp) {
     try {return {content:[{type:'text',text:JSON.stringify(await task)}]}}
     catch(error){return {isError:true,content:[{type:'text',text:String(error)}]}}
   }
-  void mcpApp.connect().then(()=>publishContext()).catch(showError)
+  mcpApp.onhostcontextchanged=()=>acceptHostContext(mcpApp.getHostContext())
 }
+
+function acceptHostContext(context:unknown){
+  try {presentation.apply(context)}catch{showError(new PluginPresentationError('languageRejected'))}
+}
+const hostReady=mcpApp ? mcpApp.connect().then(()=>{acceptHostContext(mcpApp.getHostContext());publishContext()}).catch(showError) : Promise.resolve()
+if(!mcpApp)presentation.apply({locale:navigator.language})
+function requireFeature(feature:keyof typeof pluginConfiguration.features){if(!presentation.features[feature])throw new PluginPresentationError('featureDisabled')}
+class PluginPresentationError extends Error {
+  constructor(readonly code:string,readonly arguments_:Record<string,string|number>={}){super(presentation.integration(code,arguments_))}
+}
+presentation.subscribe(()=>{emit('onLanguageChanged',presentation.upstream);emit('onThemeChanged',presentation.theme)})
+
 let opened: OpenedPptx | null = null
-let fileName = 'Presentation.pptx'
+let fileName = presentation.limits.defaultFileName
 let fitWidthPx = 1280
 let dirty = false
 let revision = 0
@@ -37,7 +50,8 @@ function publishContext() {
   if(mcpApp?.getHostCapabilities()?.updateModelContext) void mcpApp.updateModelContext({structuredContent:{name:fileName,revision,dirty,slides:opened?.deck.slides.length??0,slideIndex:editorContext.slideIndex,selectedIds:editorContext.selectedIds}}).catch(()=>{})
 }
 export async function askAgent(text:string) {
-  if(!mcpApp?.getHostCapabilities()?.message)throw new Error('当前 Host 尚未连接 Agent 插件，请在 Host 的 Agent 面板中操作。')
+  requireFeature('agent')
+  if(!mcpApp?.getHostCapabilities()?.message)throw new PluginPresentationError('agentUnavailable')
   await editorContext.beforeRun?.()
   await mcpApp.sendMessage({role:'user',content:[{type:'text',text}]})
 }
@@ -53,8 +67,14 @@ const render = (index: number) => opened ? rebuildSlide({opened,fitWidthPx} as a
 const allSlides = () => buildAllRenderSlides(opened!,fitWidthPx)
 const result = () => ({path:fileName,slides:allSlides(),size:opened!.deck.size})
 const history = () => emit('onHistoryChanged',{canUndo:undoStack.length>0,canRedo:redoStack.length>0})
+presentation.subscribe(()=>{
+  const limit=presentation.limits.historyLimit
+  if(undoStack.length>limit||redoStack.length>limit){
+    undoStack.splice(0,Math.max(0,undoStack.length-limit));redoStack.splice(0,Math.max(0,redoStack.length-limit));history()
+  }
+})
 async function load(file: File) {
-  if (file.size > 64*1024*1024) throw new Error('PPTX exceeds 64 MiB')
+  if (file.size > presentation.limits.maxFileBytes) throw new PluginPresentationError('fileTooLarge')
   await fontsReady()
   opened = await openPptx(new Uint8Array(await file.arrayBuffer()))
   fileName = file.name; dirty=false; undoStack.length=0;redoStack.length=0
@@ -66,26 +86,32 @@ async function load(file: File) {
 }
 window.addEventListener('unhandledrejection',event=>showError(event.reason))
 window.addEventListener('message',event=>{
-  if (event.data instanceof File) void load(event.data).catch(showError)
+  if (event.source===(mcpApp?window.parent:window) && event.data instanceof File) void load(event.data).catch(showError)
 })
+let errorBanner:HTMLDivElement|null=null
+let errorMessage:{code:string,args:Record<string,string|number>}|null=null
+function renderError(){if(errorBanner&&errorMessage)errorBanner.textContent=presentation.integration(errorMessage.code,errorMessage.args)}
+presentation.subscribe(renderError)
 function showError(error: unknown) {
-  console.error(error)
-  const banner=document.createElement('div');banner.textContent=String(error)
-  banner.style.cssText='position:fixed;bottom:20px;left:20px;background:#fff2f2;color:#9b1c1c;padding:12px;z-index:99999'
-  document.body.append(banner)
+  errorMessage={code:error instanceof PluginPresentationError?error.code:'operationFailed',args:error instanceof PluginPresentationError?error.arguments_:{}}
+  if(!errorBanner){errorBanner=document.createElement('div');errorBanner.setAttribute('role','alert');errorBanner.style.cssText='position:fixed;bottom:20px;inset-inline-start:20px;background:#fff2f2;color:#9b1c1c;padding:12px;z-index:99999';document.body.append(errorBanner)}
+  renderError()
 }
+
 async function apply(ops: Op[], index: number, all=false, expectedRevision?:number) {
-  if(!opened) throw new Error('No presentation open')
+  requireFeature('editing')
+  if(!opened) throw new PluginPresentationError('noPresentation')
   const before=await savePptx(opened)
   if(expectedRevision!==undefined&&expectedRevision!==revision)throw new Error(`Revision conflict: expected ${expectedRevision}, actual ${revision}. Read the document again.`)
   const outcome=runTxn(opened,{ops})
   if(!outcome.applied) throw new Error(outcome.failures?.map(f=>f.error).join('; ')||'Edit failed')
-  undoStack.push(before);if(undoStack.length>30)undoStack.shift();redoStack.length=0;dirty=true;history()
+  undoStack.push(before);while(undoStack.length>presentation.limits.historyLimit)undoStack.shift();redoStack.length=0;dirty=true;history()
   revision++;publishContext()
   return all?allSlides():render(index)
 }
 const target=(op:any)=>({target:{slide:op.slideIndex,el:op.sourceId},...(op.groupId?{group:op.groupId}:{})})
 async function save() {
+  requireFeature('export')
   if(!opened)return {ok:false}
   const bytes=await savePptx(opened)
   const file=new File([bytes as BlobPart],fileName,{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})
@@ -99,14 +125,14 @@ async function save() {
   emit('onDeckChanged',{slides:allSlides()});publishContext()
   return {ok:true,path:fileName,slides:allSlides()}
 }
-const settings={provider:'custom',providers:Object.fromEntries(AI_PROVIDERS.map(p=>[p.id,{apiKey:'',baseUrl:'',model:p.defaultModel}]))}
+const settings={provider:'custom',providers:{custom:{apiKey:'',baseUrl:'',model:''}}}
 const api: Record<string, (...args:any[])=>any>={
-  getLanguage:async()=>'zh',getTheme:async()=>'light',getAutoSaveDefault:async()=>false,
+  getLanguage:async()=>{let timer:ReturnType<typeof setTimeout>;await Promise.race([hostReady,new Promise<void>(resolve=>{timer=setTimeout(resolve,presentation.limits.hostInitializationTimeoutMs)})]);clearTimeout(timer!);return presentation.upstream},getTheme:async()=>presentation.theme,getAutoSaveDefault:async()=>false,
   getAiPanelPrefs:async()=>({fontSize:14,spellcheck:false}),setAiPanelPrefs:async(p:any)=>p,
   consumePendingOpen:async(width:number)=>{fitWidthPx=width;return opened?result():new Promise(resolve=>pendingResolve=resolve)},
   consumeHeadlessExport:async()=>null,
   openPptx:async()=>new Promise(resolve=>{const input=document.createElement('input');input.type='file';input.accept='.pptx';input.onchange=async()=>{if(input.files?.[0]){await load(input.files[0]);resolve(result())}else resolve(null)};input.click()}),
-  newBlank:async(width:number)=>{fitWidthPx=width;await load(new File([await createBlankPptx() as BlobPart],'Presentation.pptx'));return result()},
+  newBlank:async(width:number)=>{requireFeature('editing');fitWidthPx=width;await load(new File([await createBlankPptx() as BlobPart],presentation.limits.defaultFileName));return result()},
   getLayouts:async()=>({layouts:[],size:opened?.deck.size??{cx:12192000,cy:6858000}}),
   privateFontFaces:async()=>[],privateFontData:async()=>null,fontMissing:async()=>[],fontCatalog:async()=>[],
   clipboardProbe:async()=>false,hasSlideClipboard:async()=>false,
@@ -114,8 +140,8 @@ const api: Record<string, (...args:any[])=>any>={
   getComments:async()=>[],getSections:async()=>[],getNotes:async(index:number)=>opened?getSlideNotes(opened.archive,opened.deck.slides[index].path):'',
   setNotes:async(op:any)=>{await apply([{op:'setNotes',target:{slide:op.slideIndex},text:op.text}],op.slideIndex);return true},
   isDirty:async()=>dirty,save,saveAs:save,
-  undo:async()=>{if(!opened||!undoStack.length)return null;redoStack.push(await savePptx(opened));opened=await openPptx(undoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
-  redo:async()=>{if(!opened||!redoStack.length)return null;undoStack.push(await savePptx(opened));opened=await openPptx(redoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
+  undo:async()=>{requireFeature('editing');if(!opened||!undoStack.length)return null;redoStack.push(await savePptx(opened));opened=await openPptx(undoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
+  redo:async()=>{requireFeature('editing');if(!opened||!redoStack.length)return null;undoStack.push(await savePptx(opened));while(undoStack.length>presentation.limits.historyLimit)undoStack.shift();opened=await openPptx(redoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
   editText:async(op:any)=>apply([{op:'setText',...target(op),paragraphs:op.paragraphs}],op.slideIndex),
   setElementFont:async(op:any)=>apply(op.sourceIds.map((id:string)=>({op:'setFont',...target({...op,sourceId:id}),font:op})),op.slideIndex),
   setElementParagraphFormat:async(op:any)=>apply(op.sourceIds.map((id:string)=>({op:'setParagraphFormat',...target({...op,sourceId:id}),format:op})),op.slideIndex),
@@ -142,7 +168,7 @@ const api: Record<string, (...args:any[])=>any>={
 ;(window as any).slidesApi = new Proxy(api,{get(target,key:string){
   if(key in target)return target[key]
   if(key.startsWith('on'))return (fn:any)=>{if(!listeners.has(key))listeners.set(key,new Set());listeners.get(key)!.add(fn);return()=>listeners.get(key)?.delete(fn)}
-  return async()=>{throw new Error(`此离线插件暂不支持此操作：${key}`)}
+  return async()=>{throw new PluginPresentationError('unsupportedOperation',{operation:key})}
 }})
 // A browser test harness can select files through the standard file input.
 const input=document.createElement('input');input.type='file';input.accept='.pptx';input.id='pptx-file-input';input.style.display='none';input.onchange=()=>{if(input.files?.[0])void load(input.files[0]).catch(showError)}
@@ -155,7 +181,7 @@ function tool(name:string,description:string,properties:any,required:string[],re
   return {name,description,inputSchema:{type:'object' as const,properties,required,additionalProperties:false},annotations:{readOnlyHint}}
 }
 const agentTools=[
-  tool('pptx_get_state','GenOffice live slides v1: read current page and document revision.',{},[],true),
+  tool('pptx_get_state','OpenMuse live slides v1: read current page and document revision.',{},[],true),
   tool('pptx_read_page','Read actual live text and speaker notes for a zero-based slide; no file snapshot.',{slideIndex:integer},['slideIndex'],true),
   tool('pptx_go_to_slide','Navigate the original editor without changing the document.',{slideIndex:integer},['slideIndex']),
   tool('pptx_read_deck','Read live document revision and editable element IDs/text. Optionally read one zero-based slide. Never guess IDs. Read again after a revision conflict.',{slideIndex:integer},[],true),

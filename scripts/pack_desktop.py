@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "genoffice-pptx"
 VERSION = json.loads((ROOT / "package.json").read_text())["version"]
+METADATA = json.loads((ROOT / "config/package-metadata.json").read_text())
 
 
 def build(output: Path) -> Path:
@@ -19,12 +20,12 @@ def build(output: Path) -> Path:
     manifest = {
         "manifest_version": "0.3",
         "name": NAME,
-        "display_name": "GenOffice PPTX",
+        "display_name": "OpenMuse Slides",
         "version": VERSION,
-        "description": "GenOffice original in-app PowerPoint rendering and editing via standard MCP Apps.",
+        "description": "OpenMuse in-app presentation rendering and editing via standard MCP Apps.",
         "author": {"name": "OpenMuse contributors"},
         "license": "Apache-2.0",
-        "repository": {"type": "git", "url": "https://github.com/genspark-ai/genoffice"},
+        "repository": {"type": "git", "url": METADATA["repository"]},
         "tools": [{"name": "inspect_pptx", "description": "Inspect a PPTX deck"}],
         "compatibility": {
             "platforms": ["darwin", "win32", "linux"],
@@ -72,6 +73,9 @@ def build(output: Path) -> Path:
     entries["server/web/index.html"] = (web_root / "index.html").read_bytes()
     entries["web/index.html"] = (web_root / "index.html").read_bytes()
     entries["web/mcp-offline.json"] = (web_root / "mcp-offline.json").read_bytes()
+    for resource in (ROOT / "i18n").glob("*.json"):
+        entries[f"i18n/{resource.name}"] = resource.read_bytes()
+    entries["config/globalization.json"] = (ROOT / "config/globalization.json").read_bytes()
     with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, data in sorted(entries.items()):
             info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))

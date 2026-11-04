@@ -54,8 +54,8 @@ def main() -> None:
     document = {
         "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
         "name": "io.openmuse/genoffice-pptx",
-        "title": "GenOffice PPTX",
-        "description": "Original GenOffice React/Konva PowerPoint editor, running inside Desktop and Mobile through MCP Apps.",
+        "title": "OpenMuse Slides",
+        "description": "OpenMuse presentation editor for PPTX files on Desktop and Mobile.",
         "version": version,
         "repository": {"url": "https://github.com/genspark-ai/genoffice", "source": "github"},
         "packages": [{

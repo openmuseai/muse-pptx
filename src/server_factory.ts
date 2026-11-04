@@ -1,6 +1,8 @@
 import { readFile } from 'node:fs/promises'
 import { McpServer } from '@modelcontextprotocol/server'
 import { z } from 'zod'
+import catalog from '../i18n/catalog.json'
+import packageInfo from '../package.json'
 import { inspectBytes } from './worker.js'
 import { registerSlidesApi, decodePptxContent } from './public_api.js'
 
@@ -9,12 +11,12 @@ const mimeType = 'text/html;profile=mcp-app'
 
 export function buildServer() {
   const server = new McpServer(
-    { name: 'io.openmuse/genoffice-pptx', version: '0.7.1' },
+    { name: 'io.openmuse/genoffice-pptx', version: packageInfo.version },
     { capabilities: { tools: {}, resources: {} } },
   )
   server.registerResource(
-    'GenOffice PowerPoint editor', uiResource,
-    { title: 'GenOffice PowerPoint editor', mimeType },
+    'OpenMuse Slides editor', uiResource,
+    { title: 'OpenMuse Slides editor', mimeType },
     async () => {
       let text: string
       try {text=await readFile(new URL('./web/index.html',import.meta.url),'utf8')}
@@ -51,6 +53,8 @@ export function buildServer() {
       }
     },
   )
+  server.registerResource('Plugin language contract','i18n://genoffice-pptx/catalog',
+    {mimeType:'application/vnd.openmuse.message-catalog+json'},async()=>({contents:[{uri:'i18n://genoffice-pptx/catalog',mimeType:'application/vnd.openmuse.message-catalog+json',text:JSON.stringify(catalog)}]}))
   registerSlidesApi(server)
   return server
 }

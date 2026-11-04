@@ -37,7 +37,7 @@ test('remote MCP serves MCP Apps resource and PPTX tool over HTTP', async () => 
         content: (await readFile(fixture)).toString('base64'),
       } })
       assert.ok(Number(result.structuredContent?.slides) > 0)
-      assert.ok(ui.contents.some(item => 'text' in item && item.text.includes('GenOffice PPTX')))
+      assert.ok(ui.contents.some(item => 'text' in item && item.text.includes('OpenMuse Slides')))
     } finally {
       await transport.close()
     }

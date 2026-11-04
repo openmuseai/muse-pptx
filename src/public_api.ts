@@ -2,10 +2,11 @@ import { createHash } from 'node:crypto'
 import { openPptx, getSlideNotes } from '@genoffice/pptx-engine'
 import { McpServer } from '@modelcontextprotocol/server'
 import { z } from 'zod'
+import metadata from '../config/package-metadata.json'
 
 export const slidesContract = {
-  id: 'https://plugins.openmuseai.com/contracts/genoffice/slides-read/v1',
-  version: '1.0.1', title: 'GenOffice Slides · file snapshots',
+  id: metadata.slidesContractId,
+  version: '1.0.1', title: 'OpenMuse Slides · file snapshots',
   mediaType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   operations: { readSnapshot: 'slides_read_snapshot' }, tools: ['slides_read_snapshot'],
   semantics: 'Immutable authorized file snapshot, not the unsaved active editor. Zero-based slide indices.',
@@ -26,7 +27,7 @@ export function registerSlidesApi(server:McpServer) {
       uri:'capability://genoffice-pptx/contracts',mimeType:'application/vnd.openmuse.capabilities+json',
       text:JSON.stringify({profile:'openmuse-capabilities/1',contracts:[slidesContract]})}]}))
   server.registerTool('slides_read_snapshot',{
-    description:'Read plain text and notes from an authorized PPTX file using the original GenOffice engine. This does not read unsaved editor changes.',
+    description:'Read plain text and notes from an authorized PPTX file. This does not read unsaved editor changes.',
     inputSchema:z.object({content:z.string().max(90*1024*1024).meta({contentEncoding:'base64',contentMediaType:slidesContract.mediaType}),name:z.string().max(180).optional()}),
     outputSchema:slidesSnapshot, annotations:{readOnlyHint:true,openWorldHint:false},
   },async({content,name})=>{

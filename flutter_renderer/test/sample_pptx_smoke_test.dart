@@ -24,7 +24,7 @@ void main() {
       expect(find.textContaining('20XX'), findsWidgets);
       expect(tester.takeException(), isNull);
 
-      await tester.tap(find.byTooltip('下一页'));
+      await tester.tap(find.byTooltip('Next slide'));
       await tester.pump();
       expect(find.text('2 / 23'), findsOneWidget);
       expect(tester.takeException(), isNull);

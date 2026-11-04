@@ -19,12 +19,16 @@ const result = await esbuild.build({
   assetNames:'assets/[name]-[hash]', metafile:true,
   alias:{'electron':path.join(root,'web/shims/electron.ts'),'node:path':path.join(root,'web/shims/path.ts'),'pngjs':path.join(root,'node_modules/pngjs/browser.js'),'node:crypto':path.join(root,'web/shims/crypto.ts'),'node:zlib':path.join(root,'web/shims/zlib.ts'),'node:fs':path.join(root,'web/shims/unavailable.ts'),'node:stream/promises':path.join(root,'web/shims/unavailable.ts')},
   plugins:[{name:'upstream-packages',setup(build){
+    // Keep the upstream checkout unchanged; substitute only its presentation adapter.
+    build.onLoad({filter:/\/renderer\/i18n\/locale\.tsx$/},async()=>({contents:await fs.promises.readFile(path.join(root,'web/src/locale-adapter.tsx'),'utf8'),loader:'tsx',resolveDir:path.join(root,'web/src')}))
     // Product integration overlays only AI surfaces; parser, session builder,
     // original React editor and Konva rendering are unchanged.
     if (!process.env.GENOFFICE_WEB_ENTRY) {
       // Add only an integration callback to the existing editor state setter.
       build.onLoad({filter:/\/renderer\/App\.tsx$/},async args=>{
-        const source=await fs.promises.readFile(args.path,'utf8')
+        let source=await fs.promises.readFile(args.path,'utf8')
+        source=source.replaceAll('<GensparkMark', '<OpenMuseMark').replaceAll('>Genspark AI<', '>OpenMuse<')
+        source=`import {OpenMuseMark} from ${JSON.stringify(path.join(root,'web/src/brand-mark.tsx'))};\n`+source
         if(!source.includes('<AiPanel\n'))throw Error('Upstream navigation contract changed')
         return {contents:source.replace('<AiPanel\n','<AiPanel onNavigate={setCurrent}\n'),loader:'tsx',resolveDir:path.dirname(args.path)}
       })
