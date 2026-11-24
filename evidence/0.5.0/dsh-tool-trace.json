@@ -1,0 +1,94 @@
+{
+  "toolCalls": [
+    {
+      "seq": 127,
+      "callId": "call_00_3HxaOErb5XNl1eAG8gml3054",
+      "name": "mcp__resources__list_open_resources",
+      "arguments": {},
+      "result": {
+        "seq": 128,
+        "isError": false
+      }
+    },
+    {
+      "seq": 132,
+      "callId": "call_00_d1RpRUHtKZ4rU3e4qsSF7046",
+      "name": "mcp__resources__list_resource_tools",
+      "arguments": {},
+      "resource": "PPTX-Agent-acceptance.pptx",
+      "result": {
+        "seq": 133,
+        "isError": false
+      }
+    },
+    {
+      "seq": 137,
+      "callId": "call_00_ET_1Kl5EGjREgqRsiRPCl8G5348",
+      "name": "mcp__resources__call_resource_tool",
+      "arguments": {
+        "arguments": {
+          "slideIndex": 0
+        },
+        "name": "pptx_read_deck"
+      },
+      "resource": "PPTX-Agent-acceptance.pptx",
+      "result": {
+        "seq": 138,
+        "isError": false
+      }
+    },
+    {
+      "seq": 142,
+      "callId": "call_00_ZDDtbXWARk1eTwyuRdjp3217",
+      "name": "mcp__resources__call_resource_tool",
+      "arguments": {
+        "arguments": {
+          "elementId": "sp_5",
+          "expectedRevision": 1,
+          "slideIndex": 0,
+          "text": "2026 DSH"
+        },
+        "name": "pptx_edit_text"
+      },
+      "resource": "PPTX-Agent-acceptance.pptx",
+      "result": {
+        "seq": 143,
+        "isError": false
+      }
+    },
+    {
+      "seq": 147,
+      "callId": "call_00_ET_1Co19ee2zVciWpwhfzmg0815",
+      "name": "mcp__resources__call_resource_tool",
+      "arguments": {
+        "arguments": {
+          "expectedRevision": 2
+        },
+        "name": "pptx_save"
+      },
+      "resource": "PPTX-Agent-acceptance.pptx",
+      "result": {
+        "seq": 148,
+        "isError": false
+      }
+    },
+    {
+      "seq": 152,
+      "callId": "call_00_ET_XYTBzEpKVisuKPFes2fG9470",
+      "name": "mcp__resources__call_resource_tool",
+      "arguments": {
+        "arguments": {
+          "slideIndex": 0
+        },
+        "name": "pptx_read_deck"
+      },
+      "resource": "PPTX-Agent-acceptance.pptx",
+      "result": {
+        "seq": 153,
+        "isError": false
+      }
+    }
+  ],
+  "onlyResourceMcpToolsUsed": true,
+  "assistantResponse": "端到端验收已完成，全程只用了 MCP 资源工具（`list_open_resources` → `list_resource_tools` → `call_resource_tool`），未使用 bash、未直接改文件、未触碰 Sample_ppt.pptx。\n\n**1. 活动资源确认**\n- 名称：`PPTX-Agent-acceptance.pptx` ✅（与要求一致，故继续）\n- URI：`.../accounts/2f66…ccaa3/Workspace/PPTX-Agent-acceptance.pptx`\n- 初始状态：revision 1，23 页，dirty=false\n\n**2. 编辑前读取（slideIndex=0）** 封面元素中唯一的纯年份文本是 `sp_5` = `20XX`（`sp_3` 是「汇报时间：20XX年XX月XX日」，非独立年份，未动）。\n\n**3. 修改**\n- `pptx_edit_text`：slideIndex=0，elementId=`sp_5`，expectedRevision=1，text=`2026 DSH`\n- 返回：revision 2，dirty=true\n\n**4. 保存**\n- `pptx_save`：expectedRevision=2 → `{\"saved\":true,\"name\":\"PPTX-Agent-acceptance.pptx\"}`\n\n**5. 保存后复核读取**\n- revision 2，dirty=false\n- `sp_5` = **`2026 DSH`** ✅\n- 其余元素逐字未变：`sp_0`「蓝色年终汇报PPT模板」、`sp_1` LOREM IPSUM…、`sp_2` 汇报人：XXX、`sp_3` 汇报时间：20XX年XX月XX日、`pic_4`、`grp_6`（含 `cxn_8`、`sp_7`）\n\n样式方面用的是插件保格式的文本替换接口，仅改文字内容、沿用原 run 属性。活动资源名称全程未变，因此没有中止条件被触发。"
+}
