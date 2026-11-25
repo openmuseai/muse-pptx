@@ -1,0 +1,243 @@
+{
+  "schema": "openmuse.source-evidence/1",
+  "date": "2026-11-25",
+  "branches": {
+    "Muse-Client": {
+      "branch": "codex/fix/mobile-pptx-editing-safe-area",
+      "head": "df95e2d3f608b740ff5fb37720875896ce241c9e",
+      "uncommitted": true
+    },
+    "Muse-Plugin-Ecosystem": {
+      "branch": "codex/fix/mobile-pptx-editing-safe-area",
+      "head": "45bad29ab63c7db3203be204e81ffc3eb6635578",
+      "uncommitted": true
+    }
+  },
+  "files": [
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/brand-mark.tsx",
+      "size": 381,
+      "sha256": "416b17c9f511a1f98b102f96593f1d80b832dc8da22d4455016e8751282a0ae5"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/locale-adapter.tsx",
+      "size": 1624,
+      "sha256": "21edad7dda8e16b45e218354627caeed97faf4f4eec4725c2fdf0bf58dac9454"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/insert-bridge.ts",
+      "size": 1977,
+      "sha256": "2a9616dbf6eca4c3f89b7241b39c48b63492c2812dfb4adf64845cd7226d0ff5"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/toolbar-bridge.ts",
+      "size": 28758,
+      "sha256": "021158d76d23b44539c7d2f7043c7fbf078e4c861ec8863d944ca07ec9c66ac5"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/reference-ui.tsx",
+      "size": 1129,
+      "sha256": "5b5d5f35c7f7ded2475edfbc65e6d9b06b48881cc12dcdd9d4b5bccc459e7b6a"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/ink-bridge.ts",
+      "size": 1492,
+      "sha256": "8272ac1f0bb5d54e7f73771f0f6a352828899e81551f1729d39585e501909551"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/browser-dialogs.ts",
+      "size": 3250,
+      "sha256": "cf215f7fa193114733b53474c188c1889c4226c85c5aba4b3d313daa812611d0"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/main.ts",
+      "size": 127,
+      "sha256": "68d57bc5da3f7bd066c3a2a5a3cf9899ee589a769ffe9f53ebbd39e327d13aa4"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/presentation-capture.ts",
+      "size": 3315,
+      "sha256": "c5d9a61b1a1567573bbb6396c332a2f6dae6c438e2db9d4a3960815244190f69"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/reference.ts",
+      "size": 376,
+      "sha256": "f462014bbaf5d7338a2b34c466c3b4ebc8b8f1b7bf9475039a31a007dcf2273f"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/environment.ts",
+      "size": 1301,
+      "sha256": "cab6ef4d0a4e20c4221e3962bcd06d55d47c60449821ecba31748ef3f060609d"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/font-metrics.ts",
+      "size": 3908,
+      "sha256": "d188f583e5815ada9fc8ee4d0afe4f2547e6fd29f5617ae309e9f1b74ac6dbf9"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/browser-services.ts",
+      "size": 10139,
+      "sha256": "7f4dfaa9f469d7706b9e59ed356991753fe841d260440f8851d607017788e6de"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/presentation.ts",
+      "size": 7658,
+      "sha256": "944889ea7cab623f59ff60eca41acf10aa5777355d1f0737aea22fcc67a65b71"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/runtime.ts",
+      "size": 27130,
+      "sha256": "8eec4fa8a73c9e23304264b6914c6237a27246680eb374aec9ef9dd5b3ac90b2"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/agent-button.tsx",
+      "size": 920,
+      "sha256": "93ff74bf6260a0146f7b6fce4cbcd23fa0a5c398f4022150c1bb8c7271b0c8bd"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/agent-panel.tsx",
+      "size": 1239,
+      "sha256": "26133daefacffefa8beef996174c02551c1bf24cddbae9f07d82def5ffdbd924"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/src/mobile.css",
+      "size": 2815,
+      "sha256": "86c7b5d7a2f45ef92cb7c724d2e65132096ad0d6cc5f298709524b26adde72a4"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/adapters/presentation-capture.mjs",
+      "size": 508,
+      "sha256": "f77fcedc8a0fa3cad97f40407cc6f8de4d06f4e560c66ddac44fa924d6978470"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/adapters/media-crc.mjs",
+      "size": 421,
+      "sha256": "e31522e9fdc44db3367c4cdce0b430834393588133fb82d9252a07298c44fe36"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/adapters/browser-dialogs.mjs",
+      "size": 1184,
+      "sha256": "a15429541b46bc70caf7e2c5114260ba3e0bb1c571f836c96e613580b19c0fe2"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/adapters/slide-input.mjs",
+      "size": 1456,
+      "sha256": "c86e2cf5e004e8b5d08cb174b939ea883e0b819a4fbe4507156ace802f8b74cc"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/web/adapters/ink-input.mjs",
+      "size": 1138,
+      "sha256": "dfcf794470777747bf898619e7f7d18b17ad0cc43fb9f427e030944c4fc47f0d"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/scripts/qa/mobile-toolbar/helpers.js",
+      "size": 1098,
+      "sha256": "c999a6917a9fca4e4cb6fe7b7a21ee8041373a6853434c3890d3a63fb96e41fd"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/scripts/qa/mobile-toolbar/scenarios/core.js",
+      "size": 2248,
+      "sha256": "d2543fbb0fb6ed5b296eba56934ea1f0ae9fb83663f123fedd79d32999f80bb6"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/scripts/qa/mobile-toolbar/scenarios/link.js",
+      "size": 896,
+      "sha256": "4c57fd23717a81282a3342703dac29c8e730c20dcfdde7b7b1291ec84e45d6c9"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/scripts/qa/mobile-toolbar/scenarios/record.js",
+      "size": 1552,
+      "sha256": "cacef20ec6677cc082bc50dc68576cf82d9f6e9297fb863073ffb2cf75ef758d"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/scripts/qa/mobile-toolbar/scenarios/link-open.js",
+      "size": 485,
+      "sha256": "313fcb8a3220fea01a66f73ec1f229567c1e5ce34cad3f86a385420fa1e44f25"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/scripts/qa/mobile-toolbar/run.mjs",
+      "size": 2872,
+      "sha256": "9d9e02eb091ae48b0fa214a8d8006b34981deab321eebebd7a2f73582faef8bc"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/test/toolbar-coverage.test.ts",
+      "size": 2143,
+      "sha256": "d75ceaf118b778eb02259cef12e429bab3d9e0f9c225e235553bd2458f444573"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/test/toolbar-bridge.test.ts",
+      "size": 12094,
+      "sha256": "a75accbb9fbf16c9bb010346eda38ba8268c507d1bbf2a3bd623cfeaf8ab4307"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/OfflineWebMicrophone.kt",
+      "size": 3118,
+      "sha256": "d4d124f116bb6c8477ca180f34d1df3e84ddca2a4533bf855b27bf2629a4b254"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/SharedBrowserExport.kt",
+      "size": 1576,
+      "sha256": "7ac8c9a0f684ca3ccbc67afb0ac8a6ae38b33469f6ddf7e088ad0c17f98fd6c3"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/OfflineWebPluginFactory.kt",
+      "size": 14848,
+      "sha256": "35d264d492622ea20a438fc72f7afa85d88f428bd448457c30bdb2b1c50ef4bc"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/DownloadIdentity.kt",
+      "size": 663,
+      "sha256": "dd54d402b5f96e12589db1a38e91c0704bd30f0b3c29e5f731fcf4824933dd79"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/MicrophoneOriginPolicy.kt",
+      "size": 690,
+      "sha256": "668aac1ae87d30290f9960937dce13d3a7418711ccb70ae6ada8db14fa66c48f"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/OfflineWebFilePicker.kt",
+      "size": 2682,
+      "sha256": "662c45c4a02db3f0abdadfd92a4a787c8ab0ef01036c32fc0b2338f429cb1c55"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/OfflineWebPrint.kt",
+      "size": 4481,
+      "sha256": "9acf0417c16d72ab55e3740e7e102fadc3b80871f530579486e60d6f2296adb9"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/package.json",
+      "size": 2186,
+      "sha256": "e544194bf4f62edd5809d924edc5353651462ce22bc42be7f652e502b2113d6b"
+    },
+    {
+      "path": "Muse-Plugin-Ecosystem/plugins/genoffice-pptx/package-lock.json",
+      "size": 90078,
+      "sha256": "65179bbeb429a251709a4c173741bc54d3e4abd558a9af600638ffcbe9453ca4"
+    },
+    {
+      "path": "Muse-Client/packages/openmuse_plugin_sdk/lib/src/mcp_app_document.dart",
+      "size": 9472,
+      "sha256": "7e40917a48e18c5d1b55f0ab6b24aa58f37530ae0572c8ce3789fd7c006d434c"
+    },
+    {
+      "path": "Muse-Client/packages/openmuse_plugin_sdk/lib/src/mcp_browser_permissions.dart",
+      "size": 2021,
+      "sha256": "1af71982e32c101dea5adb17b8f1a2cf656bf5dca8d2a04b4a48f808e990674c"
+    },
+    {
+      "path": "Muse-Client/plugins/mobile-plugin-market/lib/src/mcp_remote_market.dart",
+      "size": 66227,
+      "sha256": "dd8f87209fbef0998c674f5ca041499d8299666920f9933b534347308b1a6d53"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/AndroidManifest.xml",
+      "size": 4503,
+      "sha256": "fbb5915da312aad10c2b614f79901eb531f343d1ae8fe92d4b04fb1db0294d8d"
+    },
+    {
+      "path": "Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/MainActivity.kt",
+      "size": 16314,
+      "sha256": "c21b11eb8772201620e3cfda63e51e21da58bb075344906dde373d7775ac2984"
+    }
+  ]
+}

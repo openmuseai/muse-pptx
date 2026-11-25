@@ -1,12 +1,12 @@
 {
   "metadata": {
     "schemaVersion": 1,
-    "sourceRevision": 1,
+    "sourceRevision": 3,
     "templateLocale": "en",
     "fallbackLocale": "en",
     "pluginId": "io.openmuse/genoffice-pptx",
     "namespace": "plugin.genoffice_pptx",
-    "contractHash": "cf91153db9b78f4353a98063060855684f91d55c5e410a7de0198f74d489f823",
+    "contractHash": "fa96db6b13606de484bef96e8caf2fd8bb153172022cc939f3e41c7dab524c04",
     "locales": [
       {
         "tag": "en",
@@ -13830,6 +13830,42 @@
         "zh-Hans": "Agent"
       }
     },
+    "plugin.genoffice_pptx.integration.confirmAction": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "Confirm action",
+        "zh-Hans": "确认操作"
+      }
+    },
+    "plugin.genoffice_pptx.integration.fileName": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "PPTX file name",
+        "zh-Hans": "PPTX 文件名"
+      }
+    },
+    "plugin.genoffice_pptx.integration.saveCopyName": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "Choose a name ending in .pptx for the new copy. The original file is retained.",
+        "zh-Hans": "请为新副本输入以 .pptx 结尾的名称，原文件将保留。"
+      }
+    },
+    "plugin.genoffice_pptx.integration.chartSimplifyBody": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "Editing this imported chart may simplify unsupported formatting. Continue?",
+        "zh-Hans": "编辑此导入的图表可能简化尚未支持的格式，是否继续？"
+      }
+    },
     "plugin.genoffice_pptx.integration.agentConnecting": {
       "namespace": "plugin.genoffice_pptx",
       "format": "interpolation.v1",
@@ -13956,6 +13992,60 @@
       "messages": {
         "en": "No presentation is open.",
         "zh-Hans": "尚未打开演示文稿。"
+      }
+    },
+    "plugin.genoffice_pptx.integration.captureTip": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "Record only the current PPT canvas; stop to insert as a video. No microphone or other apps are captured.",
+        "zh-Hans": "仅录制当前 PPT 画布，停止后插入视频；不采集麦克风或其他应用。"
+      }
+    },
+    "plugin.genoffice_pptx.integration.captureStatus": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "Recording the PPT canvas… Click Stop recording to insert.",
+        "zh-Hans": "PPT 画布录制中…点击「停止录制」后插入。"
+      }
+    },
+    "plugin.genoffice_pptx.integration.captureInserted": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "PPT canvas recording inserted (embedded WebM).",
+        "zh-Hans": "已插入 PPT 画布录制（webm 嵌入）。"
+      }
+    },
+    "plugin.genoffice_pptx.integration.captureUnavailable": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "PPT canvas recording is unavailable in this view.",
+        "zh-Hans": "当前视图无法录制 PPT 画布。"
+      }
+    },
+    "plugin.genoffice_pptx.integration.dismissError": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "Dismiss error",
+        "zh-Hans": "关闭错误提示"
+      }
+    },
+    "plugin.genoffice_pptx.integration.printingUnavailable": {
+      "namespace": "plugin.genoffice_pptx",
+      "format": "interpolation.v1",
+      "parameters": [],
+      "messages": {
+        "en": "The system print dialog could not be opened. Please retry from the active document.",
+        "zh-Hans": "暂时无法打开系统打印对话框，请返回当前文稿后重试。"
       }
     }
   }

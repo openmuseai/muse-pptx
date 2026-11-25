@@ -1,0 +1,66 @@
+{
+  "workflowId": "92826b61a05ff96c49193c91d65d4b4a",
+  "states": [
+    {
+      "nodeId": "feature-prd",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-ui",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-solution",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "implementation",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-cases",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-report",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "mr-review",
+      "status": "pending"
+    },
+    {
+      "nodeId": "mr-merge",
+      "status": "pending"
+    }
+  ],
+  "checks": [
+    {
+      "nodeId": "implementation",
+      "runId": "cd678f80-6607-4dbd-96e0-f051b770b3a7",
+      "attempt": 1,
+      "sha256": "a6118da0ea942c5e7150292f03febae7ae4e8073d37a1a5d845171385255f8cf",
+      "command": [
+        "npm",
+        "run",
+        "build:web"
+      ],
+      "exitCode": 0,
+      "realExecution": true,
+      "sourceDigest": "3ae8f9caf32e7a28a4eff4980d45f29be85ec84676d04b5c8cec52ead063dcef"
+    },
+    {
+      "nodeId": "feature-report",
+      "runId": "f8c08390-4354-4035-9488-b277b361b554",
+      "attempt": 1,
+      "sha256": "af572f56d2d0bb00b62fb5a52480386ed3e5217e39de551571b6b6f642f98809",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exitCode": 0,
+      "realExecution": true,
+      "sourceDigest": "03511f09959b05b4e4ddc192ac53899350edbc323f008ba3f83b28362ae7ca9c"
+    }
+  ]
+}

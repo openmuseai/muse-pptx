@@ -1,0 +1,33 @@
+Home/new blank slide
+Home/layout gallery and insert
+Home/reset layout
+Home/duplicate/delete slides
+Home/section create rename reorder
+Home/copy paste slides
+Insert/table
+Table/style refresh retains new objects and edits
+Insert/chart
+Chart/edit refresh retains table and updates actual data
+Insert/SmartArt
+Insert/hyperlink keeps selection through URL, slide and remove
+Insert/unsafe link rejected
+Review/comment persisted and deleted
+Insert/header footer
+Design/size no-op retains history and document
+Design/background
+Transitions/read write all slides
+Animations/read write real target
+Show/hidden and rehearsal timing
+Insert/video and audio embedded with readable posters
+Show/narration embed and clear preserve other media
+View/master edits persist in the addressed OOXML part
+Save/reopen all data
+✔ original toolbar contracts mutate canonical OOXML and survive save/reopen (479.493708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 591.69575

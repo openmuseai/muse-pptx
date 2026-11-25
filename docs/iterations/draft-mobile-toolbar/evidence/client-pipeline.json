@@ -1,0 +1,66 @@
+{
+  "workflowId": "7ca2c45f9795aafd5959b8dea2c0be28",
+  "states": [
+    {
+      "nodeId": "feature-prd",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-ui",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-solution",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "implementation",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-cases",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "feature-report",
+      "status": "succeeded"
+    },
+    {
+      "nodeId": "mr-review",
+      "status": "pending"
+    },
+    {
+      "nodeId": "mr-merge",
+      "status": "pending"
+    }
+  ],
+  "checks": [
+    {
+      "nodeId": "implementation",
+      "runId": "80af84b7-9c42-4a4a-8723-c1059acb73e8",
+      "attempt": 1,
+      "sha256": "944806d5509c41fd2d9573f77bb8d13fa5bf07990786af4fa21871936bac5fce",
+      "command": [
+        "flutter",
+        "analyze",
+        "lib/main.dart"
+      ],
+      "exitCode": 0,
+      "realExecution": true,
+      "sourceDigest": "d1ac318043fee4f1135b5facc8f4d9952674c3fa6964de7f9bc643155dcb627e"
+    },
+    {
+      "nodeId": "feature-report",
+      "runId": "bda055e4-1881-4fa5-9889-a5dc22748948",
+      "attempt": 1,
+      "sha256": "9e51d13bcd703a88461188452e8268aed17a34ff8893e6c03448904fcfbc832f",
+      "command": [
+        "flutter",
+        "test"
+      ],
+      "exitCode": 0,
+      "realExecution": true,
+      "sourceDigest": "d1ac318043fee4f1135b5facc8f4d9952674c3fa6964de7f9bc643155dcb627e"
+    }
+  ]
+}

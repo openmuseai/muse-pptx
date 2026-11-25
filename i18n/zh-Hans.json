@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "sourceRevision": 1,
+  "sourceRevision": 3,
   "locale": "zh-Hans",
   "namespace": "plugin.genoffice_pptx",
-  "contractHash": "cf91153db9b78f4353a98063060855684f91d55c5e410a7de0198f74d489f823",
+  "contractHash": "fa96db6b13606de484bef96e8caf2fd8bb153172022cc939f3e41c7dab524c04",
   "messages": {
     "plugin.genoffice_pptx.ui.redactMenuLabel": "把选中的内容对 AI 隐藏",
     "plugin.genoffice_pptx.ui.redactDialogDesc": "选中的内容会留在文档和文件里，AI 读到的却是下面的标记。给它起个名字，AI 才知道它是什么。",
@@ -1505,6 +1505,10 @@
     "plugin.genoffice_pptx.ui.aiSumTemplatesEmpty": "风格模板列表（空）",
     "plugin.genoffice_pptx.ui.aiSumListTemplates": "列出 {count} 个风格模板",
     "plugin.genoffice_pptx.integration.agent": "Agent",
+    "plugin.genoffice_pptx.integration.confirmAction": "确认操作",
+    "plugin.genoffice_pptx.integration.fileName": "PPTX 文件名",
+    "plugin.genoffice_pptx.integration.saveCopyName": "请为新副本输入以 .pptx 结尾的名称，原文件将保留。",
+    "plugin.genoffice_pptx.integration.chartSimplifyBody": "编辑此导入的图表可能简化尚未支持的格式，是否继续？",
     "plugin.genoffice_pptx.integration.agentConnecting": "连接 Agent…",
     "plugin.genoffice_pptx.integration.agentPrompt": "请查看当前演示文稿和选中的幻灯片，先询问我希望如何修改。通过文档插件提供的工具读取、修改和保存。",
     "plugin.genoffice_pptx.integration.agentUnavailable": "当前 Host 尚未连接 Agent 插件，请在 Host 的 Agent 面板中操作。",
@@ -1518,6 +1522,12 @@
     "plugin.genoffice_pptx.integration.nextPage": "下一页",
     "plugin.genoffice_pptx.integration.previewTitle": "PPTX 结构预览",
     "plugin.genoffice_pptx.integration.previewNote": "选择演示文稿后，受授权的 MCP 工具将返回页面结构。",
-    "plugin.genoffice_pptx.integration.noPresentation": "尚未打开演示文稿。"
+    "plugin.genoffice_pptx.integration.noPresentation": "尚未打开演示文稿。",
+    "plugin.genoffice_pptx.integration.captureTip": "仅录制当前 PPT 画布，停止后插入视频；不采集麦克风或其他应用。",
+    "plugin.genoffice_pptx.integration.captureStatus": "PPT 画布录制中…点击「停止录制」后插入。",
+    "plugin.genoffice_pptx.integration.captureInserted": "已插入 PPT 画布录制（webm 嵌入）。",
+    "plugin.genoffice_pptx.integration.captureUnavailable": "当前视图无法录制 PPT 画布。",
+    "plugin.genoffice_pptx.integration.dismissError": "关闭错误提示",
+    "plugin.genoffice_pptx.integration.printingUnavailable": "暂时无法打开系统打印对话框，请返回当前文稿后重试。"
   }
 }

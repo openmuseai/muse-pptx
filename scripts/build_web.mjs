@@ -2,6 +2,11 @@ import * as esbuild from 'esbuild'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import {adaptSlideInput} from '../web/adapters/slide-input.mjs'
+import {adaptInkApp,adaptInkRibbon} from '../web/adapters/ink-input.mjs'
+import {adaptBrowserDialogsRibbon} from '../web/adapters/browser-dialogs.mjs'
+import {adaptPresentationCapture} from '../web/adapters/presentation-capture.mjs'
+import {adaptMediaCrc} from '../web/adapters/media-crc.mjs'
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const upstream = path.join(root, 'vendor/genoffice')
 const output = path.join(root,process.env.GENOFFICE_WEB_OUT || 'dist/web')
@@ -19,20 +24,24 @@ const result = await esbuild.build({
   assetNames:'assets/[name]-[hash]', metafile:true,
   alias:{'electron':path.join(root,'web/shims/electron.ts'),'node:path':path.join(root,'web/shims/path.ts'),'pngjs':path.join(root,'node_modules/pngjs/browser.js'),'node:crypto':path.join(root,'web/shims/crypto.ts'),'node:zlib':path.join(root,'web/shims/zlib.ts'),'node:fs':path.join(root,'web/shims/unavailable.ts'),'node:stream/promises':path.join(root,'web/shims/unavailable.ts')},
   plugins:[{name:'upstream-packages',setup(build){
+    build.onLoad({filter:/\/pptx-engine\/src\/media-insert\.ts$/},async args=>({contents:adaptMediaCrc(await fs.promises.readFile(args.path,'utf8')),loader:'ts',resolveDir:path.dirname(args.path)}))
     // Keep the upstream checkout unchanged; substitute only its presentation adapter.
     build.onLoad({filter:/\/renderer\/i18n\/locale\.tsx$/},async()=>({contents:await fs.promises.readFile(path.join(root,'web/src/locale-adapter.tsx'),'utf8'),loader:'tsx',resolveDir:path.join(root,'web/src')}))
     // Product integration overlays only AI surfaces; parser, session builder,
     // original React editor and Konva rendering are unchanged.
     if (!process.env.GENOFFICE_WEB_ENTRY) {
+      build.onLoad({filter:/\/renderer\/insert-actions\.ts$/},async args=>({contents:adaptPresentationCapture(await fs.promises.readFile(args.path,'utf8'),path.join(root,'web/src/presentation-capture.ts')),loader:'ts',resolveDir:path.dirname(args.path)}))
+      build.onLoad({filter:/\/renderer\/SlideCanvas\.tsx$/},async args=>({contents:adaptSlideInput(await fs.promises.readFile(args.path,'utf8')),loader:'tsx',resolveDir:path.dirname(args.path)}))
       // Add only an integration callback to the existing editor state setter.
       build.onLoad({filter:/\/renderer\/App\.tsx$/},async args=>{
-        let source=await fs.promises.readFile(args.path,'utf8')
+        let source=adaptInkApp(await fs.promises.readFile(args.path,'utf8'))
         source=source.replaceAll('<GensparkMark', '<OpenMuseMark').replaceAll('>Genspark AI<', '>OpenMuse<')
         source=`import {OpenMuseMark} from ${JSON.stringify(path.join(root,'web/src/brand-mark.tsx'))};\n`+source
         if(!source.includes('<AiPanel\n'))throw Error('Upstream navigation contract changed')
         return {contents:source.replace('<AiPanel\n','<AiPanel onNavigate={setCurrent}\n'),loader:'tsx',resolveDir:path.dirname(args.path)}
       })
       build.onResolve({filter:/^\.\/ai\/AiPanel$/},()=>({path:path.join(root,'web/src/agent-panel.tsx')}))
+      build.onLoad({filter:/\/components\/Ribbon\.tsx$/},async args=>({contents:adaptBrowserDialogsRibbon(adaptInkRibbon(await fs.promises.readFile(args.path,'utf8')),path.join(root,'web/src/browser-dialogs.ts')),loader:'tsx',resolveDir:path.dirname(args.path)}))
       build.onLoad({filter:/\/components\/RibbonHomeTab\.tsx$/},async args=>{
         let source=await fs.promises.readFile(args.path,'utf8')
         const start=source.indexOf('<Group label="Genspark AI">')

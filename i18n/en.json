@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "sourceRevision": 1,
+  "sourceRevision": 3,
   "locale": "en",
   "namespace": "plugin.genoffice_pptx",
-  "contractHash": "cf91153db9b78f4353a98063060855684f91d55c5e410a7de0198f74d489f823",
+  "contractHash": "fa96db6b13606de484bef96e8caf2fd8bb153172022cc939f3e41c7dab524c04",
   "messages": {
     "plugin.genoffice_pptx.ui.redactMenuLabel": "Hide the selection from AI",
     "plugin.genoffice_pptx.ui.redactDialogDesc": "The selection stays in the document and in the file; the model sees the placeholder below instead. Name it so the model knows what it stands for.",
@@ -1505,6 +1505,10 @@
     "plugin.genoffice_pptx.ui.aiSumTemplatesEmpty": "Style templates (empty)",
     "plugin.genoffice_pptx.ui.aiSumListTemplates": "Listed {count} style templates",
     "plugin.genoffice_pptx.integration.agent": "Agent",
+    "plugin.genoffice_pptx.integration.confirmAction": "Confirm action",
+    "plugin.genoffice_pptx.integration.fileName": "PPTX file name",
+    "plugin.genoffice_pptx.integration.saveCopyName": "Choose a name ending in .pptx for the new copy. The original file is retained.",
+    "plugin.genoffice_pptx.integration.chartSimplifyBody": "Editing this imported chart may simplify unsupported formatting. Continue?",
     "plugin.genoffice_pptx.integration.agentConnecting": "Connecting to Agent…",
     "plugin.genoffice_pptx.integration.agentPrompt": "Review the current presentation and selected slides. First ask how I would like to change them. Use the document plugin tools to read, edit, and save.",
     "plugin.genoffice_pptx.integration.agentUnavailable": "The Host has no connected Agent. Open the Host Agent panel to continue.",
@@ -1518,6 +1522,12 @@
     "plugin.genoffice_pptx.integration.nextPage": "Next slide",
     "plugin.genoffice_pptx.integration.previewTitle": "PPTX structure preview",
     "plugin.genoffice_pptx.integration.previewNote": "Choose a presentation to inspect its structure through authorized MCP tools.",
-    "plugin.genoffice_pptx.integration.noPresentation": "No presentation is open."
+    "plugin.genoffice_pptx.integration.noPresentation": "No presentation is open.",
+    "plugin.genoffice_pptx.integration.captureTip": "Record only the current PPT canvas; stop to insert as a video. No microphone or other apps are captured.",
+    "plugin.genoffice_pptx.integration.captureStatus": "Recording the PPT canvas… Click Stop recording to insert.",
+    "plugin.genoffice_pptx.integration.captureInserted": "PPT canvas recording inserted (embedded WebM).",
+    "plugin.genoffice_pptx.integration.captureUnavailable": "PPT canvas recording is unavailable in this view.",
+    "plugin.genoffice_pptx.integration.dismissError": "Dismiss error",
+    "plugin.genoffice_pptx.integration.printingUnavailable": "The system print dialog could not be opened. Please retry from the active document."
   }
 }

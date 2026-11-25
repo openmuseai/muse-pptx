@@ -4,12 +4,22 @@
  */
 import { Buffer } from 'buffer'
 import { App } from '@modelcontextprotocol/ext-apps'
-import { openPptx, savePptx, createBlankPptx, getSlideNotes, type OpenedPptx } from '@genoffice/pptx-engine'
-import { buildAllRenderSlides, rebuildSlide } from '../../vendor/genoffice/apps/slides/src/main/session-state'
-import { runTxn, type Op } from '@genoffice/pptx-ops'
-import {fontsReady} from './font-metrics'
+import { openPptx, savePptx, createBlankPptx, getSlideNotes,reparseDeck,materializeSlide,commitSaved, type OpenedPptx } from '@genoffice/pptx-engine'
+import { buildAllRenderSlides, rebuildSlide,makeMediaResolver } from '../../vendor/genoffice/apps/slides/src/main/session-state'
+import { runTxn, type Op, type TxnRequest } from '@genoffice/pptx-ops'
+import {fontsReady,fontMetrics} from './font-metrics'
 import {presentation,pluginConfiguration} from './presentation'
 import packageInfo from '../../package.json'
+import {elementInsertOp,pickImageFile,imageSize} from './insert-bridge'
+import {inkInsertOp} from './ink-bridge'
+import {pictureFrame} from '../../vendor/genoffice/apps/slides/src/main/picture-frame'
+import {imageDpiFromBytes} from '@genoffice/pptx-render'
+import {tiffToPng} from '../../vendor/genoffice/apps/slides/src/main/tiff-decode'
+import {createToolbarBridge,type ToolbarPort} from './toolbar-bridge'
+import {pickBrowserFile,createBrowserServices} from './browser-services'
+import {t} from '../../vendor/genoffice/apps/slides/src/renderer/i18n/locale'
+import {confirmBrowserDialog,saveNameDialog} from './browser-dialogs'
+import {z} from 'zod'
 
 const mcpApp = window.parent !== window ? new App({name:'OpenMuse Slides',version:packageInfo.version},{tools:{listChanged:false}}) : null
 if (mcpApp) {
@@ -27,7 +37,7 @@ if (mcpApp) {
 }
 
 function acceptHostContext(context:unknown){
-  try {presentation.apply(context)}catch{showError(new PluginPresentationError('languageRejected'))}
+  try {presentation.apply(context);if((context as any)?.platform==='mobile')document.documentElement.dataset.platform='mobile';else delete document.documentElement.dataset.platform}catch{showError(new PluginPresentationError('languageRejected'))}
 }
 const hostReady=mcpApp ? mcpApp.connect().then(()=>{acceptHostContext(mcpApp.getHostContext());publishContext()}).catch(showError) : Promise.resolve()
 if(!mcpApp)presentation.apply({locale:navigator.language})
@@ -51,7 +61,7 @@ function publishContext() {
 }
 export async function askAgent(text:string) {
   requireFeature('agent')
-  if(!mcpApp?.getHostCapabilities()?.message)throw new PluginPresentationError('agentUnavailable')
+  if(!mcpApp?.getHostCapabilities()?.message){const error=new PluginPresentationError('agentUnavailable');showError(error);throw error}
   await editorContext.beforeRun?.()
   await mcpApp.sendMessage({role:'user',content:[{type:'text',text}]})
 }
@@ -61,6 +71,9 @@ const listeners = new Map<string, Set<(...args: any[]) => void>>()
 const emit = (name: string, value: any) => listeners.get(name)?.forEach(fn => fn(value))
 const undoStack: Uint8Array[] = []
 const redoStack: Uint8Array[] = []
+let historyBatch:{depth:number;snapshotTaken:boolean}|null=null
+let mutationTail:Promise<unknown>=Promise.resolve()
+let preview:{before:Uint8Array;redo:Uint8Array[];dirty:boolean;undoLength:number}|null=null
 // The same Desktop session builder (including TIFF, themed SVG and JPEG
 // orientation handling) produces the tree consumed by the original React UI.
 const render = (index: number) => opened ? rebuildSlide({opened,fitWidthPx} as any,index) : null
@@ -77,7 +90,8 @@ async function load(file: File) {
   if (file.size > presentation.limits.maxFileBytes) throw new PluginPresentationError('fileTooLarge')
   await fontsReady()
   opened = await openPptx(new Uint8Array(await file.arrayBuffer()))
-  fileName = file.name; dirty=false; undoStack.length=0;redoStack.length=0
+  fileName = file.name; dirty=false; undoStack.length=0;redoStack.length=0;historyBatch=null;preview=null
+  api.resetSession?.()
   revision++;publishContext()
   firstOpen=result()
   if(pendingResolve) {pendingResolve(firstOpen);pendingResolve=null}
@@ -90,38 +104,61 @@ window.addEventListener('message',event=>{
 })
 let errorBanner:HTMLDivElement|null=null
 let errorMessage:{code:string,args:Record<string,string|number>}|null=null
-function renderError(){if(errorBanner&&errorMessage)errorBanner.textContent=presentation.integration(errorMessage.code,errorMessage.args)}
+let errorText:HTMLSpanElement|null=null
+function clearError(){errorBanner?.remove();errorBanner=null;errorText=null;errorMessage=null}
+function renderError(){if(errorText&&errorMessage)errorText.textContent=presentation.integration(errorMessage.code,errorMessage.args);const close=errorBanner?.querySelector('button');if(close)close.setAttribute('aria-label',presentation.integration('dismissError'))}
 presentation.subscribe(renderError)
 function showError(error: unknown) {
   errorMessage={code:error instanceof PluginPresentationError?error.code:'operationFailed',args:error instanceof PluginPresentationError?error.arguments_:{}}
-  if(!errorBanner){errorBanner=document.createElement('div');errorBanner.setAttribute('role','alert');errorBanner.style.cssText='position:fixed;bottom:20px;inset-inline-start:20px;background:#fff2f2;color:#9b1c1c;padding:12px;z-index:99999';document.body.append(errorBanner)}
+  if(!errorBanner){errorBanner=document.createElement('div');errorBanner.setAttribute('role','alert');errorBanner.style.cssText='position:fixed;bottom:20px;inset-inline-start:20px;background:#fff2f2;color:#9b1c1c;padding:12px;z-index:99999';errorText=document.createElement('span');const close=document.createElement('button');close.type='button';close.textContent='×';close.style.cssText='margin-inline-start:10px;border:0;background:transparent;color:inherit;cursor:pointer';close.onclick=clearError;errorBanner.append(errorText,close);document.body.append(errorBanner)}
   renderError()
 }
 
-async function apply(ops: Op[], index: number, all=false, expectedRevision?:number) {
-  requireFeature('editing')
-  if(!opened) throw new PluginPresentationError('noPresentation')
-  const before=await savePptx(opened)
-  if(expectedRevision!==undefined&&expectedRevision!==revision)throw new Error(`Revision conflict: expected ${expectedRevision}, actual ${revision}. Read the document again.`)
-  const outcome=runTxn(opened,{ops})
-  if(!outcome.applied) throw new Error(outcome.failures?.map(f=>f.error).join('; ')||'Edit failed')
-  undoStack.push(before);while(undoStack.length>presentation.limits.historyLimit)undoStack.shift();redoStack.length=0;dirty=true;history()
-  revision++;publishContext()
+function serializeMutation<T>(action:()=>Promise<T>):Promise<T>{const next=mutationTail.then(action);mutationTail=next.catch(()=>{});return next}
+const transact:ToolbarPort['transact']=(ops,options={})=>serializeMutation(async()=>{
+  requireFeature('editing');if(!opened)throw new PluginPresentationError('noPresentation')
+  if(!ops.length)throw Error('No edit operations')
+  if(options.expectedRevision!==undefined&&options.expectedRevision!==revision)throw Error('Document revision conflict')
+  const source=opened,before=await savePptx(source),beforeRevision=revision
+  if(opened!==source||revision!==beforeRevision)throw Error('Document changed while preparing edit')
+  const previousRedo=[...redoStack],previousDirty=dirty
+  try{
+    if(options.replaceLast){if(!undoStack.length)throw Error('Paste options expired');opened=await openPptx(options.replaceLast)}
+    options.prepare?.()
+    const active=opened!
+    const outcome=runTxn(active,{ops,...(options.parts?{parts:options.parts}:{})})
+    if(!outcome.applied)throw Error(outcome.failures?.map(f=>f.error).join('; ')||'Edit failed')
+    const continuingPreview=!!preview
+    if(options.preview&&!preview)preview={before,redo:previousRedo,dirty:previousDirty,undoLength:undoStack.length}
+    if(!options.replaceLast&&!continuingPreview&&!historyBatch?.snapshotTaken){undoStack.push(before);if(historyBatch)historyBatch.snapshotTaken=true}
+    if(!options.preview)preview=null
+    if(options.reparse)opened=reparseDeck(active)
+    if(options.materialize!==undefined)materializeSlide(active,options.materialize)
+    while(undoStack.length>presentation.limits.historyLimit)undoStack.shift()
+    redoStack.length=0;dirty=true;revision++;clearError();history();publishContext();return outcome
+  }catch(error){opened=await openPptx(before);emit('onDeckChanged',{slides:allSlides()});throw error}
+})
+async function apply(ops: Op[], index: number, all=false, expectedRevision?:number,creation=false) {
+  const outcome=await transact(ops,{expectedRevision})
+  if(creation){const sourceId=outcome.records?.flatMap(record=>record.created??[])[0];if(!sourceId)throw Error('Insertion produced no element');return {slide:render(index),sourceId}}
   return all?allSlides():render(index)
 }
 const target=(op:any)=>({target:{slide:op.slideIndex,el:op.sourceId},...(op.groupId?{group:op.groupId}:{})})
-async function save() {
+async function save(exportName=fileName) {
   requireFeature('export')
   if(!opened)return {ok:false}
+  await mutationTail
+  const savedRevision=revision
   const bytes=await savePptx(opened)
-  const file=new File([bytes as BlobPart],fileName,{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})
+  const file=new File([bytes as BlobPart],exportName,{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'})
   if(mcpApp) {
-    const response=await mcpApp.downloadFile({contents:[{type:'resource',resource:{uri:'file:///'+encodeURIComponent(fileName),mimeType:file.type,blob:Buffer.from(bytes).toString('base64')}}]})
+    const response=await mcpApp.downloadFile({contents:[{type:'resource',resource:{uri:'file:///'+encodeURIComponent(exportName),mimeType:file.type,blob:Buffer.from(bytes).toString('base64')}}]})
     if(response.isError) return {ok:false}
   } else {
-    const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=fileName;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+    const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=exportName;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
   }
-  dirty=false
+  if(savedRevision===revision){commitSaved(opened);dirty=false}
+  fileName=exportName
   emit('onDeckChanged',{slides:allSlides()});publishContext()
   return {ok:true,path:fileName,slides:allSlides()}
 }
@@ -131,17 +168,35 @@ const api: Record<string, (...args:any[])=>any>={
   getAiPanelPrefs:async()=>({fontSize:14,spellcheck:false}),setAiPanelPrefs:async(p:any)=>p,
   consumePendingOpen:async(width:number)=>{fitWidthPx=width;return opened?result():new Promise(resolve=>pendingResolve=resolve)},
   consumeHeadlessExport:async()=>null,
-  openPptx:async()=>new Promise(resolve=>{const input=document.createElement('input');input.type='file';input.accept='.pptx';input.onchange=async()=>{if(input.files?.[0]){await load(input.files[0]);resolve(result())}else resolve(null)};input.click()}),
+  openPptx:async()=>{const file=await pickBrowserFile('.pptx');if(!file)return null;await load(file);return result()},
   newBlank:async(width:number)=>{requireFeature('editing');fitWidthPx=width;await load(new File([await createBlankPptx() as BlobPart],presentation.limits.defaultFileName));return result()},
+  beginHistoryBatch:async()=>{requireFeature('editing');if(!opened)return false;if(historyBatch)historyBatch.depth++;else historyBatch={depth:1,snapshotTaken:false};return true},
+  endHistoryBatch:async()=>{if(!historyBatch)return false;if(--historyBatch.depth===0)historyBatch=null;return true},
+  addElement:async(op:any)=>{requireFeature('editing');if(!opened)throw new PluginPresentationError('noPresentation');return apply([elementInsertOp(opened.deck.size,op) as Op],op.slideIndex,false,undefined,true)},
+  addInk:async(op:any)=>{requireFeature('editing');if(!opened)throw new PluginPresentationError('noPresentation');const operation=inkInsertOp(opened.deck.size,op);fitWidthPx=op.fitWidthPx;return apply([operation],op.slideIndex,false,undefined,true)},
+  pickPictureFile:async()=>{requireFeature('editing');const file=await pickImageFile();if(!file)return null;if(file.size>16*1024*1024)throw new PluginPresentationError('fileTooLarge');return {base64:Buffer.from(await file.arrayBuffer()).toString('base64'),ext:file.name.split('.').pop()!.toLowerCase()}},
+  insertImage:async(index:number)=>{
+    requireFeature('editing');if(!opened)throw new PluginPresentationError('noPresentation')
+    const source=opened,expected=revision,file=await pickImageFile();if(!file)return null
+    if(file.size>16*1024*1024)throw new PluginPresentationError('fileTooLarge')
+    const ext=file.name.split('.').pop()!.toLowerCase()
+    if(!['png','jpg','jpeg','gif','bmp','webp','tif','tiff'].includes(ext))return {error:'unsupported',ext}
+    const bytes=new Uint8Array(await file.arrayBuffer())
+    let natural:{width:number;height:number};try{if(ext==='tif'||ext==='tiff'){const decoded=tiffToPng(bytes);if(!decoded)return {error:'unsupported',ext};natural={width:decoded.width,height:decoded.height}}else natural=await imageSize(file)}catch{return {error:'unsupported',ext}}
+    if(opened!==source||revision!==expected)throw new PluginPresentationError('operationFailed')
+    const size=source.deck.size
+    return apply([{op:'addPicture',target:{slide:index},bytes,ext,offset:pictureFrame({width:size.cx,height:size.cy},natural,imageDpiFromBytes(bytes),96)}],index,false,expected,true)
+  },
+  flipElements:async(op:any)=>apply([{op:'flipElements',target:{slide:op.slideIndex},els:op.sourceIds,axis:op.axis}],op.slideIndex),
   getLayouts:async()=>({layouts:[],size:opened?.deck.size??{cx:12192000,cy:6858000}}),
   privateFontFaces:async()=>[],privateFontData:async()=>null,fontMissing:async()=>[],fontCatalog:async()=>[],
   clipboardProbe:async()=>false,hasSlideClipboard:async()=>false,
   getAiSettings:async()=>settings,getRecentFiles:async()=>[],getTransition:async()=>'none',getAnimations:async()=>[],
   getComments:async()=>[],getSections:async()=>[],getNotes:async(index:number)=>opened?getSlideNotes(opened.archive,opened.deck.slides[index].path):'',
   setNotes:async(op:any)=>{await apply([{op:'setNotes',target:{slide:op.slideIndex},text:op.text}],op.slideIndex);return true},
-  isDirty:async()=>dirty,save,saveAs:save,
-  undo:async()=>{requireFeature('editing');if(!opened||!undoStack.length)return null;redoStack.push(await savePptx(opened));opened=await openPptx(undoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
-  redo:async()=>{requireFeature('editing');if(!opened||!redoStack.length)return null;undoStack.push(await savePptx(opened));while(undoStack.length>presentation.limits.historyLimit)undoStack.shift();opened=await openPptx(redoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()},
+  isDirty:async()=>dirty,save,saveAs:async(defaultName:string)=>{const stem=(defaultName||fileName).replace(/\.pptx$/i,'');const name=await saveNameDialog(stem+'-copy.pptx');return name?save(name):{ok:false}},
+  undo:async()=>serializeMutation(async()=>{requireFeature('editing');if(!opened||!undoStack.length)return null;historyBatch=null;preview=null;redoStack.push(await savePptx(opened));opened=await openPptx(undoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()}),
+  redo:async()=>serializeMutation(async()=>{requireFeature('editing');if(!opened||!redoStack.length)return null;historyBatch=null;preview=null;undoStack.push(await savePptx(opened));while(undoStack.length>presentation.limits.historyLimit)undoStack.shift();opened=await openPptx(redoStack.pop()!);dirty=true;revision++;history();publishContext();return allSlides()}),
   editText:async(op:any)=>apply([{op:'setText',...target(op),paragraphs:op.paragraphs}],op.slideIndex),
   setElementFont:async(op:any)=>apply(op.sourceIds.map((id:string)=>({op:'setFont',...target({...op,sourceId:id}),font:op})),op.slideIndex),
   setElementParagraphFormat:async(op:any)=>apply(op.sourceIds.map((id:string)=>({op:'setParagraphFormat',...target({...op,sourceId:id}),format:op})),op.slideIndex),
@@ -157,12 +212,27 @@ const api: Record<string, (...args:any[])=>any>={
   editTransform:async(op:any)=>{
     const factor=opened!.deck.size.cx/op.fitWidthPx
     const box={x:Math.round(op.xPx*factor),y:Math.round(op.yPx*factor),cx:Math.round(op.wPx*factor),cy:Math.round(op.hPx*factor)}
-    return apply([{op:'setTransform',...target(op),box,rotDeg:op.rotationDeg,resizeTableGrid:!op.groupId}],op.slideIndex)
+    await transact([{op:'setTransform',...target(op),...(op.groupId?{absBox:box}:{box}),rotDeg:op.rotationDeg,resizeTableGrid:!op.groupId}],{preview:op.preview});return render(op.slideIndex)
   },
-  getSlideSize:async()=>opened?.deck.size,
-  setSlideSize:async(op:any)=>apply([{op:'setSlideSize',...op}],0,true),
   reportSelection:async()=>{},setAutoSavePref:async()=>{},setShowFullScreen:async()=>{},
 }
+Object.assign(api,createToolbarBridge({
+  document:()=>{if(!opened)throw new PluginPresentationError('noPresentation');return opened},revision:()=>revision,
+  width:(value?:number)=>{if(value!==undefined){if(!Number.isFinite(value)||value<=0)throw Error('Invalid viewport');fitWidthPx=value}return fitWidthPx},
+  render,renderAll:allSlides,transact,
+  cancelPreview:index=>serializeMutation(async()=>{if(!preview)return render(index);const before=preview;preview=null;opened=await openPptx(before.before);undoStack.splice(before.undoLength);redoStack.splice(0,redoStack.length,...before.redo);dirty=before.dirty;revision++;history();publishContext();return render(index)}),
+  pickFile:pickBrowserFile,imageFile:async()=>{const file=await pickImageFile();if(!file)return null;if(file.size>16*1024*1024)throw new PluginPresentationError('fileTooLarge');return {bytes:new Uint8Array(await file.arrayBuffer()),ext:file.name.split('.').pop()!.toLowerCase()}},
+  confirm:confirmBrowserDialog,translate:key=>key.startsWith('integration.')?presentation.integration(key.slice(12)):t(key as any),metrics:fontMetrics,media:makeMediaResolver,
+}),createBrowserServices({download:async(name,mime,bytes)=>{
+  requireFeature('export')
+  if(mcpApp){const r=await mcpApp.downloadFile({contents:[{type:'resource',resource:{uri:'file:///'+encodeURIComponent(name),mimeType:mime,blob:Buffer.from(bytes).toString('base64')}}]});return !r.isError}
+  const url=URL.createObjectURL(new Blob([bytes as BlobPart],{type:mime}));const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return true
+},printDocument:async(html,widthMils,heightMils)=>{
+  requireFeature('export')
+  if(!mcpApp?.getHostCapabilities()?.experimental?.['io.openmuse/browser-print'])return null
+  const result=await mcpApp.request({method:'io.openmuse/browser-print',params:{html,title:fileName,widthMils,heightMils}},z.object({dialogOpened:z.boolean()}),{timeout:35000})
+  return {ok:result.dialogOpened}
+},emit,language:()=>presentation.upstream,theme:()=>presentation.theme}))
 // Optional event subscriptions preserve the upstream preload contract entirely
 // inside the plugin. Unsupported native/cloud actions fail visibly.
 ;(window as any).slidesApi = new Proxy(api,{get(target,key:string){

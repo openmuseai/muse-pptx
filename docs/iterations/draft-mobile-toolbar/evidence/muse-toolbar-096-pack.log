@@ -1,0 +1,22 @@
+
+> @openmuse/genoffice-pptx-plugin@0.9.6 pack:desktop
+> npm run build:web && npm run build && node ../../packages/plugin-sdk/scripts/export-offline.mjs dist/server.mjs dist/web/mcp-offline.json && python3 scripts/pack_desktop.py
+
+
+> @openmuse/genoffice-pptx-plugin@0.9.6 build:web
+> npm run i18n:check && node scripts/build_web.mjs
+
+
+> @openmuse/genoffice-pptx-plugin@0.9.6 i18n:check
+> node scripts/generate_i18n.mjs --check
+
+Verified 1524 plugin messages; contract fa96db6b1360
+
+> @openmuse/genoffice-pptx-plugin@0.9.6 build
+> esbuild src/mcp_server.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/server.mjs
+
+
+  dist/server.mjs  2.5mb ⚠️
+
+⚡ Done in 27ms
+/Users/mac/src/openmuse-io/Muse-Plugin-Ecosystem/plugins/genoffice-pptx/dist/genoffice-pptx-0.9.6.mcpb

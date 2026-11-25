@@ -5,7 +5,8 @@ export type StringKey = string
 export type TFunc = (key:StringKey,params?:Params)=>string
 export const getLang=()=>presentation.upstream as Lang
 export const setModuleLang=(_lang:Lang)=>{syncDocument()}
-export const t:TFunc=(key,params)=>platformShortcuts(presentation.ui(key,params)).replaceAll('GenOffice', 'OpenMuse').replaceAll('Genspark', 'OpenMuse')
+const captureMessages:Record<string,string>={ribbonScreenRecTip:'captureTip',appStatusRecording:'captureStatus',appStatusRecordingInserted:'captureInserted',appStatusRecordingUnavailable:'captureUnavailable'}
+export const t:TFunc=(key,params)=>platformShortcuts(captureMessages[key]?presentation.integration(captureMessages[key],params):presentation.ui(key,params)).replaceAll('GenOffice', 'OpenMuse').replaceAll('Genspark', 'OpenMuse')
 export const aiLangDirective=()=>'' // Host Agent owns its locale-aware instructions.
 export const DATE_LOCALES = new Proxy({} as Record<Lang,string>,{get:()=>presentation.formatLocale})
 function syncDocument(){document.documentElement.lang=presentation.locale;document.documentElement.dir=presentation.direction;document.documentElement.dataset.pptxLocale=presentation.locale}

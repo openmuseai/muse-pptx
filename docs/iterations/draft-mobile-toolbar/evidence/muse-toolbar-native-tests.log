@@ -1,0 +1,1321 @@
+Starting a Gradle Daemon, 1 incompatible Daemon could not be reused, use --status for details
+
+> Configure project :gradle
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `2.2.0` that might work differently than in the requested version `2.2.20`.
+
+> Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle:pluginDescriptors UP-TO-DATE
+> Task :gradle:processResources UP-TO-DATE
+
+> Task :gradle:compileKotlin
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/Deeplink.kt:13:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/Deeplink.kt:15:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/Deeplink.kt:17:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/Deeplink.kt:19:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/FlutterPlugin.kt:12:8 'interface ApkVariant : Any, BaseVariant, InstallableVariant, AndroidArtifactVariant, InternalBaseVariant' is deprecated. Deprecated in Java.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/FlutterPlugin.kt:625:69 'interface ApkVariant : Any, BaseVariant, InstallableVariant, AndroidArtifactVariant, InternalBaseVariant' is deprecated. Deprecated in Java.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/FlutterPluginUtils.kt:12:8 'interface BaseVariantOutput : Any, OutputFile' is deprecated. Deprecated in Java.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/plugins/PluginHandler.kt:168:70 Unchecked cast of 'NamedDomainObjectContainer<out BuildType>' to 'NamedDomainObjectContainer<BuildType>'.
+w: file:///Users/mac/src/flutter/packages/flutter_tools/gradle/src/main/kotlin/plugins/PluginHandler.kt:169:75 Unchecked cast of 'NamedDomainObjectContainer<out BuildType>' to 'NamedDomainObjectContainer<BuildType>'.
+
+> Task :gradle:compileJava NO-SOURCE
+> Task :gradle:compileGroovy NO-SOURCE
+> Task :gradle:classes UP-TO-DATE
+> Task :gradle:jar UP-TO-DATE
+
+> Configure project :app
+WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':app' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :audioplayers_android
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':audioplayers_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :device_info_plus
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':device_info_plus' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :file_picker
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':file_picker' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :file_selector_android
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':file_selector_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :fjs
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':fjs' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :flutter_plugin_android_lifecycle
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':flutter_plugin_android_lifecycle' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :flutter_secure_storage
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':flutter_secure_storage' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :integration_test
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':integration_test' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :jni
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':jni' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :jni_flutter
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':jni_flutter' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :keyboard_height_plugin
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':keyboard_height_plugin' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :muse_embedded_browser
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':muse_embedded_browser' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :openmuse_resource_clipboard
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':openmuse_resource_clipboard' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :package_info_plus
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':package_info_plus' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :record_android
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':record_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :shared_preferences_android
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':shared_preferences_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :sherpa_onnx_android_arm64
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':sherpa_onnx_android_arm64' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :sherpa_onnx_android_armeabi
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':sherpa_onnx_android_armeabi' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :sherpa_onnx_android_x86
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':sherpa_onnx_android_x86' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :sherpa_onnx_android_x86_64
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':sherpa_onnx_android_x86_64' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :url_launcher_android
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':url_launcher_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :video_player_android
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':video_player_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :webview_flutter_android
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':webview_flutter_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+WARNING: Your app uses the following plugins that apply Kotlin Gradle Plugin (KGP): device_info_plus, file_picker, keyboard_height_plugin, package_info_plus
+Future versions of Flutter will fail to build if your app uses plugins that apply KGP.
+
+Please check the changelogs of these plugins and upgrade to a version that supports Built-in Kotlin.
+If no such version exists, report the issue to the plugin. If necessary, here is a guide on filing 
+an issue against a plugin: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers#report-incompatible-kotlin-gradle-plugin-usage-to-plugin-authors
+
+If you are a plugin author, please migrate your plugin to Built-in Kotlin using this guide: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-plugin-authors
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:cleanMergeDebugAssets
+
+> Task :app:compileFlutterBuildDebug
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -lc++_shared: 'linker' input unused [-Wunused-command-line-argument]
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -lc++_shared: 'linker' input unused [-Wunused-command-line-argument]
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+clang: warning: -Wl,-z,max-page-size=16384: 'linker' input unused [-Wunused-command-line-argument]
+
+
+Skipping assets entry "packages/pdf_rebuild_flutter/assets/native/libpdfium.dylib" since its configured platform(s) did not match the target platform.
+Configured platforms: macos
+Target platform: android
+
+Skipping assets entry "packages/pdf_rebuild_flutter/assets/native/libkspfreetext.dylib" since its configured platform(s) did not match the target platform.
+Configured platforms: macos
+Target platform: android
+
+Skipping assets entry "packages/pdf_rebuild_flutter/assets/native/README.md" since its configured platform(s) did not match the target platform.
+Configured platforms: macos
+Target platform: android
+
+Skipping assets entry "packages/pdf_rebuild_flutter/assets/native/libpdfium_viewer.dylib" since its configured platform(s) did not match the target platform.
+Configured platforms: macos
+Target platform: android
+
+Skipping assets entry "packages/word_render/native/macos/arm64/libword_core_ffi.dylib" since its configured platform(s) did not match the target platform.
+Configured platforms: macos
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-wasm-web.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-wasm-web.wasm" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-asr.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-tts.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-vad.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-kws.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-punctuation.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-speaker-diarization.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/sherpa_onnx_web/assets/sherpa-onnx-speech-enhancement.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+Skipping assets entry "packages/record_web/assets/js/record.worklet.js" since its configured platform(s) did not match the target platform.
+Configured platforms: web
+Target platform: android
+
+
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:verifyOpenMusePairedNative
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :audioplayers_android:generateDebugAssets UP-TO-DATE
+> Task :audioplayers_android:preBuild UP-TO-DATE
+> Task :audioplayers_android:preDebugBuild UP-TO-DATE
+> Task :audioplayers_android:mergeDebugAssets UP-TO-DATE
+> Task :device_info_plus:generateDebugAssets UP-TO-DATE
+> Task :device_info_plus:preBuild UP-TO-DATE
+> Task :device_info_plus:preDebugBuild UP-TO-DATE
+> Task :device_info_plus:mergeDebugAssets UP-TO-DATE
+> Task :file_picker:generateDebugAssets UP-TO-DATE
+> Task :file_picker:preBuild UP-TO-DATE
+> Task :file_picker:preDebugBuild UP-TO-DATE
+> Task :file_picker:mergeDebugAssets UP-TO-DATE
+> Task :file_selector_android:generateDebugAssets UP-TO-DATE
+> Task :file_selector_android:preBuild UP-TO-DATE
+> Task :file_selector_android:preDebugBuild UP-TO-DATE
+> Task :file_selector_android:mergeDebugAssets UP-TO-DATE
+> Task :fjs:generateDebugAssets UP-TO-DATE
+> Task :fjs:preBuild UP-TO-DATE
+> Task :fjs:preDebugBuild UP-TO-DATE
+> Task :fjs:mergeDebugAssets UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:generateDebugAssets UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:preBuild UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:preDebugBuild UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:mergeDebugAssets UP-TO-DATE
+> Task :flutter_secure_storage:generateDebugAssets UP-TO-DATE
+> Task :flutter_secure_storage:preBuild UP-TO-DATE
+> Task :flutter_secure_storage:preDebugBuild UP-TO-DATE
+> Task :flutter_secure_storage:mergeDebugAssets UP-TO-DATE
+> Task :integration_test:generateDebugAssets UP-TO-DATE
+> Task :integration_test:preBuild UP-TO-DATE
+> Task :integration_test:preDebugBuild UP-TO-DATE
+> Task :integration_test:mergeDebugAssets UP-TO-DATE
+> Task :jni:generateDebugAssets UP-TO-DATE
+> Task :jni:preBuild UP-TO-DATE
+> Task :jni:preDebugBuild UP-TO-DATE
+> Task :jni:mergeDebugAssets UP-TO-DATE
+> Task :jni_flutter:generateDebugAssets UP-TO-DATE
+> Task :jni_flutter:preBuild UP-TO-DATE
+> Task :jni_flutter:preDebugBuild UP-TO-DATE
+> Task :jni_flutter:mergeDebugAssets UP-TO-DATE
+> Task :keyboard_height_plugin:generateDebugAssets UP-TO-DATE
+> Task :keyboard_height_plugin:preBuild UP-TO-DATE
+> Task :keyboard_height_plugin:preDebugBuild UP-TO-DATE
+> Task :keyboard_height_plugin:mergeDebugAssets UP-TO-DATE
+> Task :muse_embedded_browser:generateDebugAssets UP-TO-DATE
+> Task :muse_embedded_browser:preBuild UP-TO-DATE
+> Task :muse_embedded_browser:preDebugBuild UP-TO-DATE
+> Task :muse_embedded_browser:mergeDebugAssets UP-TO-DATE
+> Task :openmuse_resource_clipboard:generateDebugAssets UP-TO-DATE
+> Task :openmuse_resource_clipboard:preBuild UP-TO-DATE
+> Task :openmuse_resource_clipboard:preDebugBuild UP-TO-DATE
+> Task :openmuse_resource_clipboard:mergeDebugAssets UP-TO-DATE
+> Task :package_info_plus:generateDebugAssets UP-TO-DATE
+> Task :package_info_plus:preBuild UP-TO-DATE
+> Task :package_info_plus:preDebugBuild UP-TO-DATE
+> Task :package_info_plus:mergeDebugAssets UP-TO-DATE
+> Task :record_android:generateDebugAssets UP-TO-DATE
+> Task :record_android:preBuild UP-TO-DATE
+> Task :record_android:preDebugBuild UP-TO-DATE
+> Task :record_android:mergeDebugAssets UP-TO-DATE
+> Task :shared_preferences_android:generateDebugAssets UP-TO-DATE
+> Task :shared_preferences_android:preBuild UP-TO-DATE
+> Task :shared_preferences_android:preDebugBuild UP-TO-DATE
+> Task :shared_preferences_android:mergeDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:generateDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:preBuild UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:preDebugBuild UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:mergeDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:generateDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:preBuild UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:preDebugBuild UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:mergeDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_x86:generateDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_x86:preBuild UP-TO-DATE
+> Task :sherpa_onnx_android_x86:preDebugBuild UP-TO-DATE
+> Task :sherpa_onnx_android_x86:mergeDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:generateDebugAssets UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:preBuild UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:preDebugBuild UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:mergeDebugAssets UP-TO-DATE
+> Task :url_launcher_android:generateDebugAssets UP-TO-DATE
+> Task :url_launcher_android:preBuild UP-TO-DATE
+> Task :url_launcher_android:preDebugBuild UP-TO-DATE
+> Task :url_launcher_android:mergeDebugAssets UP-TO-DATE
+> Task :video_player_android:generateDebugAssets UP-TO-DATE
+> Task :video_player_android:preBuild UP-TO-DATE
+> Task :video_player_android:preDebugBuild UP-TO-DATE
+> Task :video_player_android:mergeDebugAssets UP-TO-DATE
+> Task :webview_flutter_android:generateDebugAssets UP-TO-DATE
+> Task :webview_flutter_android:preBuild UP-TO-DATE
+> Task :webview_flutter_android:preDebugBuild UP-TO-DATE
+> Task :webview_flutter_android:mergeDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:copyFlutterAssetsDebug
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :audioplayers_android:processDebugNavigationResources UP-TO-DATE
+> Task :device_info_plus:processDebugNavigationResources UP-TO-DATE
+> Task :file_picker:processDebugNavigationResources UP-TO-DATE
+> Task :file_selector_android:processDebugNavigationResources UP-TO-DATE
+> Task :fjs:processDebugNavigationResources UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:processDebugNavigationResources UP-TO-DATE
+> Task :flutter_secure_storage:processDebugNavigationResources UP-TO-DATE
+> Task :integration_test:processDebugNavigationResources UP-TO-DATE
+> Task :jni:processDebugNavigationResources UP-TO-DATE
+> Task :jni_flutter:processDebugNavigationResources UP-TO-DATE
+> Task :keyboard_height_plugin:processDebugNavigationResources UP-TO-DATE
+> Task :muse_embedded_browser:processDebugNavigationResources UP-TO-DATE
+> Task :openmuse_resource_clipboard:processDebugNavigationResources UP-TO-DATE
+> Task :package_info_plus:processDebugNavigationResources UP-TO-DATE
+> Task :record_android:processDebugNavigationResources UP-TO-DATE
+> Task :shared_preferences_android:processDebugNavigationResources UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:processDebugNavigationResources UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:processDebugNavigationResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86:processDebugNavigationResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:processDebugNavigationResources UP-TO-DATE
+> Task :url_launcher_android:processDebugNavigationResources UP-TO-DATE
+> Task :video_player_android:processDebugNavigationResources UP-TO-DATE
+> Task :webview_flutter_android:processDebugNavigationResources UP-TO-DATE
+> Task :app:processDebugNavigationResources
+> Task :audioplayers_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :audioplayers_android:generateDebugResources UP-TO-DATE
+> Task :audioplayers_android:packageDebugResources UP-TO-DATE
+> Task :audioplayers_android:parseDebugLocalResources UP-TO-DATE
+> Task :audioplayers_android:generateDebugRFile UP-TO-DATE
+> Task :app:parseDebugLocalResources
+> Task :audioplayers_android:javaPreCompileDebug UP-TO-DATE
+> Task :device_info_plus:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :device_info_plus:generateDebugResources UP-TO-DATE
+> Task :device_info_plus:packageDebugResources UP-TO-DATE
+> Task :device_info_plus:parseDebugLocalResources UP-TO-DATE
+> Task :device_info_plus:generateDebugRFile UP-TO-DATE
+> Task :app:generateDebugRFile
+> Task :device_info_plus:javaPreCompileDebug UP-TO-DATE
+> Task :file_picker:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :file_picker:generateDebugResources UP-TO-DATE
+> Task :file_picker:packageDebugResources UP-TO-DATE
+> Task :file_picker:parseDebugLocalResources UP-TO-DATE
+> Task :file_picker:generateDebugRFile UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :flutter_plugin_android_lifecycle:generateDebugResources UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:packageDebugResources UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:parseDebugLocalResources UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:generateDebugRFile UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:compileDebugKotlin NO-SOURCE
+> Task :flutter_plugin_android_lifecycle:javaPreCompileDebug UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:compileDebugJavaWithJavac
+> Task :flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :file_picker:javaPreCompileDebug UP-TO-DATE
+> Task :file_selector_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :file_selector_android:generateDebugResources UP-TO-DATE
+> Task :file_selector_android:packageDebugResources UP-TO-DATE
+> Task :file_selector_android:parseDebugLocalResources UP-TO-DATE
+> Task :file_selector_android:generateDebugRFile UP-TO-DATE
+> Task :file_selector_android:javaPreCompileDebug UP-TO-DATE
+> Task :fjs:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :fjs:generateDebugResources UP-TO-DATE
+> Task :fjs:packageDebugResources UP-TO-DATE
+> Task :fjs:parseDebugLocalResources UP-TO-DATE
+> Task :fjs:generateDebugRFile UP-TO-DATE
+> Task :fjs:compileDebugKotlin NO-SOURCE
+> Task :fjs:javaPreCompileDebug UP-TO-DATE
+> Task :fjs:compileDebugJavaWithJavac NO-SOURCE
+> Task :fjs:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :flutter_secure_storage:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :flutter_secure_storage:generateDebugBuildConfig UP-TO-DATE
+> Task :flutter_secure_storage:generateDebugResources UP-TO-DATE
+> Task :flutter_secure_storage:packageDebugResources UP-TO-DATE
+> Task :flutter_secure_storage:parseDebugLocalResources UP-TO-DATE
+> Task :flutter_secure_storage:generateDebugRFile UP-TO-DATE
+> Task :flutter_secure_storage:compileDebugKotlin NO-SOURCE
+> Task :flutter_secure_storage:javaPreCompileDebug UP-TO-DATE
+> Task :flutter_secure_storage:compileDebugJavaWithJavac
+> Task :integration_test:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :integration_test:generateDebugResources UP-TO-DATE
+> Task :integration_test:packageDebugResources UP-TO-DATE
+> Task :integration_test:parseDebugLocalResources UP-TO-DATE
+> Task :integration_test:generateDebugRFile UP-TO-DATE
+> Task :integration_test:compileDebugKotlin NO-SOURCE
+> Task :integration_test:javaPreCompileDebug UP-TO-DATE
+> Task :flutter_secure_storage:bundleLibCompileToJarDebug
+> Task :integration_test:compileDebugJavaWithJavac
+> Task :jni:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :jni:generateDebugResources UP-TO-DATE
+> Task :integration_test:bundleLibCompileToJarDebug
+> Task :jni:packageDebugResources UP-TO-DATE
+> Task :jni:parseDebugLocalResources UP-TO-DATE
+> Task :jni:generateDebugRFile UP-TO-DATE
+> Task :jni:compileDebugKotlin NO-SOURCE
+> Task :jni:javaPreCompileDebug UP-TO-DATE
+> Task :jni:compileDebugJavaWithJavac
+> Task :jni_flutter:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :jni_flutter:generateDebugResources UP-TO-DATE
+> Task :jni:bundleLibCompileToJarDebug
+> Task :jni_flutter:packageDebugResources UP-TO-DATE
+> Task :jni_flutter:parseDebugLocalResources UP-TO-DATE
+> Task :jni_flutter:generateDebugRFile UP-TO-DATE
+> Task :jni_flutter:compileDebugKotlin NO-SOURCE
+> Task :jni_flutter:javaPreCompileDebug UP-TO-DATE
+> Task :jni_flutter:compileDebugJavaWithJavac
+> Task :jni_flutter:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :keyboard_height_plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :keyboard_height_plugin:generateDebugResources UP-TO-DATE
+> Task :keyboard_height_plugin:packageDebugResources UP-TO-DATE
+> Task :keyboard_height_plugin:parseDebugLocalResources UP-TO-DATE
+> Task :keyboard_height_plugin:generateDebugRFile UP-TO-DATE
+> Task :keyboard_height_plugin:javaPreCompileDebug UP-TO-DATE
+> Task :muse_embedded_browser:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :muse_embedded_browser:generateDebugResources UP-TO-DATE
+> Task :muse_embedded_browser:packageDebugResources UP-TO-DATE
+> Task :muse_embedded_browser:parseDebugLocalResources UP-TO-DATE
+> Task :muse_embedded_browser:generateDebugRFile UP-TO-DATE
+> Task :muse_embedded_browser:compileDebugKotlin NO-SOURCE
+> Task :muse_embedded_browser:javaPreCompileDebug UP-TO-DATE
+
+> Task :muse_embedded_browser:compileDebugJavaWithJavac
+Note: /Users/mac/src/openmuse-io/Muse-Plugin-Ecosystem/plugins/browser/flutter/android/src/main/java/io/openmuse/browser/MuseEmbeddedBrowserPlugin.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :openmuse_resource_clipboard:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :openmuse_resource_clipboard:generateDebugResources UP-TO-DATE
+> Task :muse_embedded_browser:bundleLibCompileToJarDebug
+> Task :openmuse_resource_clipboard:packageDebugResources UP-TO-DATE
+> Task :openmuse_resource_clipboard:parseDebugLocalResources UP-TO-DATE
+> Task :openmuse_resource_clipboard:generateDebugRFile UP-TO-DATE
+> Task :openmuse_resource_clipboard:compileDebugKotlin NO-SOURCE
+> Task :openmuse_resource_clipboard:javaPreCompileDebug UP-TO-DATE
+> Task :openmuse_resource_clipboard:compileDebugJavaWithJavac
+> Task :openmuse_resource_clipboard:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :package_info_plus:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :package_info_plus:generateDebugResources UP-TO-DATE
+> Task :package_info_plus:packageDebugResources UP-TO-DATE
+> Task :package_info_plus:parseDebugLocalResources UP-TO-DATE
+> Task :package_info_plus:generateDebugRFile UP-TO-DATE
+> Task :package_info_plus:javaPreCompileDebug UP-TO-DATE
+> Task :record_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :record_android:generateDebugResources UP-TO-DATE
+> Task :record_android:packageDebugResources UP-TO-DATE
+> Task :record_android:parseDebugLocalResources UP-TO-DATE
+> Task :record_android:generateDebugRFile UP-TO-DATE
+> Task :record_android:javaPreCompileDebug UP-TO-DATE
+> Task :shared_preferences_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared_preferences_android:generateDebugResources UP-TO-DATE
+> Task :shared_preferences_android:packageDebugResources UP-TO-DATE
+> Task :shared_preferences_android:parseDebugLocalResources UP-TO-DATE
+> Task :shared_preferences_android:generateDebugRFile UP-TO-DATE
+> Task :shared_preferences_android:javaPreCompileDebug UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :sherpa_onnx_android_arm64:generateDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:packageDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:parseDebugLocalResources UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:generateDebugRFile UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:compileDebugKotlin NO-SOURCE
+> Task :sherpa_onnx_android_arm64:javaPreCompileDebug UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:compileDebugJavaWithJavac NO-SOURCE
+> Task :sherpa_onnx_android_arm64:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :sherpa_onnx_android_armeabi:generateDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:packageDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:parseDebugLocalResources UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:generateDebugRFile UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:compileDebugKotlin NO-SOURCE
+> Task :sherpa_onnx_android_armeabi:javaPreCompileDebug UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:compileDebugJavaWithJavac NO-SOURCE
+> Task :sherpa_onnx_android_armeabi:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :sherpa_onnx_android_x86:generateDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86:packageDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86:parseDebugLocalResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86:generateDebugRFile UP-TO-DATE
+> Task :sherpa_onnx_android_x86:compileDebugKotlin NO-SOURCE
+> Task :sherpa_onnx_android_x86:javaPreCompileDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86:compileDebugJavaWithJavac NO-SOURCE
+> Task :sherpa_onnx_android_x86:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :sherpa_onnx_android_x86_64:generateDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:packageDebugResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:parseDebugLocalResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:generateDebugRFile UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:compileDebugKotlin NO-SOURCE
+> Task :sherpa_onnx_android_x86_64:javaPreCompileDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:compileDebugJavaWithJavac NO-SOURCE
+> Task :sherpa_onnx_android_x86_64:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :url_launcher_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :url_launcher_android:generateDebugBuildConfig UP-TO-DATE
+> Task :url_launcher_android:generateDebugResources UP-TO-DATE
+> Task :url_launcher_android:packageDebugResources UP-TO-DATE
+> Task :url_launcher_android:parseDebugLocalResources UP-TO-DATE
+> Task :url_launcher_android:generateDebugRFile UP-TO-DATE
+> Task :url_launcher_android:javaPreCompileDebug UP-TO-DATE
+> Task :video_player_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :video_player_android:generateDebugResources UP-TO-DATE
+> Task :video_player_android:packageDebugResources UP-TO-DATE
+> Task :video_player_android:parseDebugLocalResources UP-TO-DATE
+> Task :video_player_android:generateDebugRFile UP-TO-DATE
+> Task :video_player_android:javaPreCompileDebug UP-TO-DATE
+> Task :webview_flutter_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :webview_flutter_android:generateDebugResources UP-TO-DATE
+> Task :webview_flutter_android:packageDebugResources UP-TO-DATE
+> Task :webview_flutter_android:parseDebugLocalResources UP-TO-DATE
+> Task :webview_flutter_android:generateDebugRFile UP-TO-DATE
+> Task :webview_flutter_android:javaPreCompileDebug UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :audioplayers_android:writeDebugAarMetadata UP-TO-DATE
+> Task :device_info_plus:writeDebugAarMetadata UP-TO-DATE
+> Task :file_picker:writeDebugAarMetadata UP-TO-DATE
+> Task :file_selector_android:writeDebugAarMetadata UP-TO-DATE
+> Task :fjs:writeDebugAarMetadata UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:writeDebugAarMetadata UP-TO-DATE
+> Task :flutter_secure_storage:writeDebugAarMetadata UP-TO-DATE
+> Task :integration_test:writeDebugAarMetadata UP-TO-DATE
+> Task :jni:writeDebugAarMetadata UP-TO-DATE
+> Task :jni_flutter:writeDebugAarMetadata UP-TO-DATE
+> Task :keyboard_height_plugin:writeDebugAarMetadata UP-TO-DATE
+> Task :muse_embedded_browser:writeDebugAarMetadata UP-TO-DATE
+> Task :openmuse_resource_clipboard:writeDebugAarMetadata UP-TO-DATE
+> Task :package_info_plus:writeDebugAarMetadata UP-TO-DATE
+> Task :record_android:writeDebugAarMetadata UP-TO-DATE
+> Task :shared_preferences_android:writeDebugAarMetadata UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:writeDebugAarMetadata UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:writeDebugAarMetadata UP-TO-DATE
+> Task :sherpa_onnx_android_x86:writeDebugAarMetadata UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:writeDebugAarMetadata UP-TO-DATE
+> Task :url_launcher_android:writeDebugAarMetadata UP-TO-DATE
+> Task :video_player_android:writeDebugAarMetadata UP-TO-DATE
+> Task :webview_flutter_android:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :audioplayers_android:extractDeepLinksDebug UP-TO-DATE
+> Task :audioplayers_android:processDebugManifest UP-TO-DATE
+> Task :device_info_plus:extractDeepLinksDebug UP-TO-DATE
+> Task :device_info_plus:processDebugManifest UP-TO-DATE
+> Task :file_picker:extractDeepLinksDebug UP-TO-DATE
+> Task :file_picker:processDebugManifest UP-TO-DATE
+> Task :file_selector_android:extractDeepLinksDebug UP-TO-DATE
+> Task :file_selector_android:processDebugManifest UP-TO-DATE
+> Task :fjs:extractDeepLinksDebug UP-TO-DATE
+> Task :fjs:processDebugManifest UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:extractDeepLinksDebug UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:processDebugManifest UP-TO-DATE
+> Task :flutter_secure_storage:extractDeepLinksDebug UP-TO-DATE
+> Task :flutter_secure_storage:processDebugManifest UP-TO-DATE
+> Task :integration_test:extractDeepLinksDebug UP-TO-DATE
+> Task :integration_test:processDebugManifest UP-TO-DATE
+> Task :jni:extractDeepLinksDebug UP-TO-DATE
+> Task :jni:processDebugManifest UP-TO-DATE
+> Task :jni_flutter:extractDeepLinksDebug UP-TO-DATE
+> Task :jni_flutter:processDebugManifest UP-TO-DATE
+> Task :keyboard_height_plugin:extractDeepLinksDebug UP-TO-DATE
+> Task :keyboard_height_plugin:processDebugManifest UP-TO-DATE
+> Task :muse_embedded_browser:extractDeepLinksDebug UP-TO-DATE
+> Task :muse_embedded_browser:processDebugManifest UP-TO-DATE
+> Task :openmuse_resource_clipboard:extractDeepLinksDebug UP-TO-DATE
+> Task :openmuse_resource_clipboard:processDebugManifest UP-TO-DATE
+> Task :package_info_plus:extractDeepLinksDebug UP-TO-DATE
+> Task :package_info_plus:processDebugManifest UP-TO-DATE
+> Task :record_android:extractDeepLinksDebug UP-TO-DATE
+> Task :record_android:processDebugManifest UP-TO-DATE
+> Task :shared_preferences_android:extractDeepLinksDebug UP-TO-DATE
+> Task :shared_preferences_android:processDebugManifest UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:extractDeepLinksDebug UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:processDebugManifest UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:extractDeepLinksDebug UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:processDebugManifest UP-TO-DATE
+> Task :sherpa_onnx_android_x86:extractDeepLinksDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86:processDebugManifest UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:extractDeepLinksDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:processDebugManifest UP-TO-DATE
+> Task :url_launcher_android:extractDeepLinksDebug UP-TO-DATE
+> Task :url_launcher_android:processDebugManifest UP-TO-DATE
+> Task :video_player_android:extractDeepLinksDebug UP-TO-DATE
+> Task :video_player_android:processDebugManifest UP-TO-DATE
+> Task :webview_flutter_android:extractDeepLinksDebug UP-TO-DATE
+> Task :webview_flutter_android:processDebugManifest UP-TO-DATE
+> Task :app:mergeDebugResources
+
+> Task :app:processDebugMainManifest
+/Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	uses-permission#android.permission.READ_EXTERNAL_STORAGE was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
+/Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	uses-permission#android.permission.WRITE_EXTERNAL_STORAGE was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
+/Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	uses-permission#android.permission.READ_MEDIA_IMAGES was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
+/Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	uses-permission#android.permission.READ_MEDIA_VIDEO was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
+/Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	uses-permission#android.permission.READ_MEDIA_AUDIO was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
+/Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	uses-permission#android.permission.READ_MEDIA_VISUAL_USER_SELECTED was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
+
+> Task :app:outputDebugAppLinkSettings
+> Task :app:processDebugManifest
+> Task :audioplayers_android:compileDebugLibraryResources UP-TO-DATE
+> Task :device_info_plus:compileDebugLibraryResources UP-TO-DATE
+> Task :file_picker:compileDebugLibraryResources UP-TO-DATE
+> Task :file_selector_android:compileDebugLibraryResources UP-TO-DATE
+> Task :fjs:compileDebugLibraryResources UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:compileDebugLibraryResources UP-TO-DATE
+> Task :flutter_secure_storage:compileDebugLibraryResources UP-TO-DATE
+> Task :integration_test:compileDebugLibraryResources UP-TO-DATE
+> Task :jni:compileDebugLibraryResources UP-TO-DATE
+> Task :jni_flutter:compileDebugLibraryResources UP-TO-DATE
+> Task :keyboard_height_plugin:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processDebugManifestForPackage
+> Task :muse_embedded_browser:compileDebugLibraryResources UP-TO-DATE
+> Task :openmuse_resource_clipboard:compileDebugLibraryResources UP-TO-DATE
+> Task :package_info_plus:compileDebugLibraryResources UP-TO-DATE
+> Task :record_android:compileDebugLibraryResources UP-TO-DATE
+> Task :shared_preferences_android:compileDebugLibraryResources UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:compileDebugLibraryResources UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:compileDebugLibraryResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86:compileDebugLibraryResources UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:compileDebugLibraryResources UP-TO-DATE
+> Task :url_launcher_android:compileDebugLibraryResources UP-TO-DATE
+> Task :video_player_android:compileDebugLibraryResources UP-TO-DATE
+> Task :webview_flutter_android:compileDebugLibraryResources UP-TO-DATE
+> Task :app:preDebugUnitTestBuild
+> Task :fjs:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
+> Task :fjs:processDebugJavaRes NO-SOURCE
+> Task :flutter_plugin_android_lifecycle:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :flutter_plugin_android_lifecycle:processDebugJavaRes NO-SOURCE
+> Task :flutter_secure_storage:processDebugJavaRes NO-SOURCE
+> Task :flutter_secure_storage:bundleLibRuntimeToJarDebug
+> Task :integration_test:processDebugJavaRes NO-SOURCE
+> Task :integration_test:bundleLibRuntimeToJarDebug
+> Task :jni:processDebugJavaRes NO-SOURCE
+> Task :jni_flutter:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :jni:bundleLibRuntimeToJarDebug
+> Task :jni_flutter:processDebugJavaRes NO-SOURCE
+> Task :muse_embedded_browser:processDebugJavaRes NO-SOURCE
+> Task :muse_embedded_browser:bundleLibRuntimeToJarDebug
+> Task :openmuse_resource_clipboard:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :openmuse_resource_clipboard:processDebugJavaRes NO-SOURCE
+> Task :sherpa_onnx_android_arm64:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :sherpa_onnx_android_arm64:processDebugJavaRes NO-SOURCE
+> Task :sherpa_onnx_android_armeabi:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :sherpa_onnx_android_armeabi:processDebugJavaRes NO-SOURCE
+> Task :sherpa_onnx_android_x86:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86:processDebugJavaRes NO-SOURCE
+> Task :sherpa_onnx_android_x86_64:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :sherpa_onnx_android_x86_64:processDebugJavaRes NO-SOURCE
+
+> Task :keyboard_height_plugin:compileDebugKotlin
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/keyboard_height_plugin-0.1.5/android/src/main/kotlin/com/nschairer/keyboard_height_plugin/KeyboardHeightPlugin.kt:72:60 'val systemWindowInsetBottom: Int' is deprecated. Deprecated in Java.
+
+> Task :app:processDebugResources
+> Task :keyboard_height_plugin:compileDebugJavaWithJavac NO-SOURCE
+> Task :keyboard_height_plugin:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :keyboard_height_plugin:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :keyboard_height_plugin:processDebugJavaRes UP-TO-DATE
+> Task :device_info_plus:compileDebugKotlin
+> Task :package_info_plus:compileDebugKotlin
+> Task :device_info_plus:compileDebugJavaWithJavac NO-SOURCE
+> Task :device_info_plus:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :package_info_plus:compileDebugJavaWithJavac NO-SOURCE
+> Task :package_info_plus:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :device_info_plus:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :device_info_plus:processDebugJavaRes UP-TO-DATE
+> Task :package_info_plus:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :package_info_plus:processDebugJavaRes UP-TO-DATE
+> Task :url_launcher_android:compileDebugKotlin
+> Task :file_selector_android:compileDebugKotlin
+> Task :url_launcher_android:compileDebugJavaWithJavac
+> Task :file_selector_android:compileDebugJavaWithJavac
+> Task :file_selector_android:bundleLibCompileToJarDebug
+> Task :url_launcher_android:bundleLibCompileToJarDebug
+> Task :file_selector_android:processDebugJavaRes UP-TO-DATE
+> Task :file_selector_android:bundleLibRuntimeToJarDebug
+> Task :url_launcher_android:processDebugJavaRes UP-TO-DATE
+> Task :url_launcher_android:bundleLibRuntimeToJarDebug
+
+> Task :file_picker:compileDebugKotlin
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/file_picker-10.3.10/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerDelegate.kt:71:83 Elvis operator (?:) always returns the left operand of non-nullable type 'Uri'.
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/file_picker-10.3.10/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:135:49 Unnecessary safe call on a non-null receiver of type 'HashMap<*, *>'.
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/file_picker-10.3.10/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:136:38 Unnecessary safe call on a non-null receiver of type 'HashMap<*, *>'.
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/file_picker-10.3.10/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:137:60 Unnecessary safe call on a non-null receiver of type 'HashMap<*, *>'.
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/file_picker-10.3.10/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:148:70 Unchecked cast of 'Any?' to 'ArrayList<String>?'.
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/file_picker-10.3.10/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:170:70 Unchecked cast of 'Any?' to 'ArrayList<String>?'.
+
+> Task :file_picker:compileDebugJavaWithJavac NO-SOURCE
+> Task :file_picker:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :file_picker:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :file_picker:processDebugJavaRes UP-TO-DATE
+
+> Task :audioplayers_android:compileDebugKotlin
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/audioplayers_android-5.3.0/android/src/main/kotlin/xyz/luan/audioplayers/AudioplayersPlugin.kt:72:30 'var isSpeakerphoneOn: Boolean' is deprecated. Deprecated in Java.
+w: file:///Users/mac/.pub-cache/hosted/pub.flutter-io.cn/audioplayers_android-5.3.0/android/src/main/kotlin/xyz/luan/audioplayers/player/WrappedPlayer.kt:172:22 'var isSpeakerphoneOn: Boolean' is deprecated. Deprecated in Java.
+
+> Task :audioplayers_android:compileDebugJavaWithJavac NO-SOURCE
+> Task :audioplayers_android:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :audioplayers_android:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :audioplayers_android:processDebugJavaRes UP-TO-DATE
+> Task :video_player_android:compileDebugKotlin
+> Task :shared_preferences_android:compileDebugKotlin
+> Task :video_player_android:compileDebugJavaWithJavac
+> Task :shared_preferences_android:compileDebugJavaWithJavac NO-SOURCE
+> Task :shared_preferences_android:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :shared_preferences_android:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :shared_preferences_android:processDebugJavaRes UP-TO-DATE
+> Task :video_player_android:bundleLibCompileToJarDebug
+> Task :video_player_android:processDebugJavaRes UP-TO-DATE
+> Task :video_player_android:bundleLibRuntimeToJarDebug
+> Task :record_android:compileDebugKotlin
+> Task :record_android:compileDebugJavaWithJavac NO-SOURCE
+> Task :record_android:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :record_android:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :record_android:processDebugJavaRes UP-TO-DATE
+> Task :webview_flutter_android:compileDebugKotlin
+> Task :webview_flutter_android:compileDebugJavaWithJavac
+> Task :webview_flutter_android:processDebugJavaRes UP-TO-DATE
+> Task :webview_flutter_android:bundleLibCompileToJarDebug
+> Task :webview_flutter_android:bundleLibRuntimeToJarDebug
+
+> Task :app:compileDebugKotlin
+w: file:///Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/MainActivity.kt:322:21 'val isInsideSecureHardware: Boolean' is deprecated. Deprecated in Java.
+w: file:///Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/android/app/src/main/kotlin/com/openmuseai/mobile/OfflineWebPluginFactory.kt:40:27 No cast needed.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:testDebugUnitTest
+
+[Incubating] Problems report is available at: file:///Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 1m 28s
+369 actionable tasks: 66 executed, 303 up-to-date
