@@ -1,0 +1,218 @@
+{
+  "schema": "openmuse.acceptance-evidence/1",
+  "requirement": "REQ-PPTX-TOOLBAR",
+  "date": "2026-11-25",
+  "app": {
+    "version": "1.0.2",
+    "build": 112415,
+    "target": "lib/main.dart",
+    "package": "com.openmuseai.mobile.acceptance",
+    "sha256": "42b9e94865bdc925c99276db9d2a1a3d69f2a1da664fe024a1354358bf3e88b8"
+  },
+  "plugin": {
+    "version": "0.9.6",
+    "sha256": "e451b2336f7abfee8ab682f3adafe4bd5fdf530343d88de4f854e4812a564e9c"
+  },
+  "device": {
+    "model": "PLP110",
+    "android": 16,
+    "physical": [
+      2248,
+      2480
+    ],
+    "css": [
+      691,
+      660
+    ]
+  },
+  "pipeline": {
+    "client": "7ca2c45f9795aafd5959b8dea2c0be28",
+    "plugin": "92826b61a05ff96c49193c91d65d4b4a"
+  },
+  "notRun": [
+    "actual external Agent spelling/translation response; Host has no Agent capability",
+    "second physical monitor",
+    "iOS and latest Desktop native E2E",
+    "statistical performance p95",
+    "all parameter/color/asset combinations"
+  ],
+  "verificationLayers": {
+    "pluginNodeTests": 13,
+    "canonicalScenariosWithinOneTest": 24,
+    "rendererMethodNamesCovered": 151,
+    "mobileFlutterTests": 114,
+    "sdkTargetedTests": 5,
+    "methodCoverageIsNot151DeviceTests": true
+  },
+  "roundtrip": {
+    "file": "android-112415-roundtrip.pptx",
+    "slides": 4,
+    "ink": 2,
+    "recordings": 2,
+    "modelBytes": 448,
+    "animations": 6,
+    "transitions": [
+      "random",
+      "random",
+      "random",
+      "random"
+    ]
+  },
+  "evidence": [
+    {
+      "file": "evidence/android-112412-single-row.png",
+      "bytes": 281079,
+      "sha256": "e13ed7b6c61013ed61af1442ebffa1ed9fbf43a14a516e49710aae04baabf11d"
+    },
+    {
+      "file": "evidence/android-112414-canvas-recording.webm",
+      "bytes": 548316,
+      "sha256": "7d739dcc4df2133e20c76e0237771bf77777aaabdb3c7991aa1a06245130e6ba"
+    },
+    {
+      "file": "evidence/android-112414-export.pdf",
+      "bytes": 633614,
+      "sha256": "a01627a9d0f833a03cad2ef345359e2e764ab04419c58d1169656f94086b3dd3"
+    },
+    {
+      "file": "evidence/android-112414-pdf-page2.png",
+      "bytes": 38898,
+      "sha256": "eebcfad9aa3cb3b9c6ec6675bf92f93285a8db440f47b148a4759d6f2e0b9038"
+    },
+    {
+      "file": "evidence/android-112414-recording-frame.png",
+      "bytes": 325266,
+      "sha256": "d32536d23874cc324b3ad64fb10faab6079caad63d13c288ad117b64df62af6a"
+    },
+    {
+      "file": "evidence/android-112414-roundtrip.pptx",
+      "bytes": 701554,
+      "sha256": "39132790dec1214434d2265713629b87eaf699c045e1cb6680f3891dad899a07"
+    },
+    {
+      "file": "evidence/android-112414-system-print.pdf",
+      "bytes": 1940738,
+      "sha256": "f6a75cb0aadb3291d92d22a1ec042ef3aba9796e3493acb5854ebcf1ec357cd7"
+    },
+    {
+      "file": "evidence/android-112414-system-print.png",
+      "bytes": 288148,
+      "sha256": "674855d3e45481f4aa9e2965a6574672c54996bd02a16b38986c281c9ba60abf"
+    },
+    {
+      "file": "evidence/android-112415-canvas-recording.webm",
+      "bytes": 103691,
+      "sha256": "08e4e09aada12fee08c11d1e7c3cdb4a546d1d615c9f99cf5075035ff9a8a280"
+    },
+    {
+      "file": "evidence/android-112415-ci-mr-pending.png",
+      "bytes": 170384,
+      "sha256": "969d1ca2011a139acced41f7b01eca98ce5ee0c70cc8a19c925687b3de0c81ce"
+    },
+    {
+      "file": "evidence/android-112415-ci-six-passed.png",
+      "bytes": 276493,
+      "sha256": "d8a288428f88237e9fc4ee28afff3d1009a0fb4ee830fd90efae660c99b4b2bd"
+    },
+    {
+      "file": "evidence/android-112415-e2e.jsonl",
+      "bytes": 1892,
+      "sha256": "345bc6ec72250436aca1801c655c62b744f09eb8c80504546514336695d3c31f"
+    },
+    {
+      "file": "evidence/android-112415-native-report.png",
+      "bytes": 667216,
+      "sha256": "1c6853c2f893df8ff5e1aed5848b3b1516f36c92bc1016bfa99e4a05175afc49"
+    },
+    {
+      "file": "evidence/android-112415-reopened.png",
+      "bytes": 303142,
+      "sha256": "061818fdfe01da4f2c49a84a593eadc0158bf58710a9767c9091b3882f7b3715"
+    },
+    {
+      "file": "evidence/android-112415-roundtrip.pptx",
+      "bytes": 814003,
+      "sha256": "bcad9faa16f20dac6dbc8ff2cb89dcad4963dc02168457544d5501c6f2068d92"
+    },
+    {
+      "file": "evidence/client-feature-report-check.json",
+      "bytes": 37054,
+      "sha256": "9e51d13bcd703a88461188452e8268aed17a34ff8893e6c03448904fcfbc832f"
+    },
+    {
+      "file": "evidence/client-implementation-check.json",
+      "bytes": 504,
+      "sha256": "944806d5509c41fd2d9573f77bb8d13fa5bf07990786af4fa21871936bac5fce"
+    },
+    {
+      "file": "evidence/client-pipeline.json",
+      "bytes": 1511,
+      "sha256": "c92fba5d191502d298e88e9e528e2e9e52c4a5501882a6fe6969a1f40a78950b"
+    },
+    {
+      "file": "evidence/muse-complete-android-112415-build.log",
+      "bytes": 4847,
+      "sha256": "bc1b4e27c1d35ba0d57743507a945dc73b1155be2b2ec25e2614443aac78553f"
+    },
+    {
+      "file": "evidence/muse-toolbar-095-market-analyze.log",
+      "bytes": 96,
+      "sha256": "15402c3cc111005ac3a18a74db013ece4721c5cbceb6a785d3988a5d55ebd9b5"
+    },
+    {
+      "file": "evidence/muse-toolbar-095-sdk-analyze.log",
+      "bytes": 96,
+      "sha256": "bfa5a0293dcdd7a655f6c3dbee6f878a74d01397e3ea6569d67a1b282ecfc012"
+    },
+    {
+      "file": "evidence/muse-toolbar-095-sdk-tests.log",
+      "bytes": 1037,
+      "sha256": "565cb3a9ffd603b11fa00d57a49f28cce5afc52ef49bd8ed8ed14ac21406132a"
+    },
+    {
+      "file": "evidence/muse-toolbar-096-contract.log",
+      "bytes": 1009,
+      "sha256": "6a279f8bd0d682ab9c2734d989ff0c1048d38cb76669f03d81c77491136b3507"
+    },
+    {
+      "file": "evidence/muse-toolbar-096-pack.log",
+      "bytes": 790,
+      "sha256": "ff8949994a86903bfd7c4cfae76ce989aae53700f578d5311bc5ce89883e252b"
+    },
+    {
+      "file": "evidence/muse-toolbar-native-tests.log",
+      "bytes": 71191,
+      "sha256": "0d5f203e97f8d37fa048370fade074994310a43421b55d0d99938710bb12b1b1"
+    },
+    {
+      "file": "evidence/muse-toolbar-print-native-compile.log",
+      "bytes": 38372,
+      "sha256": "8aad8b0b8c7e77b6b93ed80b60ac1c7b3bf7d9847f8626338b374e07d4e708bd"
+    },
+    {
+      "file": "evidence/native-actions.jsonl",
+      "bytes": 133748,
+      "sha256": "3c817ab7b3ce133495f9219ea1119714e3a6cfa621a92da49ef37fafe09e68be"
+    },
+    {
+      "file": "evidence/plugin-feature-report-check.json",
+      "bytes": 3424,
+      "sha256": "af572f56d2d0bb00b62fb5a52480386ed3e5217e39de551571b6b6f642f98809"
+    },
+    {
+      "file": "evidence/plugin-implementation-check.json",
+      "bytes": 666,
+      "sha256": "a6118da0ea942c5e7150292f03febae7ae4e8073d37a1a5d845171385255f8cf"
+    },
+    {
+      "file": "evidence/plugin-pipeline.json",
+      "bytes": 1495,
+      "sha256": "7adebf76bcf78122381033d0e359e08e11e92fef65811a3acb62ff347f259b2b"
+    },
+    {
+      "file": "evidence/source-manifest.json",
+      "bytes": 9982,
+      "sha256": "3d9cdef8f55e2f19d7f4fe5209c714b12cc3d65705f4e68458501144dc2986c6"
+    }
+  ]
+}

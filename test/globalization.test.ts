@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import catalog from '../i18n/catalog.json'
 import {PresentationSettings,matchLocale,pluginConfiguration} from '../web/src/presentation.js'
 const namespace=pluginConfiguration.namespace,prefix=pluginConfiguration.settingsPrefix
-function pack(locale:string,messages:Record<string,string>){return {schemaVersion:1,sourceRevision:1,contractHash:catalog.metadata.contractHash,namespace,locale,messages}}
+function pack(locale:string,messages:Record<string,string>){return {schemaVersion:1,sourceRevision:catalog.metadata.sourceRevision,contractHash:catalog.metadata.contractHash,namespace,locale,messages}}
 const context=(locale:string,languagePacks:any[]=[],features:Record<string,boolean>={},parameters:Record<string,unknown>={})=>({locale,theme:'light',openmuse:{schemaVersion:1,languagePacks,settings:{features,parameters}}})
 test('host locales preserve script boundaries; only bundled languages or provided packs activate',()=>{
  const state=new PresentationSettings()
@@ -16,6 +16,7 @@ test('host locales preserve script boundaries; only bundled languages or provide
 test('incompatible packs and out-of-range configuration never partially activate',()=>{
  const state=new PresentationSettings();state.apply(context('en'))
  const before=state.revision
+ assert.throws(()=>state.apply(context('fr',[{...pack('fr',{[namespace+'.ui.ribbonTabHome']:'Accueil'}),sourceRevision:catalog.metadata.sourceRevision-1}])),/INCOMPATIBLE_PLUGIN_PACK/)
  assert.throws(()=>state.apply(context('fr',[pack('fr',{[namespace+'.ui.unknown']:'bad'})],{[prefix+'editing.enabled']:false})),/INCOMPATIBLE/)
  assert.equal(state.revision,before);assert.equal(state.features.editing,true)
  assert.throws(()=>state.apply(context('en',[],{},{[prefix+'maxFileBytes']:67108865})),/PARAMETER/)

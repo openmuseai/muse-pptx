@@ -1,0 +1,14 @@
+{
+  "stdout": "\n> @openmuse/genoffice-pptx-plugin@0.9.6 build:web\n> npm run i18n:check && node scripts/build_web.mjs\n\n\n> @openmuse/genoffice-pptx-plugin@0.9.6 i18n:check\n> node scripts/generate_i18n.mjs --check\n\nVerified 1524 plugin messages; contract fa96db6b1360\n",
+  "exitCode": 0,
+  "command": [
+    "npm",
+    "run",
+    "build:web"
+  ],
+  "cwd": "/Users/mac/src/openmuse-io/Muse-Plugin-Ecosystem/plugins/genoffice-pptx",
+  "realExecution": true,
+  "projectConfigDigest": "ea4af1b8f6224b8b79b4dbbfb5a8c1e3d65eb94ad08dcff0019c2a9030a478e1",
+  "sourceDigest": "3ae8f9caf32e7a28a4eff4980d45f29be85ec84676d04b5c8cec52ead063dcef",
+  "formalRelease": false
+}

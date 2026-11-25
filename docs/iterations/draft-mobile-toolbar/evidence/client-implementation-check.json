@@ -1,0 +1,14 @@
+{
+  "stdout": "Analyzing main.dart...                                          \nNo issues found! (ran in 3.0s)\n",
+  "exitCode": 0,
+  "command": [
+    "flutter",
+    "analyze",
+    "lib/main.dart"
+  ],
+  "cwd": "/Users/mac/src/openmuse-io/Muse-Client/app/openmuse_mobile",
+  "realExecution": true,
+  "projectConfigDigest": "844baad34c7e9a37a381ede2b4e1838709a1a65e25d13330c74fbeb44c291cfa",
+  "sourceDigest": "d1ac318043fee4f1135b5facc8f4d9952674c3fa6964de7f9bc643155dcb627e",
+  "formalRelease": false
+}

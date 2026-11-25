@@ -1,17 +1,102 @@
 {
-  "agent": {"en":"Agent","zh-Hans":"Agent"},
-  "agentConnecting": {"en":"Connecting to Agent…","zh-Hans":"连接 Agent…"},
-  "agentPrompt": {"en":"Review the current presentation and selected slides. First ask how I would like to change them. Use the document plugin tools to read, edit, and save.","zh-Hans":"请查看当前演示文稿和选中的幻灯片，先询问我希望如何修改。通过文档插件提供的工具读取、修改和保存。"},
-  "agentUnavailable": {"en":"The Host has no connected Agent. Open the Host Agent panel to continue.","zh-Hans":"当前 Host 尚未连接 Agent 插件，请在 Host 的 Agent 面板中操作。"},
-  "featureDisabled": {"en":"This action is currently disabled by the Host configuration.","zh-Hans":"此操作已被宿主配置停用。"},
-  "unsupportedOperation": {"en":"This offline plugin does not support this action: {operation}","zh-Hans":"此离线插件暂不支持此操作：{operation}"},
-  "fileTooLarge": {"en":"The presentation exceeds the configured file size limit.","zh-Hans":"演示文稿超过了配置的文件大小限制。"},
-  "operationFailed": {"en":"The operation could not be completed. Your current document is retained.","zh-Hans":"暂时无法完成操作，已保留当前文稿。"},
-  "languageRejected": {"en":"The language update is incompatible. The previous language remains active.","zh-Hans":"语言更新不兼容，已保留原有语言。"},
-  "openFailed": {"en":"Unable to open the PPTX presentation.","zh-Hans":"PPTX 打开失败。"},
-  "previousPage": {"en":"Previous slide","zh-Hans":"上一页"},
-  "nextPage": {"en":"Next slide","zh-Hans":"下一页"},
-  "previewTitle": {"en":"PPTX structure preview","zh-Hans":"PPTX 结构预览"},
-  "previewNote": {"en":"Choose a presentation to inspect its structure through authorized MCP tools.","zh-Hans":"选择演示文稿后，受授权的 MCP 工具将返回页面结构。"},
-  "noPresentation": {"en":"No presentation is open.","zh-Hans":"尚未打开演示文稿。"}
+  "agent": {
+    "en": "Agent",
+    "zh-Hans": "Agent"
+  },
+  "confirmAction": {
+    "en": "Confirm action",
+    "zh-Hans": "确认操作"
+  },
+  "fileName": {
+    "en": "PPTX file name",
+    "zh-Hans": "PPTX 文件名"
+  },
+  "saveCopyName": {
+    "en": "Choose a name ending in .pptx for the new copy. The original file is retained.",
+    "zh-Hans": "请为新副本输入以 .pptx 结尾的名称，原文件将保留。"
+  },
+  "chartSimplifyBody": {
+    "en": "Editing this imported chart may simplify unsupported formatting. Continue?",
+    "zh-Hans": "编辑此导入的图表可能简化尚未支持的格式，是否继续？"
+  },
+  "agentConnecting": {
+    "en": "Connecting to Agent…",
+    "zh-Hans": "连接 Agent…"
+  },
+  "agentPrompt": {
+    "en": "Review the current presentation and selected slides. First ask how I would like to change them. Use the document plugin tools to read, edit, and save.",
+    "zh-Hans": "请查看当前演示文稿和选中的幻灯片，先询问我希望如何修改。通过文档插件提供的工具读取、修改和保存。"
+  },
+  "agentUnavailable": {
+    "en": "The Host has no connected Agent. Open the Host Agent panel to continue.",
+    "zh-Hans": "当前 Host 尚未连接 Agent 插件，请在 Host 的 Agent 面板中操作。"
+  },
+  "featureDisabled": {
+    "en": "This action is currently disabled by the Host configuration.",
+    "zh-Hans": "此操作已被宿主配置停用。"
+  },
+  "unsupportedOperation": {
+    "en": "This offline plugin does not support this action: {operation}",
+    "zh-Hans": "此离线插件暂不支持此操作：{operation}"
+  },
+  "fileTooLarge": {
+    "en": "The presentation exceeds the configured file size limit.",
+    "zh-Hans": "演示文稿超过了配置的文件大小限制。"
+  },
+  "operationFailed": {
+    "en": "The operation could not be completed. Your current document is retained.",
+    "zh-Hans": "暂时无法完成操作，已保留当前文稿。"
+  },
+  "languageRejected": {
+    "en": "The language update is incompatible. The previous language remains active.",
+    "zh-Hans": "语言更新不兼容，已保留原有语言。"
+  },
+  "openFailed": {
+    "en": "Unable to open the PPTX presentation.",
+    "zh-Hans": "PPTX 打开失败。"
+  },
+  "previousPage": {
+    "en": "Previous slide",
+    "zh-Hans": "上一页"
+  },
+  "nextPage": {
+    "en": "Next slide",
+    "zh-Hans": "下一页"
+  },
+  "previewTitle": {
+    "en": "PPTX structure preview",
+    "zh-Hans": "PPTX 结构预览"
+  },
+  "previewNote": {
+    "en": "Choose a presentation to inspect its structure through authorized MCP tools.",
+    "zh-Hans": "选择演示文稿后，受授权的 MCP 工具将返回页面结构。"
+  },
+  "noPresentation": {
+    "en": "No presentation is open.",
+    "zh-Hans": "尚未打开演示文稿。"
+  },
+  "captureTip": {
+    "en": "Record only the current PPT canvas; stop to insert as a video. No microphone or other apps are captured.",
+    "zh-Hans": "仅录制当前 PPT 画布，停止后插入视频；不采集麦克风或其他应用。"
+  },
+  "captureStatus": {
+    "en": "Recording the PPT canvas… Click Stop recording to insert.",
+    "zh-Hans": "PPT 画布录制中…点击「停止录制」后插入。"
+  },
+  "captureInserted": {
+    "en": "PPT canvas recording inserted (embedded WebM).",
+    "zh-Hans": "已插入 PPT 画布录制（webm 嵌入）。"
+  },
+  "captureUnavailable": {
+    "en": "PPT canvas recording is unavailable in this view.",
+    "zh-Hans": "当前视图无法录制 PPT 画布。"
+  },
+  "dismissError": {
+    "en": "Dismiss error",
+    "zh-Hans": "关闭错误提示"
+  },
+  "printingUnavailable": {
+    "en": "The system print dialog could not be opened. Please retry from the active document.",
+    "zh-Hans": "暂时无法打开系统打印对话框，请返回当前文稿后重试。"
+  }
 }

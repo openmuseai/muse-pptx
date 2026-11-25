@@ -21,7 +21,7 @@ export function buildServer() {
       let text: string
       try {text=await readFile(new URL('./web/index.html',import.meta.url),'utf8')}
       catch {text=await readFile(new URL('../dist/web/index.html',import.meta.url),'utf8')}
-      return {contents:[{uri:uiResource,mimeType,text}]}
+      return {contents:[{uri:uiResource,mimeType,text,_meta:{ui:{permissions:{microphone:{},clipboardWrite:{}}}}}]}
     },
   )
   server.registerTool(

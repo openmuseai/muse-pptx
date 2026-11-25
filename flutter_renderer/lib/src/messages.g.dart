@@ -10,6 +10,10 @@ const pptxLocaleAliases = <String, String>{
 const pptxMessages = <String, Map<String, String>>{
   "en": {
     "agent": "Agent",
+    "confirmAction": "Confirm action",
+    "fileName": "PPTX file name",
+    "saveCopyName": "Choose a name ending in .pptx for the new copy. The original file is retained.",
+    "chartSimplifyBody": "Editing this imported chart may simplify unsupported formatting. Continue?",
     "agentConnecting": "Connecting to Agent…",
     "agentPrompt": "Review the current presentation and selected slides. First ask how I would like to change them. Use the document plugin tools to read, edit, and save.",
     "agentUnavailable": "The Host has no connected Agent. Open the Host Agent panel to continue.",
@@ -23,10 +27,20 @@ const pptxMessages = <String, Map<String, String>>{
     "nextPage": "Next slide",
     "previewTitle": "PPTX structure preview",
     "previewNote": "Choose a presentation to inspect its structure through authorized MCP tools.",
-    "noPresentation": "No presentation is open."
+    "noPresentation": "No presentation is open.",
+    "captureTip": "Record only the current PPT canvas; stop to insert as a video. No microphone or other apps are captured.",
+    "captureStatus": "Recording the PPT canvas… Click Stop recording to insert.",
+    "captureInserted": "PPT canvas recording inserted (embedded WebM).",
+    "captureUnavailable": "PPT canvas recording is unavailable in this view.",
+    "dismissError": "Dismiss error",
+    "printingUnavailable": "The system print dialog could not be opened. Please retry from the active document."
   },
   "zh-Hans": {
     "agent": "Agent",
+    "confirmAction": "确认操作",
+    "fileName": "PPTX 文件名",
+    "saveCopyName": "请为新副本输入以 .pptx 结尾的名称，原文件将保留。",
+    "chartSimplifyBody": "编辑此导入的图表可能简化尚未支持的格式，是否继续？",
     "agentConnecting": "连接 Agent…",
     "agentPrompt": "请查看当前演示文稿和选中的幻灯片，先询问我希望如何修改。通过文档插件提供的工具读取、修改和保存。",
     "agentUnavailable": "当前 Host 尚未连接 Agent 插件，请在 Host 的 Agent 面板中操作。",
@@ -40,6 +54,12 @@ const pptxMessages = <String, Map<String, String>>{
     "nextPage": "下一页",
     "previewTitle": "PPTX 结构预览",
     "previewNote": "选择演示文稿后，受授权的 MCP 工具将返回页面结构。",
-    "noPresentation": "尚未打开演示文稿。"
+    "noPresentation": "尚未打开演示文稿。",
+    "captureTip": "仅录制当前 PPT 画布，停止后插入视频；不采集麦克风或其他应用。",
+    "captureStatus": "PPT 画布录制中…点击「停止录制」后插入。",
+    "captureInserted": "已插入 PPT 画布录制（webm 嵌入）。",
+    "captureUnavailable": "当前视图无法录制 PPT 画布。",
+    "dismissError": "关闭错误提示",
+    "printingUnavailable": "暂时无法打开系统打印对话框，请返回当前文稿后重试。"
   }
 };

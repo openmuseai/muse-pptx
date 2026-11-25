@@ -1,0 +1,7 @@
+00:00 +0: loading /Users/mac/src/openmuse-io/Muse-Client/packages/openmuse_plugin_sdk/test/mcp_app_document_test.dart
+00:00 +0: /Users/mac/src/openmuse-io/Muse-Client/packages/openmuse_plugin_sdk/test/mcp_app_document_test.dart: browser printing is opt-in and only relays the mounted View
+00:00 +1: /Users/mac/src/openmuse-io/Muse-Client/packages/openmuse_plugin_sdk/test/mcp_app_document_test.dart: browser printing is opt-in and only relays the mounted View
+00:00 +2: /Users/mac/src/openmuse-io/Muse-Client/packages/openmuse_plugin_sdk/test/mcp_app_document_test.dart: browser printing is opt-in and only relays the mounted View
+00:00 +3: /Users/mac/src/openmuse-io/Muse-Client/packages/openmuse_plugin_sdk/test/mcp_app_document_test.dart: document change context remains available without enabling Agent messages
+00:00 +4: /Users/mac/src/openmuse-io/Muse-Client/packages/openmuse_plugin_sdk/test/mcp_app_document_test.dart: MCP host context updates preserve the frame and always signal readiness to native
+00:00 +5: All tests passed!
